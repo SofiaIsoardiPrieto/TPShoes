@@ -1,5 +1,10 @@
-﻿using TPShoes.Datos.Interfaces;
+﻿using System.Numerics;
+using TPShoes.Datos;
+using TPShoes.Datos.Interfaces;
+using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
+using TPShoes.Entidades.Dtos;
+using TPShoes.Entidades.Enum;
 using TPShoes.Servicios.Interfaces;
 
 namespace TPShoes.Servicios.Servicios
@@ -7,19 +12,47 @@ namespace TPShoes.Servicios.Servicios
     public class ShoesServicio : IShoesServicio
     {
         private readonly IRepositorioShoes _repository;
-        public ShoesServicio(IRepositorioShoes repository)
+        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IProveedoresRepository _proveedorRepository;
+
+        public ShoesServicio(IRepositorioShoes repository, IUnitOfWork unitOfWork)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _unitOfWork = unitOfWork;
+            //_proveedorRepository = proveedorRepository;
         }
 
         public void Borrar(int shoeId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+                var shoe = _repository.GetShoePorId(shoeId);
+                if (shoe == null)
+                {
+                    throw new Exception("El Shoe especificado no existe.");
+                }
+
+                _repository.EliminarRelaciones(shoe);
+                _unitOfWork.SaveChanges(); 
+
+               
+                _repository.Borrar(shoe);
+                _unitOfWork.SaveChanges(); 
+
+                _unitOfWork.Commit(); 
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
         }
 
         public bool Existe(Shoe shoe)
         {
-            return _repository.Existe( shoe);
+            return _repository.Existe(shoe);
         }
 
         public int GetCantidad(Func<Shoe, bool>? filtro = null)
@@ -32,14 +65,17 @@ namespace TPShoes.Servicios.Servicios
             return _repository.GetLista();
         }
 
-        public List<Shoe> GetListaPaginadaOrdenadaFiltrada(int page, int pageSize)
+        public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
+            int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
+            Colour? ColourFiltro = null)
         {
-            return _repository.GetListaPaginadaOrdenadaFiltrada(page, pageSize);
+            return _repository.GetListaPaginadaOrdenadaFiltrada(cantidadPorPagina, paginaActual,
+                orden, BrandFiltro, ColourFiltro);
         }
 
         public Shoe GetShoePorId(int shoeId)
         {
-            throw new NotImplementedException();
+            return _repository.GetShoePorId(shoeId);
         }
 
         public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand()
@@ -59,7 +95,88 @@ namespace TPShoes.Servicios.Servicios
 
         public void Guardar(Shoe shoe)
         {
-             _repository.Guardar(shoe);
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+                if (shoe.ShoeId == 0)
+                {
+                    _repository.Agregar(shoe);
+                    _unitOfWork.SaveChanges(); // Guardar cambios para obtener el id de la planta agregada
+
+                    //if (proveedores != null && proveedores.Any())
+                    //{
+                    //    _repository.AgregarProveedoresPlanta(planta, proveedores);
+                    //}
+                }
+                else
+                {
+                    _repository.Editar(shoe);
+                    _unitOfWork.SaveChanges(); // Guardar cambios de la planta antes de manejar relaciones
+
+                    //if (proveedores != null)
+                    //{
+                    //    _repository.EliminarRelaciones(planta);
+                    //    _unitOfWork.SaveChanges(); // Guardar cambios para confirmar eliminación
+
+                    //    if (proveedores.Any())
+                    //    {
+                    //        _repository.AgregarProveedoresPlanta(planta, proveedores);
+                    //    }
+                    //}
+                }
+                _unitOfWork.SaveChanges(); // Guardar todos los cambios al final
+                _unitOfWork.Commit(); // Confirmar los cambios
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
+
+        public void Editar(Shoe shoe, int? sizeId = null)
+        {
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+                // Editar la planta
+                _repository.Editar(shoe);
+
+                //if (sizeId.HasValue)
+                //{
+                //    // Buscar el proveedor
+                //    var proveedor = _proveedorRepository
+                //        .GetProveedorPorId(sizeId.Value);
+                //    if (proveedor != null)
+                //    {
+                //        // Crear la nueva relación si no existe
+                //        if (!shoe.ProveedoresPlantas
+                //            .Any(pp => pp.ProveedorId == sizeId))
+                //        {
+                //            var nuevaRelacion = new ProveedorPlanta
+                //            {
+                //                PlantaId = shoe.PlantaId,
+                //                ProveedorId = proveedor.ProveedorId
+                //            };
+                //            _proveedorRepository.AgregarProveedorPlanta(nuevaRelacion);
+
+                //        }
+                //    }
+                //    else
+                //    {
+                //        throw new Exception("Proveedor no encontrado.");
+                //    }
+                //}
+
+                _unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
         }
     }
 

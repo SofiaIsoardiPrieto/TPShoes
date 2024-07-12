@@ -3,12 +3,12 @@
     partial class FrmPrincipal
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,85 +23,140 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            Shoebutton = new Button();
-            Brandbutton = new Button();
-            Colourbutton = new Button();
-            Genrebutton = new Button();
-            Sportbutton = new Button();
+            Shoesbutton = new Button();
+            Brandsbutton = new Button();
+            Genresbutton = new Button();
+            Coloursbutton = new Button();
+            Sportsbutton = new Button();
+            Exitbutton = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
-            // Shoebutton
+            // Shoesbutton
             // 
-            Shoebutton.Location = new Point(20, 30);
-            Shoebutton.Name = "Shoebutton";
-            Shoebutton.Size = new Size(75, 23);
-            Shoebutton.TabIndex = 0;
-            Shoebutton.Text = "Shoes";
-            Shoebutton.UseVisualStyleBackColor = true;
+            Shoesbutton.BackColor = Color.FromArgb(180, 210, 170);
+            Shoesbutton.FlatStyle = FlatStyle.Flat;
+            Shoesbutton.Font = new Font("Candara", 11.25F);
+            Shoesbutton.Location = new Point(22, 52);
+            Shoesbutton.Name = "Shoesbutton";
+            Shoesbutton.Size = new Size(75, 30);
+            Shoesbutton.TabIndex = 0;
+            Shoesbutton.Text = "Shoes";
+            Shoesbutton.UseVisualStyleBackColor = false;
+            Shoesbutton.Click += Shoesbutton_Click;
             // 
-            // Brandbutton
+            // Brandsbutton
             // 
-            Brandbutton.Location = new Point(120, 30);
-            Brandbutton.Name = "Brandbutton";
-            Brandbutton.Size = new Size(75, 23);
-            Brandbutton.TabIndex = 0;
-            Brandbutton.Text = "Brands";
-            Brandbutton.UseVisualStyleBackColor = true;
+            Brandsbutton.BackColor = Color.FromArgb(180, 210, 170);
+            Brandsbutton.FlatStyle = FlatStyle.Flat;
+            Brandsbutton.Font = new Font("Candara", 11.25F);
+            Brandsbutton.Location = new Point(103, 52);
+            Brandsbutton.Name = "Brandsbutton";
+            Brandsbutton.Size = new Size(75, 30);
+            Brandsbutton.TabIndex = 1;
+            Brandsbutton.Text = "Brands";
+            Brandsbutton.UseVisualStyleBackColor = false;
+            Brandsbutton.Click += Brandsbutton_Click;
             // 
-            // Colourbutton
+            // Genresbutton
             // 
-            Colourbutton.Location = new Point(220, 30);
-            Colourbutton.Name = "Colourbutton";
-            Colourbutton.Size = new Size(75, 23);
-            Colourbutton.TabIndex = 0;
-            Colourbutton.Text = "Colours";
-            Colourbutton.UseVisualStyleBackColor = true;
+            Genresbutton.BackColor = Color.FromArgb(180, 210, 170);
+            Genresbutton.FlatStyle = FlatStyle.Flat;
+            Genresbutton.Font = new Font("Candara", 11.25F);
+            Genresbutton.Location = new Point(184, 52);
+            Genresbutton.Name = "Genresbutton";
+            Genresbutton.Size = new Size(75, 30);
+            Genresbutton.TabIndex = 2;
+            Genresbutton.Text = "Genres";
+            Genresbutton.UseVisualStyleBackColor = false;
+            Genresbutton.Click += Genresbutton_Click;
             // 
-            // Genrebutton
+            // Coloursbutton
             // 
-            Genrebutton.Location = new Point(320, 30);
-            Genrebutton.Name = "Genrebutton";
-            Genrebutton.Size = new Size(75, 23);
-            Genrebutton.TabIndex = 0;
-            Genrebutton.Text = "Genres";
-            Genrebutton.UseVisualStyleBackColor = true;
+            Coloursbutton.BackColor = Color.FromArgb(180, 210, 170);
+            Coloursbutton.FlatStyle = FlatStyle.Flat;
+            Coloursbutton.Font = new Font("Candara", 11.25F);
+            Coloursbutton.Location = new Point(265, 52);
+            Coloursbutton.Name = "Coloursbutton";
+            Coloursbutton.Size = new Size(75, 30);
+            Coloursbutton.TabIndex = 3;
+            Coloursbutton.Text = "Colours";
+            Coloursbutton.UseVisualStyleBackColor = false;
+            Coloursbutton.Click += Coloursbutton_Click;
             // 
-            // Sportbutton
+            // Sportsbutton
             // 
-            Sportbutton.Location = new Point(420, 30);
-            Sportbutton.Name = "Sportbutton";
-            Sportbutton.Size = new Size(75, 23);
-            Sportbutton.TabIndex = 0;
-            Sportbutton.Text = "Sports";
-            Sportbutton.UseVisualStyleBackColor = true;
+            Sportsbutton.BackColor = Color.FromArgb(180, 210, 170);
+            Sportsbutton.FlatStyle = FlatStyle.Flat;
+            Sportsbutton.Font = new Font("Candara", 11.25F);
+            Sportsbutton.Location = new Point(346, 52);
+            Sportsbutton.Name = "Sportsbutton";
+            Sportsbutton.Size = new Size(75, 30);
+            Sportsbutton.TabIndex = 4;
+            Sportsbutton.Text = "Sports";
+            Sportsbutton.UseVisualStyleBackColor = false;
+            Sportsbutton.Click += Sportsbutton_Click;
+            // 
+            // Exitbutton
+            // 
+            Exitbutton.BackColor = Color.White;
+            Exitbutton.FlatStyle = FlatStyle.Flat;
+            Exitbutton.ForeColor = Color.White;
+            Exitbutton.Image = Properties.Resources.cancel_20px;
+            Exitbutton.Location = new Point(408, 12);
+            Exitbutton.Name = "Exitbutton";
+            Exitbutton.Size = new Size(25, 25);
+            Exitbutton.TabIndex = 5;
+            Exitbutton.TextImageRelation = TextImageRelation.ImageAboveText;
+            Exitbutton.UseVisualStyleBackColor = false;
+            Exitbutton.Click += Exitbutton_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Candara", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label1.Location = new Point(87, 13);
+            label1.Name = "label1";
+            label1.Size = new Size(263, 29);
+            label1.TabIndex = 3;
+            label1.Text = "Zapateria \"Los juanetes\"";
             // 
             // FrmPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(511, 78);
-            Controls.Add(Sportbutton);
-            Controls.Add(Genrebutton);
-            Controls.Add(Colourbutton);
-            Controls.Add(Brandbutton);
-            Controls.Add(Shoebutton);
+            AutoValidate = AutoValidate.EnablePreventFocusChange;
+            BackColor = Color.White;
+            ClientSize = new Size(445, 100);
+            Controls.Add(label1);
+            Controls.Add(Exitbutton);
+            Controls.Add(Sportsbutton);
+            Controls.Add(Coloursbutton);
+            Controls.Add(Genresbutton);
+            Controls.Add(Brandsbutton);
+            Controls.Add(Shoesbutton);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "FrmPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Zapateria \"Los Juanetes\"";
+            Text = "Zapateria \"Los juanetes\"";
+            Load += FrmPrincipal_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private Button Shoebutton;
-        private Button Brandbutton;
-        private Button Colourbutton;
-        private Button Genrebutton;
-        private Button Sportbutton;
+        private Button Shoesbutton;
+        private Button Brandsbutton;
+        private Button Genresbutton;
+        private Button Coloursbutton;
+        private Button Sportsbutton;
+        private Button Exitbutton;
+        private Label label1;
     }
 }

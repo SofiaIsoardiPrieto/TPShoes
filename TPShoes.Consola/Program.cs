@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
+using TPShoes.Entidades.Dtos;
 using TPShoes.Herramientas;
 using TPShoes.IoC;
 using TPShoes.Servicios.Interfaces;
@@ -276,7 +277,52 @@ class Program
 
     private static void ListaDeShoesPorMarcaEntreRangoPrecios()
     {
-        throw new NotImplementedException();
+        Console.Clear();
+        Console.WriteLine("Listado de Shoes");
+
+        var servicioShoes = serviceProvider?.GetService<IShoesServicio>();
+        var servicioBrand = serviceProvider?.GetService<IBrandsServicio>();
+        if (servicioShoes is null)
+        {
+            Console.WriteLine("Servicio de Shoes no disponible.");
+            return;
+        }
+
+        var agrupaciones = servicioShoes.GetShoesAgrupadosPorGenre();
+
+        foreach (var grupo in agrupaciones)
+        {
+            Console.Clear();
+            Console.WriteLine($"Genre: {grupo.Key} {servicioBrand?.GetBrandPorId(grupo.Key).BrandName}");
+            foreach (var shoe in grupo)
+            {
+                Console.WriteLine($"  - Shoe modelo: {shoe.Model}, Brand: {shoe.Brand.BrandName}");
+            }
+            Console.WriteLine($"Cantidad: {grupo.Count()}");
+            Console.WriteLine($"Precio promedio:{grupo.Average(p => p.Price)}");
+            ConsoleExtensions.EsperaEnter();
+
+        }
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+
+        /*
+          private static void ListaPlantasFiltrado()
+        {
+            Console.Clear();
+            Console.WriteLine("Listado de Plantas Filtrada por Tipo de Planta");
+            var servicioTipoPlanta = servicioProvider?.GetService<ITiposDePlantasService>();
+            var listaTipos = servicioTipoPlanta?.GetLista();
+            ListaDeTiposDePlantas();
+            var listaCharac = listaTipos?.Select(x => x.TipoDePlantaId.ToString()).ToList();
+
+            var tipoFiltroID = ConsoleExtensions.GetValidOptions("Seleccione Tipo: ", listaCharac);
+
+            TipoDePlanta? tipoFiltro = servicioTipoPlanta?.GetTipoDePlantaPorId(Convert.ToInt32(tipoFiltroID));
+            var servicio = servicioProvider?.GetService<IPlantasService>();
+            MostrarListaPlantas(servicio?.GetListaPaginadaOrdenadaFiltrada(0, int.MaxValue, null, tipoFiltro));
+        }
+         */
     }
 
     private static void ListaDeShoesPaginado()
@@ -292,13 +338,13 @@ class Program
             Console.Clear();
             Console.WriteLine("Listado de Shoes");
             Console.WriteLine($"Página: {page + 1}");
-            List<Shoe>? listaPaginada = servicio?
-                .GetListaPaginadaOrdenadaFiltrada(page, pageSize);
+            List<ShoeDto>? listaPaginada = servicio?
+                .GetListaPaginadaOrdenadaFiltrada(page, pageSize,null,null,null);
             MostrarListaShoes(listaPaginada);
         }
     }
 
-    private static void MostrarListaShoes(List<Shoe>? lista)
+    private static void MostrarListaShoes(List<ShoeDto>? lista)
     {
         var tabla = new ConsoleTable("ID", "Brand", "Genre", "Colour", "Sport");
         if (lista != null)

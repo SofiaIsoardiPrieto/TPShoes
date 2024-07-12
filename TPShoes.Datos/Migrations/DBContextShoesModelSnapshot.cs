@@ -29,6 +29,9 @@ namespace TPShoes.Datos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BrandId"));
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<string>("BrandName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -45,27 +48,33 @@ namespace TPShoes.Datos.Migrations
                         new
                         {
                             BrandId = 1,
+                            Active = true,
                             BrandName = "Star"
                         },
                         new
                         {
                             BrandId = 2,
+                            Active = true,
                             BrandName = "Shadow"
                         },
                         new
                         {
                             BrandId = 3,
+                            Active = true,
                             BrandName = "Mr.Low"
                         });
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Colour", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Colour", b =>
                 {
                     b.Property<int>("ColourId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ColourId"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ColourName")
                         .IsRequired()
@@ -83,21 +92,24 @@ namespace TPShoes.Datos.Migrations
                         new
                         {
                             ColourId = 1,
+                            Active = true,
                             ColourName = "blanco"
                         },
                         new
                         {
                             ColourId = 2,
+                            Active = true,
                             ColourName = "azul"
                         },
                         new
                         {
                             ColourId = 3,
+                            Active = true,
                             ColourName = "rojo"
                         });
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Genre", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Genre", b =>
                 {
                     b.Property<int>("GenreId")
                         .ValueGeneratedOnAdd()
@@ -135,13 +147,16 @@ namespace TPShoes.Datos.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Shoe", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Shoe", b =>
                 {
                     b.Property<int>("ShoeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoeId"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -187,6 +202,7 @@ namespace TPShoes.Datos.Migrations
                         new
                         {
                             ShoeId = 1,
+                            Active = true,
                             BrandId = 1,
                             ColourId = 1,
                             Description = "Ideal para los juanetes",
@@ -198,6 +214,7 @@ namespace TPShoes.Datos.Migrations
                         new
                         {
                             ShoeId = 2,
+                            Active = true,
                             BrandId = 1,
                             ColourId = 1,
                             Description = "El clasico de los juanetes",
@@ -209,6 +226,7 @@ namespace TPShoes.Datos.Migrations
                         new
                         {
                             ShoeId = 3,
+                            Active = true,
                             BrandId = 1,
                             ColourId = 1,
                             Description = "No tan buenos para los juanetes",
@@ -219,13 +237,288 @@ namespace TPShoes.Datos.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Sport", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Size", b =>
+                {
+                    b.Property<int>("SizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SizeId"));
+
+                    b.Property<decimal>("SizeNumber")
+                        .HasColumnType("decimal(3, 1)");
+
+                    b.HasKey("SizeId");
+
+                    b.HasIndex("SizeNumber")
+                        .IsUnique();
+
+                    b.ToTable("Sizes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            SizeId = 1,
+                            SizeNumber = 28m
+                        },
+                        new
+                        {
+                            SizeId = 2,
+                            SizeNumber = 28.5m
+                        },
+                        new
+                        {
+                            SizeId = 3,
+                            SizeNumber = 29.0m
+                        },
+                        new
+                        {
+                            SizeId = 4,
+                            SizeNumber = 29.5m
+                        },
+                        new
+                        {
+                            SizeId = 5,
+                            SizeNumber = 30.0m
+                        },
+                        new
+                        {
+                            SizeId = 6,
+                            SizeNumber = 30.5m
+                        },
+                        new
+                        {
+                            SizeId = 7,
+                            SizeNumber = 31.0m
+                        },
+                        new
+                        {
+                            SizeId = 8,
+                            SizeNumber = 31.5m
+                        },
+                        new
+                        {
+                            SizeId = 9,
+                            SizeNumber = 32.0m
+                        },
+                        new
+                        {
+                            SizeId = 10,
+                            SizeNumber = 32.5m
+                        },
+                        new
+                        {
+                            SizeId = 11,
+                            SizeNumber = 33.0m
+                        },
+                        new
+                        {
+                            SizeId = 12,
+                            SizeNumber = 33.5m
+                        },
+                        new
+                        {
+                            SizeId = 13,
+                            SizeNumber = 34.0m
+                        },
+                        new
+                        {
+                            SizeId = 14,
+                            SizeNumber = 34.5m
+                        },
+                        new
+                        {
+                            SizeId = 15,
+                            SizeNumber = 35.0m
+                        },
+                        new
+                        {
+                            SizeId = 16,
+                            SizeNumber = 35.5m
+                        },
+                        new
+                        {
+                            SizeId = 17,
+                            SizeNumber = 36.0m
+                        },
+                        new
+                        {
+                            SizeId = 18,
+                            SizeNumber = 36.5m
+                        },
+                        new
+                        {
+                            SizeId = 19,
+                            SizeNumber = 37.0m
+                        },
+                        new
+                        {
+                            SizeId = 20,
+                            SizeNumber = 37.5m
+                        },
+                        new
+                        {
+                            SizeId = 21,
+                            SizeNumber = 38.0m
+                        },
+                        new
+                        {
+                            SizeId = 22,
+                            SizeNumber = 38.5m
+                        },
+                        new
+                        {
+                            SizeId = 23,
+                            SizeNumber = 39.0m
+                        },
+                        new
+                        {
+                            SizeId = 24,
+                            SizeNumber = 39.5m
+                        },
+                        new
+                        {
+                            SizeId = 25,
+                            SizeNumber = 40.0m
+                        },
+                        new
+                        {
+                            SizeId = 26,
+                            SizeNumber = 40.5m
+                        },
+                        new
+                        {
+                            SizeId = 27,
+                            SizeNumber = 41.0m
+                        },
+                        new
+                        {
+                            SizeId = 28,
+                            SizeNumber = 41.5m
+                        },
+                        new
+                        {
+                            SizeId = 29,
+                            SizeNumber = 42.0m
+                        },
+                        new
+                        {
+                            SizeId = 30,
+                            SizeNumber = 42.5m
+                        },
+                        new
+                        {
+                            SizeId = 31,
+                            SizeNumber = 43.0m
+                        },
+                        new
+                        {
+                            SizeId = 32,
+                            SizeNumber = 43.5m
+                        },
+                        new
+                        {
+                            SizeId = 33,
+                            SizeNumber = 44.0m
+                        },
+                        new
+                        {
+                            SizeId = 34,
+                            SizeNumber = 44.5m
+                        },
+                        new
+                        {
+                            SizeId = 35,
+                            SizeNumber = 45.0m
+                        },
+                        new
+                        {
+                            SizeId = 36,
+                            SizeNumber = 45.5m
+                        },
+                        new
+                        {
+                            SizeId = 37,
+                            SizeNumber = 46.0m
+                        },
+                        new
+                        {
+                            SizeId = 38,
+                            SizeNumber = 46.5m
+                        },
+                        new
+                        {
+                            SizeId = 39,
+                            SizeNumber = 47.0m
+                        },
+                        new
+                        {
+                            SizeId = 40,
+                            SizeNumber = 47.5m
+                        },
+                        new
+                        {
+                            SizeId = 41,
+                            SizeNumber = 48.0m
+                        },
+                        new
+                        {
+                            SizeId = 42,
+                            SizeNumber = 48.5m
+                        },
+                        new
+                        {
+                            SizeId = 43,
+                            SizeNumber = 49.0m
+                        },
+                        new
+                        {
+                            SizeId = 44,
+                            SizeNumber = 49.5m
+                        },
+                        new
+                        {
+                            SizeId = 45,
+                            SizeNumber = 50.0m
+                        });
+                });
+
+            modelBuilder.Entity("TPShoes.Entidades.Clases.SizeShoe", b =>
+                {
+                    b.Property<int>("SizeShoeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SizeShoeId"));
+
+                    b.Property<int>("ShoeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stok")
+                        .HasColumnType("int");
+
+                    b.HasKey("SizeShoeId");
+
+                    b.HasIndex("ShoeId");
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("SizeShoes", (string)null);
+                });
+
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Sport", b =>
                 {
                     b.Property<int>("SportId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SportId"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SportName")
                         .IsRequired()
@@ -243,21 +536,24 @@ namespace TPShoes.Datos.Migrations
                         new
                         {
                             SportId = 1,
+                            Active = true,
                             SportName = "basquet"
                         },
                         new
                         {
                             SportId = 2,
+                            Active = true,
                             SportName = "futbol"
                         },
                         new
                         {
                             SportId = 3,
+                            Active = true,
                             SportName = "tenis"
                         });
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Shoe", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Shoe", b =>
                 {
                     b.HasOne("TPShoes.Entidades.Brand", "Brand")
                         .WithMany("Shoes")
@@ -265,19 +561,19 @@ namespace TPShoes.Datos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TPShoes.Entidades.Colour", "Colour")
+                    b.HasOne("TPShoes.Entidades.Clases.Colour", "Colour")
                         .WithMany("Shoes")
                         .HasForeignKey("ColourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TPShoes.Entidades.Genre", "Genre")
+                    b.HasOne("TPShoes.Entidades.Clases.Genre", "Genre")
                         .WithMany("Shoes")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TPShoes.Entidades.Sport", "Sport")
+                    b.HasOne("TPShoes.Entidades.Clases.Sport", "Sport")
                         .WithMany("Shoes")
                         .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -292,22 +588,51 @@ namespace TPShoes.Datos.Migrations
                     b.Navigation("Sport");
                 });
 
+            modelBuilder.Entity("TPShoes.Entidades.Clases.SizeShoe", b =>
+                {
+                    b.HasOne("TPShoes.Entidades.Clases.Shoe", "Shoe")
+                        .WithMany("SizeShoe")
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TPShoes.Entidades.Clases.Size", "Size")
+                        .WithMany("SizeShoe")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shoe");
+
+                    b.Navigation("Size");
+                });
+
             modelBuilder.Entity("TPShoes.Entidades.Brand", b =>
                 {
                     b.Navigation("Shoes");
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Colour", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Colour", b =>
                 {
                     b.Navigation("Shoes");
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Genre", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Genre", b =>
                 {
                     b.Navigation("Shoes");
                 });
 
-            modelBuilder.Entity("TPShoes.Entidades.Sport", b =>
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Shoe", b =>
+                {
+                    b.Navigation("SizeShoe");
+                });
+
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Size", b =>
+                {
+                    b.Navigation("SizeShoe");
+                });
+
+            modelBuilder.Entity("TPShoes.Entidades.Clases.Sport", b =>
                 {
                     b.Navigation("Shoes");
                 });

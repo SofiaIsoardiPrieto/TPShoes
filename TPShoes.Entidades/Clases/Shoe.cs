@@ -16,11 +16,13 @@ namespace TPShoes.Entidades.Clases
         public string Model { get; set; } = null!;
         public string? Description { get; set; }
         public decimal Price { get; set; }
+        public bool Active { get; set; } = true;
 
         public Brand Brand { get; set; } = null!;
         public Colour Colour { get; set; } = null!;
         public Genre Genre { get; set; } = null!;
         public Sport Sport { get; set; } = null!;
 
+        public ICollection<SizeShoe> SizeShoe { get; set; } = new List<SizeShoe>();
     }
 }

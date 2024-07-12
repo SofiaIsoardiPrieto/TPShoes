@@ -14,12 +14,13 @@ namespace TPShoes.Datos
         public DbSet<Sport> Sports { get; set; }
         public DbSet<Colour> Colours { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
+        public DbSet<Size> Sizes { get; set; }
+        public DbSet<SizeShoe> SizeShoes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=.; Initial Catalog=TPShoes;
                     Trusted_Connection=true; TrustServerCertificate=True;");
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -193,14 +194,52 @@ namespace TPShoes.Datos
                 .IsRequired();
                 entity.HasData(ShoesList);
 
+                entity.Property(e => e.Model).IsRequired();
+                entity.Property(e => e.Description).IsRequired();
+
             });
 
             //Cambiar el decimal del precio a (10,2)
             modelBuilder.Entity<Shoe>(entity =>
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)")
+
+            // en MODEL y DESCRIPCION tiene caracteristica: "no nulo"
+            // es lo mismo que que IsRequired()?
             );
 
+            //
+            // ------------- PARTE 3  -----------
+            //
 
+            // aca va lo de URI????
+            //está bien asi??
+            List<Size> sizes = new List<Size>();
+            int keyId = 0;
+            for (decimal i = 28; i <= 50; i += .5m)
+            {
+                keyId++;
+                var size = new Size()
+                {
+                    SizeId = keyId,
+                    SizeNumber = i,
+                };
+                sizes.Add(size);
+            }
+
+            modelBuilder.Entity<Size>(entity =>
+            {
+                entity.ToTable("Sizes");
+                entity.HasIndex(e => e.SizeNumber).IsUnique();
+                entity.Property(e => e.SizeNumber).HasColumnType("decimal(3, 1)");
+                entity.HasData(sizes);
+            });
+
+            modelBuilder.Entity<SizeShoe>(entity =>
+            {
+                entity.ToTable("SizeShoes");
+                entity.Property(e => e.Stok).IsRequired();
+             
+            });
         }
     }
 

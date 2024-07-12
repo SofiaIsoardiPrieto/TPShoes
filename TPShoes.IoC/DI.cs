@@ -38,6 +38,8 @@ namespace TPShoes.IoC
             servicios.AddScoped<ISportsServicio,
               SportsServicio>();
 
+            //UnityOfWork
+            servicios.AddScoped<IUnitOfWork, UnitOfWork>();
 
             servicios.AddDbContext<DBContextShoes>(optiones =>
             {

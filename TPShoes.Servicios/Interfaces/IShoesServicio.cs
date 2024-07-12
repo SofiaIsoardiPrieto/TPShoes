@@ -1,20 +1,27 @@
 ﻿using System.Numerics;
+using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
+using TPShoes.Entidades.Dtos;
+using TPShoes.Entidades.Enum;
 
 namespace TPShoes.Servicios.Interfaces
 {
     public interface IShoesServicio
     {
+        void Guardar(Shoe shoe);
+        void Editar(Shoe shoe, int? sizeId = null);
         void Borrar(int shoeId);
         bool Existe(Shoe shoe);
         int GetCantidad(Func<Shoe, bool>? filtro = null);
         List<Shoe> GetLista();
-        List<Shoe> GetListaPaginadaOrdenadaFiltrada(int page, int pageSize);
+        List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
+           int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
+           Colour? ColourFiltro = null);
         Shoe GetShoePorId(int shoeId);
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();
       
-        void Guardar(Shoe shoe);
+     
     }
 }

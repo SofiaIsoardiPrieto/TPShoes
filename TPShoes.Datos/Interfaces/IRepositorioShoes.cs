@@ -1,4 +1,7 @@
-﻿using TPShoes.Entidades.Clases;
+﻿using TPShoes.Entidades;
+using TPShoes.Entidades.Clases;
+using TPShoes.Entidades.Dtos;
+using TPShoes.Entidades.Enum;
 
 namespace TPShoes.Datos.Interfaces
 {
@@ -7,10 +10,16 @@ namespace TPShoes.Datos.Interfaces
         bool Existe(Shoe shoe);
         int GetCantidad(Func<Shoe, bool>? filtro);
         List<Shoe> GetLista();
-        List<Shoe> GetListaPaginadaOrdenadaFiltrada(int page, int pageSize);
+        List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
+            int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
+            Colour? ColourFiltro = null);
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();
-        void Guardar(Shoe shoe);
+        void Agregar(Shoe shoe);
+        void Editar(Shoe shoe);
+        Shoe GetShoePorId(int shoeId);
+        void EliminarRelaciones(Shoe shoe);
+        void Borrar(Shoe shoe);
     }
 }
