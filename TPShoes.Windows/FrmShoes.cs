@@ -199,7 +199,7 @@ namespace TPShoes.Windows
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
             var r = ShoesdataGridView.SelectedRows[0];
-            Shoe shoe = (Shoe)r.Tag;
+            ShoeDto shoe = (ShoeDto)r.Tag;
             try
             {
                 DialogResult dr = MessageBox.Show("¿Desea borrar el registro seleccionado?",
@@ -207,15 +207,13 @@ namespace TPShoes.Windows
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                 if (dr == DialogResult.No) { return; }
+
                 _servicio.Borrar(shoe.ShoeId);
                 GridHelper.QuitarFila(ShoesdataGridView, r);
-                registro = _servicio.GetCantidad();
-                //esta bien?
-                PaginaActualcomboBox.SelectedIndex = paginaActual;
-                PaginasTotalestextBox.Text = paginas.ToString();
-                //
                 MessageBox.Show("Shoe borrado exitosamente", "Mensaje",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                //limpiar
                 RecargarGrilla();
                 MostrarDatosEnGrilla();
             }

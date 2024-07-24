@@ -14,7 +14,7 @@ namespace TPShoes.Servicios.Servicios
         private readonly IRepositorioShoes _repository;
         private readonly IUnitOfWork _unitOfWork;
         //private readonly IProveedoresRepository _proveedorRepository;
-
+       
         public ShoesServicio(IRepositorioShoes repository, IUnitOfWork unitOfWork)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -28,14 +28,10 @@ namespace TPShoes.Servicios.Servicios
             {
                 _unitOfWork.BeginTransaction();
 
-                var shoe = _repository.GetShoePorId(shoeId);
-                if (shoe == null)
-                {
-                    throw new Exception("El Shoe especificado no existe.");
-                }
-
-                _repository.EliminarRelaciones(shoe);
-                _unitOfWork.SaveChanges(); 
+                var shoe = _repository.GetShoePorId(shoeId) ?? throw new Exception("El Shoe especificado no existe.");
+                
+                //_repository.EliminarRelaciones(shoe);
+                //_unitOfWork.SaveChanges(); 
 
                
                 _repository.Borrar(shoe);

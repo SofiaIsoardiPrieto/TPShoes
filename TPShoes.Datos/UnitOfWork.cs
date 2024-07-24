@@ -38,7 +38,17 @@ namespace TPShoes.Datos
 
         public int SaveChanges()
         {
-            return _context.SaveChanges();
+            try
+            {
+
+                return _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+          
         }
     }
 

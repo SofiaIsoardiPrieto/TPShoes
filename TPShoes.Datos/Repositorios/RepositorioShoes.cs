@@ -13,7 +13,7 @@ namespace TPShoes.Datos.Repositorios
 
         public RepositorioShoes() { }
 
-        public RepositorioShoes(DBContextShoes context) { _context = context;}
+        public RepositorioShoes(DBContextShoes context) { _context = context; }
 
         public bool Existe(Shoe shoe)
         {
@@ -152,7 +152,7 @@ namespace TPShoes.Datos.Repositorios
         public void Agregar(Shoe shoe)
         {
             // Verificar si brand asociado a la shoe ya existe en la base de datos:
-          
+
             var brandExistente = _context.Brands
             .FirstOrDefault(t => t.BrandId == shoe.BrandId);
 
@@ -198,13 +198,13 @@ namespace TPShoes.Datos.Repositorios
         {
             var brandExistente = _context.Brands
                .FirstOrDefault(t => t.BrandId == shoe.BrandId);
-          
+
             if (brandExistente != null)
             {
                 _context.Attach(brandExistente);
                 shoe.Brand = brandExistente;
             }
-       
+
             var sportExistente = _context.Sports
                 .FirstOrDefault(t => t.SportId == shoe.SportId);
             if (sportExistente != null)
@@ -239,11 +239,27 @@ namespace TPShoes.Datos.Repositorios
         public Shoe? GetShoePorId(int shoeId)
         {
             return _context.Shoes
-                .Include(p => p.Brand)
-                 .Include(p => p.Genre)
-                 .Include(p => p.SportId)
-                 .Include(p => p.ColourId)
-                 .FirstOrDefault(p => p.ShoeId == shoeId);
+                .Include(p => p.Brand)   // Propiedad de navegación
+                .Include(p => p.Genre)   // Propiedad de navegación
+                .Include(p => p.Sport)   // Propiedad de navegación
+                .Include(p => p.Colour)  // Propiedad de navegación
+                .FirstOrDefault(p => p.ShoeId == shoeId);
+        }
+
+
+        public void EliminarRelaciones(Shoe shoe)
+        {
+            var relacionesPasadas = _context.Shoes
+              .Where(pp => pp.ShoeId == shoe.ShoeId)
+              .ToList();
+
+            _context.Shoes
+                .RemoveRange(relacionesPasadas);
+        }
+
+        public void Borrar(Shoe shoe)
+        {
+            _context.Shoes.Remove(shoe);
         }
     }
 
