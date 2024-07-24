@@ -25,6 +25,8 @@ namespace TPShoes.IoC
                 RepositorioShoes>();
             servicios.AddScoped<IRepositorioSports,
                 RepositorioSports>();
+            servicios.AddScoped<IRepositorioSizes,
+                RepositorioSizes>();
 
             // todos los servicios
             servicios.AddScoped<IBrandsServicio,
@@ -37,6 +39,8 @@ namespace TPShoes.IoC
               ShoesServicio>();
             servicios.AddScoped<ISportsServicio,
               SportsServicio>();
+            servicios.AddScoped<ISizesServicio,
+              SizesServicio>();
 
             //UnityOfWork
             servicios.AddScoped<IUnitOfWork, UnitOfWork>();

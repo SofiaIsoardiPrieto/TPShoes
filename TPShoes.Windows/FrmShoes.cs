@@ -135,7 +135,7 @@ namespace TPShoes.Windows
             }
         }
 
-        private void EditartoolStripButton_Click(object sender, EventArgs e)
+        /*private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
             var r = ShoesdataGridView.SelectedRows[0];
@@ -193,7 +193,61 @@ namespace TPShoes.Windows
 
             }
 
+        }*/
+        private void EditartoolStripButton_Click(object sender, EventArgs e)
+        {
+            if (ShoesdataGridView.SelectedRows.Count == 0) return;
+
+            var filaSeleccionada = ShoesdataGridView.SelectedRows[0];
+            if (filaSeleccionada.Tag is null) return;
+
+            ShoeDto shoeDto = (ShoeDto)filaSeleccionada.Tag;
+            Shoe? shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
+            if (shoeOriginal == null) return;
+
+            // Aquí puedes cargar proveedores o cualquier otra información necesaria para la edición
+            // List<Proveedor>? proveedores = _servicio.GetProveedoresPorPlanta(shoeOriginal.PlantaId);
+            // (Planta? planta, List<Proveedor>? proveedores) p = (shoeOriginal, proveedores);
+
+            FrmShoeAE frm = new FrmShoeAE(_serviceProvider) { Text = "Editar Shoe" };
+            frm.SetShoe(shoeOriginal); // Asegúrate de pasar el objeto original al formulario
+
+            DialogResult dr = frm.ShowDialog(this);
+
+            if (dr == DialogResult.Cancel)
+            {
+                GridHelper.SetearFila(filaSeleccionada, shoeOriginal);
+                return;
+            }
+
+            try
+            {
+                // Obtener el shoe editado desde el formulario
+                Shoe shoeEditado = frm.GetShoe();
+                if (shoeEditado == null) return;
+
+                if (!_servicio.Existe(shoeEditado))
+                {
+                    _servicio.Guardar(shoeEditado);
+                    MessageBox.Show("¡Shoe editado exitosamente!", "Confirmación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    GridHelper.SetearFila(filaSeleccionada, shoeEditado);
+                    RecargarGrilla();
+                    MostrarDatosEnGrilla();
+                }
+                else
+                {
+                    MessageBox.Show("¡Shoe existente!", "Error", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                GridHelper.SetearFila(filaSeleccionada, shoeOriginal); // Restaurar el original en caso de error
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
