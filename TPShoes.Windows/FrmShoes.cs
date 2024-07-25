@@ -73,11 +73,7 @@ namespace TPShoes.Windows
                 GridHelper.SetearFila(r, shoe);
                 GridHelper.AgregarFila(ShoesdataGridView, r);
             }
-
-
-            //PaginascomboBox.SelectedIndex = paginaActual;
-
-
+            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
             PaginasTotalestextBox.Text = paginas.ToString();
 
             if (paginaActual == paginas)
@@ -106,7 +102,7 @@ namespace TPShoes.Windows
             if (df == DialogResult.Cancel) { return; }
             try
             {
-                shoe=frm.GetShoe();
+                shoe = frm.GetShoe();
                 if (shoe is null) return;
                 if (!_servicio.Existe(shoe))
                 {
@@ -117,7 +113,8 @@ namespace TPShoes.Windows
 
                     MessageBox.Show("Shoe agregado!!!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    RecargarGrilla();
+                    MostrarPaginado();
+                   // RecargarGrilla(); //NO!!
                 }
                 else
                 {
@@ -135,65 +132,7 @@ namespace TPShoes.Windows
             }
         }
 
-        /*private void EditartoolStripButton_Click(object sender, EventArgs e)
-        {
-            if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
-            var r = ShoesdataGridView.SelectedRows[0];
-            if (r.Tag is null) return;
-            ShoeDto shoeDto = (ShoeDto)r.Tag;
-            Shoe? shoeAEditar = _servicio.GetShoePorId(shoeDto.ShoeId);
-            if (shoeAEditar == null) return;
-            //List<Proveedor>? proveedores = _servicio
-            //    .GetProveedoresPorPlanta(shoeAEditar.PlantaId);
-            //(Planta? planta, List<Proveedor>? proveedores) p = (shoeAEditar, proveedores);
 
-            FrmShoeAE frm = new FrmShoeAE(_serviceProvider) { Text = "Editar Shoe" };
-            DialogResult dr = frm.ShowDialog(this);
-
-            //frm.SetPlantaProveedores(p);
-
-            if (dr == DialogResult.Cancel)
-            {
-                GridHelper.SetearFila(r, shoeAEditar);
-                return;
-            }
-
-            try
-            {
-                //  p = frm.GetPlantaProveedores();
-                Shoe shoeEditado = frm.GetShoe();
-                if (shoeEditado is null) return;
-                if (!_servicio.Existe(shoeEditado))
-                {
-                    _servicio.Guardar(shoe);
-
-                    if (shoe != null)
-                    {
-                        GridHelper.SetearFila(r, shoeAEditar);
-                    }
-                    else
-                    {
-                        GridHelper.SetearFila(r, shoeEditado);
-                    }
-                    RecargarGrilla();
-                    MostrarDatosEnGrilla();
-                }
-                else
-                {
-                    MessageBox.Show("Shoe existente!!!", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            }
-
-        }*/
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
@@ -202,26 +141,29 @@ namespace TPShoes.Windows
             if (filaSeleccionada.Tag is null) return;
 
             ShoeDto shoeDto = (ShoeDto)filaSeleccionada.Tag;
+            //tengo un problema con un FrmShoes SOlO COPIA,
+            //pasa el punto de interupcion por un metodo viejo que estaba en forma de comentario
+            //guardo cierro y veo que pasa
             Shoe? shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
-            if (shoeOriginal == null) return;
+            if (shoeOriginal is null) return;
 
-            // Aquí puedes cargar proveedores o cualquier otra información necesaria para la edición
-            // List<Proveedor>? proveedores = _servicio.GetProveedoresPorPlanta(shoeOriginal.PlantaId);
-            // (Planta? planta, List<Proveedor>? proveedores) p = (shoeOriginal, proveedores);
+            // Crear una copia del objeto original para restaurar en caso de error
+            Shoe shoeCopia = (Shoe)shoeOriginal.Clone();
 
             FrmShoeAE frm = new FrmShoeAE(_serviceProvider) { Text = "Editar Shoe" };
             frm.SetShoe(shoeOriginal); // Asegúrate de pasar el objeto original al formulario
 
-            DialogResult dr = frm.ShowDialog(this);
+            DialogResult dr = frm.ShowDialog(this);// ACA ME CAMBIA EL shoeOrignal!!!!!!!!
 
             if (dr == DialogResult.Cancel)
             {
-                GridHelper.SetearFila(filaSeleccionada, shoeOriginal);
+                GridHelper.SetearFila(filaSeleccionada, shoeDto);
                 return;
             }
 
             try
             {
+                //DONDE ME TRAIGO LA INFO DE AE Y GUARDO EN EDITADO, CAMBIA TAMBIEN EL ORIGNAL PORQUE!!??
                 // Obtener el shoe editado desde el formulario
                 Shoe shoeEditado = frm.GetShoe();
                 if (shoeEditado == null) return;
@@ -232,28 +174,34 @@ namespace TPShoes.Windows
                     MessageBox.Show("¡Shoe editado exitosamente!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     GridHelper.SetearFila(filaSeleccionada, shoeEditado);
-                    RecargarGrilla();
-                    MostrarDatosEnGrilla();
                 }
                 else
                 {
-                    MessageBox.Show("¡Shoe existente!", "Error", 
+                    MessageBox.Show("¡Shoe existente!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    GridHelper.SetearFila(filaSeleccionada, shoeDto);
+                
                 }
             }
             catch (Exception ex)
             {
-                GridHelper.SetearFila(filaSeleccionada, shoeOriginal); // Restaurar el original en caso de error
+                // Restaurar el original en caso de error
+                shoeOriginal = shoeCopia;//PORQUE!!!!!!??
+
+                GridHelper.SetearFila(filaSeleccionada, shoeDto);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            MostrarPaginado();
         }
+
 
 
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
             var r = ShoesdataGridView.SelectedRows[0];
-            ShoeDto shoe = (ShoeDto)r.Tag;
+            ShoeDto? shoe = r.Tag as ShoeDto;//LO MISMO?
             try
             {
                 DialogResult dr = MessageBox.Show("¿Desea borrar el registro seleccionado?",
@@ -464,6 +412,16 @@ namespace TPShoes.Windows
                 MessageBox.Show("Limpie el filtro activo (Actualizar)", "Adevertencia",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void PaginaActualcomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PaginaActualcomboBox.SelectedIndex >= 0)
+            {
+                paginaActual = PaginaActualcomboBox.SelectedIndex + 1;
+                MostrarPaginado();
+            }
+
         }
     }
 }

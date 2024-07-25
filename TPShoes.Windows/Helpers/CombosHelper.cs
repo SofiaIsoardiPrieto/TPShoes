@@ -9,12 +9,12 @@ namespace TPShoes.Windows.Helpers
     public static class CombosHelper
     {
 
-        public static void CargarCombosPaginas(int pageCount, ref ComboBox cbo)
+        public static void CargarCombosPaginas(int paginaActual, ref ComboBox cbo)
         {
             cbo.Items.Clear();
-            for (int page = 1; page <= pageCount; page++)
+            for (int pagina = 1; pagina <= paginaActual; pagina++)
             {
-                cbo.Items.Add(page.ToString());
+                cbo.Items.Add(pagina.ToString());
             }
             cbo.SelectedIndex = 0;
         }

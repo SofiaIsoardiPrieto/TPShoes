@@ -17,13 +17,23 @@ namespace TPShoes.Datos.Repositorios
 
         public bool Existe(Shoe shoe)
         {
-            if (shoe.ShoeId == 0)
+            try
             {
+                if (shoe.ShoeId == 0)
+                {
+                    return _context.Shoes
+                        .Any(s => s.Model == shoe.Model && s.Price == shoe.Price);
+                }
                 return _context.Shoes
-                    .Any(s => s.Model == shoe.Model && s.Price == shoe.Price);
+                    .Any(s => s.Model == shoe.Model && s.Price == shoe.Price && s.ShoeId != shoe.ShoeId);
             }
-            return _context.Shoes
-                .Any(s => s.Model == shoe.Model && s.Price == shoe.Price && s.ShoeId != shoe.ShoeId);
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
         }
 
         public int GetCantidad(Func<Shoe, bool>? filtro = null)

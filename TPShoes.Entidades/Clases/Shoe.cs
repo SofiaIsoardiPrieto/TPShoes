@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TPShoes.Entidades.Clases
 {
-    public class Shoe
+    public class Shoe:ICloneable
     {
         public int ShoeId { get; set; }
         public int BrandId { get; set; }
@@ -24,5 +24,10 @@ namespace TPShoes.Entidades.Clases
         public Sport Sport { get; set; } = null!;
 
         public ICollection<SizeShoe> SizeShoe { get; set; } = new List<SizeShoe>();
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

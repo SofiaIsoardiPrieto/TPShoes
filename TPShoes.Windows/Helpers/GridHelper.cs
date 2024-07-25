@@ -31,9 +31,9 @@ namespace TPShoes.Windows.Helpers
                     r.Cells[1].Value = shoeDto.Colour;
                     r.Cells[2].Value = shoeDto.Genre;
                     r.Cells[3].Value = shoeDto.Sport;
-                    r.Cells[4].Value = shoeDto.Price;
-                    r.Cells[5].Value = shoeDto.Description;
-                    r.Cells[6].Value = shoeDto.Model;
+                    r.Cells[4].Value = shoeDto.Model;
+                    r.Cells[5].Value = shoeDto.Price;
+                    r.Cells[6].Value = shoeDto.Description;
                     break;
                 //case TipoDeEnvase tipoEnvase:
                 //    r.Cells[0].Value = tipoEnvase.Descripcion;

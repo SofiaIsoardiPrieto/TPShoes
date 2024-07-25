@@ -97,6 +97,7 @@ namespace TPShoes.Windows
                 //    }
                 //}
                 DialogResult = DialogResult.OK;
+                
             }
         }
 
@@ -137,7 +138,7 @@ namespace TPShoes.Windows
                 valido = false;
                 errorProvider1.SetError(ColourcomboBox, "Debe seleccionar un Colour");
             }
-            //combos
+            
 
             if (string.IsNullOrEmpty(ModeltextBox.Text) ||
                 string.IsNullOrWhiteSpace(ModeltextBox.Text))
@@ -146,11 +147,19 @@ namespace TPShoes.Windows
                 errorProvider1.SetError(ModeltextBox, "Model requerido");
             }
 
-            if (!decimal.TryParse(PricetextBox.Text, out decimal pCosto) ||
-                (pCosto <= 0))
+            // Validar que el precio sea un decimal válido y mayor que cero
+            if (!decimal.TryParse(PricetextBox.Text, out decimal price) || price <= 0)
             {
                 valido = false;
-                errorProvider1.SetError(PricetextBox, "Precio de costo no válido o mal ingresado");
+                errorProvider1.SetError(PricetextBox, "Precio no válido o mal ingresado. Debe ser un número positivo.");
+                return valido;
+            }
+
+            // Validar que el precio esté dentro del rango permitido (0.00 a 99999999.99) y tenga como máximo dos decimales
+            if (price > 99999999.99M || decimal.Round(price, 2) != price)
+            {
+                valido = false;
+                errorProvider1.SetError(PricetextBox, "El precio debe estar entre 0.00 y 99999999.99 con hasta dos decimales.");
             }
 
             if (string.IsNullOrEmpty(DescripciontextBox.Text) ||
