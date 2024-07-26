@@ -28,8 +28,8 @@ namespace TPShoes.Windows
         {
             if (ValidarDatos())
             {
-                brand = (Brand?)BrandcomboBox.SelectedValue;
-                brand.BrandId =BrandcomboBox.SelectedIndex;
+                //brand = (Brand?)BrandcomboBox.SelectedItem;
+                //brand.BrandId =BrandcomboBox.SelectedIndex;
                 DialogResult = DialogResult.OK;
             }
         }

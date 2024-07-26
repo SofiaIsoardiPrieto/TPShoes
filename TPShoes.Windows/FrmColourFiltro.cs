@@ -1,4 +1,3 @@
-using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 using TPShoes.Windows.Helpers;
 
@@ -17,19 +16,18 @@ namespace TPShoes.Windows
         {
             base.OnLoad(e);
             CombosHelper.CargarComboColour(_serviceProvider, ref ColourcomboBox);
-           
+
         }
         public Colour GetColour()
         {
             return colour;
         }
-       
+
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                colour = (Colour?)ColourcomboBox.SelectedValue;
-                colour.ColourId = ColourcomboBox.SelectedIndex;
+               //ya defino mi colour cuando cambio la seleccion del color
                 DialogResult = DialogResult.OK;
             }
         }
@@ -48,7 +46,8 @@ namespace TPShoes.Windows
         {
             Close();
         }
-        private void BrandcomboBox_SelectedIndexChanged(object sender, EventArgs e)
+      
+        private void ColourcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ColourcomboBox.SelectedIndex > 0)
             {

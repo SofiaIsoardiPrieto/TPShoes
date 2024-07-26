@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using TPShoes.Datos;
+﻿using TPShoes.Datos;
 using TPShoes.Datos.Interfaces;
 using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
@@ -14,7 +13,7 @@ namespace TPShoes.Servicios.Servicios
         private readonly IRepositorioShoes _repository;
         private readonly IUnitOfWork _unitOfWork;
         //private readonly IProveedoresRepository _proveedorRepository;
-       
+
         public ShoesServicio(IRepositorioShoes repository, IUnitOfWork unitOfWork)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -29,15 +28,15 @@ namespace TPShoes.Servicios.Servicios
                 _unitOfWork.BeginTransaction();
 
                 var shoe = _repository.GetShoePorId(shoeId) ?? throw new Exception("El Shoe especificado no existe.");
-                
+
                 //_repository.EliminarRelaciones(shoe);
                 //_unitOfWork.SaveChanges(); 
 
-               
-                _repository.Borrar(shoe);
-                _unitOfWork.SaveChanges(); 
 
-                _unitOfWork.Commit(); 
+                _repository.Borrar(shoe);
+                _unitOfWork.SaveChanges();
+
+                _unitOfWork.Commit();
             }
             catch (Exception)
             {
@@ -53,8 +52,18 @@ namespace TPShoes.Servicios.Servicios
 
         public int GetCantidad(Func<Shoe, bool>? filtro = null)
         {
-            return _repository.GetCantidad(filtro);
+            try
+            {
+                return _repository.GetCantidad(filtro);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Habilita el servidor, boluda!.", ex);
+            }
         }
+
+
 
         public List<Shoe> GetLista()
         {

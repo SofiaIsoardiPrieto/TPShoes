@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TPShoes.Servicios.Interfaces;
 using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
+using TPShoes.Servicios.Interfaces;
 
 namespace TPShoes.Windows.Helpers
 {
@@ -10,13 +10,13 @@ namespace TPShoes.Windows.Helpers
     {
 
         public static void CargarCombosPaginas(int paginaActual, ref ComboBox cbo)
-        {
-            cbo.Items.Clear();
-            for (int pagina = 1; pagina <= paginaActual; pagina++)
-            {
-                cbo.Items.Add(pagina.ToString());
-            }
-            cbo.SelectedIndex = 0;
+        {    
+                cbo.Items.Clear();
+                for (int pagina = 1; pagina <= paginaActual; pagina++)
+                {
+                    cbo.Items.Add(pagina.ToString());
+                }
+                cbo.SelectedIndex = 0;
         }
 
         public static void CargarComboBrand(IServiceProvider serviceProvider, ref ComboBox cbo)

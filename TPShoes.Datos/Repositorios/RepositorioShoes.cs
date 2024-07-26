@@ -44,10 +44,22 @@ namespace TPShoes.Datos.Repositorios
             }
             else
             {
+                try
+                {
+                    return _context.Shoes.Count();
+                }
+                catch (Exception ex)
+                {
 
-                return _context.Shoes.Count();
+                    throw new Exception("Habilita el servidor, boluda!.", ex);
+                }
+
             }
+
         }
+
+
+
 
         public List<Shoe> GetLista()
         {
@@ -80,15 +92,15 @@ namespace TPShoes.Datos.Repositorios
                 //.Include(p => p.SizeShoe)
                 .AsNoTracking();
 
-            // Aplicar filtro si se proporciona un tipo de planta
-            if (BrandFiltro != null)
+            // Aplicar filtro si se proporciona un brand
+            if (BrandFiltro is not null)
             {
                 query = query
                     .Where(p => p.BrandId == BrandFiltro.BrandId);
             }
 
-            // Aplicar filtro si se proporciona un tipo de envase
-            if (ColourFiltro != null)
+            // Aplicar filtro si se proporciona un colour
+            if (ColourFiltro is not null)
             {
                 query = query
                     .Where(p => p.ColourId == ColourFiltro.ColourId);
@@ -248,12 +260,16 @@ namespace TPShoes.Datos.Repositorios
 
         public Shoe? GetShoePorId(int shoeId)
         {
-            return _context.Shoes
+            //el problema viena de aca!!!!
+            Shoe shoe =
+             _context.Shoes
                 .Include(p => p.Brand)   // Propiedad de navegación
                 .Include(p => p.Genre)   // Propiedad de navegación
                 .Include(p => p.Sport)   // Propiedad de navegación
                 .Include(p => p.Colour)  // Propiedad de navegación
                 .FirstOrDefault(p => p.ShoeId == shoeId);
+
+            return shoe;
         }
 
 

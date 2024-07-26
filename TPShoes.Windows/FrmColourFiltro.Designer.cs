@@ -89,6 +89,7 @@
             ColourcomboBox.Name = "ColourcomboBox";
             ColourcomboBox.Size = new Size(237, 26);
             ColourcomboBox.TabIndex = 14;
+            ColourcomboBox.SelectedIndexChanged += ColourcomboBox_SelectedIndexChanged;
             // 
             // label3
             // 

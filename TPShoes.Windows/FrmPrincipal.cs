@@ -35,9 +35,17 @@ namespace TPShoes.Windows
 
         private void Shoesbutton_Click(object sender, EventArgs e)
         {
-            FrmShoes frm = new FrmShoes(_serviceProvider
-               .GetService<IShoesServicio>(), _serviceProvider);
-            frm.ShowDialog();
+            try
+            {
+                FrmShoes frm = new FrmShoes(_serviceProvider
+                               .GetService<IShoesServicio>(), _serviceProvider);
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Se produjo un error: {ex.Message}");
+            }
+
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)

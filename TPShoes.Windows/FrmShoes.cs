@@ -11,7 +11,7 @@ namespace TPShoes.Windows
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IShoesServicio _servicio;
-        private List<ShoeDto>? lista;//Dto????
+        private List<ShoeDto>? lista;
         private Orden orden = Orden.SinOrden;
         private Shoe? shoe = null;
         private Brand? brand = null;
@@ -19,10 +19,7 @@ namespace TPShoes.Windows
         private Genre? genre = null;
         private Colour? colour = null;
 
-        string textoFiltro = null;
         private Color colorOriginal;
-
-        private bool filtroOn = false;
 
         int paginaActual = 1;//private int pageNum = 0;
         int registro;//private int recordCount;
@@ -41,25 +38,26 @@ namespace TPShoes.Windows
         }
         private void RecargarGrilla()
         {
-            try
-            {
-                registro = _servicio.GetCantidad();
-                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
-                PaginasTotalestextBox.Text = registro.ToString();
-                CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
+            registro = _servicio.GetCantidad();
+            paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
+            PaginasTotalestextBox.Text = registro.ToString();
+            CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
 
-                lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, null, null);
-                MostrarDatosEnGrilla();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            //Sin flitrar ni ordenar
+            lista = _servicio.GetListaPaginadaOrdenadaFiltrada
+                (registrosPorPagina, paginaActual, null, null, null);
+            MostrarDatosEnGrilla();
         }
-
-        private void MostrarPaginado()
+        //private void MostrarOrdenado(Orden orden)
+        //{
+        //    // Mostrar la lista ordenada según el criterio seleccionado
+        //    lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, orden, null, null);
+        //    MostrarDatosEnGrilla();
+        //}
+        private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null)
         {
-            lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual);
+            // Actualizar la lista paginada según la página actual y tamaño de página
+            lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, orden, brand, colour);
             MostrarDatosEnGrilla();
         }
 
@@ -73,25 +71,44 @@ namespace TPShoes.Windows
                 GridHelper.SetearFila(r, shoe);
                 GridHelper.AgregarFila(ShoesdataGridView, r);
             }
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
+            ActualizarBotonesPaginado();
+
+
+        }
+
+        private void ActualizarBotonesPaginado()
+        {
             PaginasTotalestextBox.Text = paginas.ToString();
 
             if (paginaActual == paginas)
             {
+                Primerobutton.Enabled = true;
+                Anteriorbutton.Enabled = true;
                 Siguientebutton.Enabled = false;
                 Ultimobutton.Enabled = false;
 
             }
             if (paginaActual < paginas)
             {
+                Primerobutton.Enabled = true;
+                Anteriorbutton.Enabled = true;
+                Siguientebutton.Enabled = true;
+                Ultimobutton.Enabled = true;
+            }
+            if (paginaActual > paginas)
+            {
+                Primerobutton.Enabled = true;
+                Anteriorbutton.Enabled = true;
                 Siguientebutton.Enabled = true;
                 Ultimobutton.Enabled = true;
 
             }
             if (paginaActual == 1)
             {
+                Primerobutton.Enabled = false; 
                 Anteriorbutton.Enabled = false;
-                Primerobutton.Enabled = false;
+                Siguientebutton.Enabled = true;
+                Ultimobutton.Enabled = true;
             }
         }
 
@@ -113,8 +130,8 @@ namespace TPShoes.Windows
 
                     MessageBox.Show("Shoe agregado!!!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    MostrarPaginado();
-                   // RecargarGrilla(); //NO!!
+
+
                 }
                 else
                 {
@@ -130,8 +147,8 @@ namespace TPShoes.Windows
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
+            RecargarGrilla();// para evitar algun error
         }
-
 
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
@@ -144,7 +161,8 @@ namespace TPShoes.Windows
             //tengo un problema con un FrmShoes SOlO COPIA,
             //pasa el punto de interupcion por un metodo viejo que estaba en forma de comentario
             //guardo cierro y veo que pasa
-            Shoe? shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
+            Shoe? shoeOriginal = null;
+            shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
             if (shoeOriginal is null) return;
 
             // Crear una copia del objeto original para restaurar en caso de error
@@ -180,28 +198,24 @@ namespace TPShoes.Windows
                     MessageBox.Show("¡Shoe existente!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     GridHelper.SetearFila(filaSeleccionada, shoeDto);
-                
+
                 }
             }
             catch (Exception ex)
             {
-                // Restaurar el original en caso de error
-                shoeOriginal = shoeCopia;//PORQUE!!!!!!??
 
                 GridHelper.SetearFila(filaSeleccionada, shoeDto);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            MostrarPaginado();
+            RecargarGrilla();//para evitar algun error
         }
-
-
 
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
             var r = ShoesdataGridView.SelectedRows[0];
-            ShoeDto? shoe = r.Tag as ShoeDto;//LO MISMO?
+            ShoeDto? shoeDto = r.Tag as ShoeDto;//LO MISMO?
             try
             {
                 DialogResult dr = MessageBox.Show("¿Desea borrar el registro seleccionado?",
@@ -210,14 +224,14 @@ namespace TPShoes.Windows
                     MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                 if (dr == DialogResult.No) { return; }
 
-                _servicio.Borrar(shoe.ShoeId);
+                _servicio.Borrar(shoeDto.ShoeId);
                 GridHelper.QuitarFila(ShoesdataGridView, r);
                 MessageBox.Show("Shoe borrado exitosamente", "Mensaje",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                //limpiar
-                RecargarGrilla();
-                MostrarDatosEnGrilla();
+
+                RecargarGrilla();//evitar errores
+
             }
             catch (Exception ex)
             {
@@ -227,17 +241,22 @@ namespace TPShoes.Windows
             }
         }
 
-        private void FiltrotoolStripButton_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void ActualizartoolStripButton_Click(object sender, EventArgs e)
         {
-            filtroOn = false;
+            LimpiarBotonesYActualizarLista();
+        }
+
+        private void LimpiarBotonesYActualizarLista()
+        {
+            orden = Orden.SinOrden;
+            brand = null;
+            colour = null;
             FiltrotoolStripButton.Enabled = true;
-            RecargarGrilla();
-            FiltrotoolStripButton.BackColor = Color.FromArgb(180, 210, 170);
+            ActualizarListaPaginada(orden, brand, colour);
+            FiltrotoolStripButton.BackColor = colorOriginal;
+            OrdenartoolStripButton.BackColor = colorOriginal;
+
         }
 
         private void SizestoolStripButton_Click(object sender, EventArgs e)
@@ -254,38 +273,27 @@ namespace TPShoes.Windows
         {
 
         }
-        private void SalirtoolStripButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+
 
         private void Primerobutton_Click(object sender, EventArgs e)
         {
             paginaActual = 1;
-            Anteriorbutton.Enabled = false;
-            Primerobutton.Enabled = false;
-            Siguientebutton.Enabled = true;
-            Ultimobutton.Enabled = true;
-            MostrarPaginado();
+            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
 
         private void Anteriorbutton_Click(object sender, EventArgs e)
         {
-            Siguientebutton.Enabled = true;
-            Ultimobutton.Enabled = true;
             paginaActual--;
             if (paginaActual == 1)
             {
                 Anteriorbutton.Enabled = false;
                 Primerobutton.Enabled = false;
             }
-            MostrarPaginado();
+            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
 
         private void Siguientebutton_Click(object sender, EventArgs e)
         {
-            Anteriorbutton.Enabled = true;
-            Primerobutton.Enabled = true;
             paginaActual++;
             if (paginaActual == paginas)
             {
@@ -293,135 +301,113 @@ namespace TPShoes.Windows
                 Ultimobutton.Enabled = false;
 
             }
-            MostrarPaginado();
-
+            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
 
         private void Ultimobutton_Click(object sender, EventArgs e)
         {
             paginaActual = paginas;
-            Siguientebutton.Enabled = false;
-            Ultimobutton.Enabled = false;
-            Anteriorbutton.Enabled = true;
-            Primerobutton.Enabled = true;
-            MostrarPaginado();
+            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
-        private void MostrarOrdenado(Orden orden)
-        {
-            lista = _servicio.GetListaPaginadaOrdenadaFiltrada(paginaActual, paginas, orden);
-            MostrarDatosEnGrilla();
-        }
-
-        private void aZToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MostrarOrdenado(Orden.AZ);
-        }
-
-        private void zAToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MostrarOrdenado(Orden.ZA);
-        }
-
-        private void menorPercioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MostrarOrdenado(Orden.MenorPrecio);
-        }
-
-        private void mayorPrecioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MostrarOrdenado(Orden.MayorPrecio);
-        }
-
-        private void brandToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            colorOriginal = FiltrotoolStripButton.BackColor;
-            if (!filtroOn)
-            {
-                try
-                {
-                    FrmBrandFiltro frm = new FrmBrandFiltro(_serviceProvider) { Text = "Buscar Brand" };
-                    DialogResult dr = frm.ShowDialog(this);
-                    if (dr == DialogResult.Cancel) { return; }
-
-                    brand = frm.GetBrand();
-                    registro = _servicio.GetCantidad();
-                    paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
-                    paginaActual = 1;
-                    lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, brand, null);
-                    if (lista.Count == 0)
-                    {
-                        MessageBox.Show("No hay Pacientes con esa letra/texto", "Informacion",
-                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-                    FiltrotoolStripButton.BackColor = Color.Gray;
-                    filtroOn = true;
-                    MostrarDatosEnGrilla();
-                }
-
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Limpie el filtro activo (Actualizar)", "Adevertencia",
-                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void colourToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            colorOriginal = FiltrotoolStripButton.BackColor;
-            if (!filtroOn)
-            {
-                try
-                {
-                    FrmColourFiltro frm = new FrmColourFiltro(_serviceProvider) { Text = "Buscar Colour" };
-                    DialogResult dr = frm.ShowDialog(this);
-                    if (dr == DialogResult.Cancel) { return; }
-
-                    colour = frm.GetColour();
-
-                    registro = _servicio.GetCantidad();
-                    paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
-                    paginaActual = 1;
-
-                    lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, null, colour);
-                    if (lista.Count == 0)
-                    {
-                        MessageBox.Show("No hay Pacientes con esa letra/texto", "Informacion",
-                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-                    FiltrotoolStripButton.BackColor = Color.Gray;
-                    filtroOn = true;
-                    MostrarDatosEnGrilla();
-                }
-
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Limpie el filtro activo (Actualizar)", "Adevertencia",
-                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
         private void PaginaActualcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (PaginaActualcomboBox.SelectedIndex >= 0)
             {
                 paginaActual = PaginaActualcomboBox.SelectedIndex + 1;
-                MostrarPaginado();
+                ActualizarListaPaginada(orden, brand, colour);
+            }
+        }
+        private void aZToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            orden = Orden.AZ;
+            ActualizarListaPaginada(orden, brand, colour);
+            colorOriginal = OrdenartoolStripButton.BackColor;
+        }
+
+        private void zAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            orden = Orden.ZA;
+            ActualizarListaPaginada(orden, brand, colour);
+            colorOriginal = OrdenartoolStripButton.BackColor;
+        }
+
+        private void menorPercioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            orden = Orden.MenorPrecio;
+            ActualizarListaPaginada(orden, brand, colour);
+            colorOriginal = OrdenartoolStripButton.BackColor;
+        }
+        private void mayorPrecioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            orden = Orden.MayorPrecio;
+            ActualizarListaPaginada(orden, brand, colour);
+            colorOriginal = OrdenartoolStripButton.BackColor;
+        }
+
+        private void brandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            colorOriginal = brandToolStripMenuItem.BackColor;
+
+
+            try
+            {
+                FrmBrandFiltro frm = new FrmBrandFiltro(_serviceProvider) { Text = "Buscar Brand" };
+                DialogResult dr = frm.ShowDialog(this);
+                if (dr == DialogResult.Cancel) { return; }
+
+                brand = frm.GetBrand();
+                registro = _servicio.GetCantidad();
+                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
+                paginaActual = 1;
+                //lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, brand, null);
+
+                brandToolStripMenuItem.BackColor = Color.Gray;
+                ActualizarListaPaginada(orden, brand, colour);
             }
 
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        private void colourToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            colorOriginal = colourToolStripMenuItem.BackColor;
+
+            try
+            {
+                FrmColourFiltro frm = new FrmColourFiltro(_serviceProvider) { Text = "Buscar Colour" };
+                DialogResult dr = frm.ShowDialog(this);
+                if (dr == DialogResult.Cancel) { return; }
+
+                colour = frm.GetColour();
+
+                registro = _servicio.GetCantidad();
+                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
+                paginaActual = 1;
+
+                //lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, null, colour);
+
+                colourToolStripMenuItem.BackColor = Color.Gray;
+
+                ActualizarListaPaginada(orden, brand, colour);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        private void SalirtoolStripButton_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
