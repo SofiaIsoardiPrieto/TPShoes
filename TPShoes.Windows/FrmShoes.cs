@@ -42,22 +42,32 @@ namespace TPShoes.Windows
             paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
             PaginasTotalestextBox.Text = registro.ToString();
             CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
-
-            //Sin flitrar ni ordenar
-            lista = _servicio.GetListaPaginadaOrdenadaFiltrada
-                (registrosPorPagina, paginaActual, null, null, null);
+            lista = GetListaSinFiltrar();
             MostrarDatosEnGrilla();
         }
-        //private void MostrarOrdenado(Orden orden)
-        //{
-        //    // Mostrar la lista ordenada según el criterio seleccionado
-        //    lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, orden, null, null);
-        //    MostrarDatosEnGrilla();
-        //}
+        private List<ShoeDto> GetListaSinFiltrar()
+        {
+            //Sin flitrar ni ordenar
+            return _servicio.GetListaPaginadaOrdenadaFiltrada
+               (registrosPorPagina, paginaActual, null, null, null);
+        }
+
+
         private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null)
         {
+            if (brand is not null)
+            {
+                registro = _servicio.GetCantidad(s => s.Brand == brand);
+                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
+            }
+            if (colour is not null)
+            {
+                registro = _servicio.GetCantidad(s => s.Colour == colour);
+                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
+            }
             // Actualizar la lista paginada según la página actual y tamaño de página
             lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, orden, brand, colour);
+
             MostrarDatosEnGrilla();
         }
 
@@ -105,7 +115,7 @@ namespace TPShoes.Windows
             }
             if (paginaActual == 1)
             {
-                Primerobutton.Enabled = false; 
+                Primerobutton.Enabled = false;
                 Anteriorbutton.Enabled = false;
                 Siguientebutton.Enabled = true;
                 Ultimobutton.Enabled = true;
@@ -254,8 +264,12 @@ namespace TPShoes.Windows
             colour = null;
             FiltrotoolStripButton.Enabled = true;
             ActualizarListaPaginada(orden, brand, colour);
-            FiltrotoolStripButton.BackColor = colorOriginal;
-            OrdenartoolStripButton.BackColor = colorOriginal;
+            brandToolStripMenuItem.BackColor = colorOriginal;
+            colourToolStripMenuItem.BackColor = colorOriginal;
+            aZToolStripMenuItem.BackColor = colorOriginal;
+            zAToolStripMenuItem.BackColor = colorOriginal;
+            menorPercioToolStripMenuItem.BackColor = colorOriginal;
+            mayorPrecioToolStripMenuItem.BackColor = colorOriginal;
 
         }
 
@@ -273,7 +287,6 @@ namespace TPShoes.Windows
         {
 
         }
-
 
         private void Primerobutton_Click(object sender, EventArgs e)
         {
@@ -348,22 +361,15 @@ namespace TPShoes.Windows
         private void brandToolStripMenuItem_Click(object sender, EventArgs e)
         {
             colorOriginal = brandToolStripMenuItem.BackColor;
-
-
             try
             {
                 FrmBrandFiltro frm = new FrmBrandFiltro(_serviceProvider) { Text = "Buscar Brand" };
                 DialogResult dr = frm.ShowDialog(this);
                 if (dr == DialogResult.Cancel) { return; }
-
                 brand = frm.GetBrand();
-                registro = _servicio.GetCantidad();
-                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
                 paginaActual = 1;
-                //lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, brand, null);
-
-                brandToolStripMenuItem.BackColor = Color.Gray;
                 ActualizarListaPaginada(orden, brand, colour);
+                brandToolStripMenuItem.BackColor = Color.Gray;
             }
 
             catch (Exception)
@@ -371,7 +377,6 @@ namespace TPShoes.Windows
 
                 throw;
             }
-
         }
 
         private void colourToolStripMenuItem_Click(object sender, EventArgs e)
@@ -385,13 +390,7 @@ namespace TPShoes.Windows
                 if (dr == DialogResult.Cancel) { return; }
 
                 colour = frm.GetColour();
-
-                registro = _servicio.GetCantidad();
-                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
                 paginaActual = 1;
-
-                //lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, null, null, colour);
-
                 colourToolStripMenuItem.BackColor = Color.Gray;
 
                 ActualizarListaPaginada(orden, brand, colour);
@@ -402,9 +401,7 @@ namespace TPShoes.Windows
 
                 throw;
             }
-
         }
-
         private void SalirtoolStripButton_Click(object sender, EventArgs e)
         {
             Close();

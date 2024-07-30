@@ -32,8 +32,6 @@ namespace TPShoes.Datos.Repositorios
 
                 throw;
             }
-
-
         }
 
         public int GetCantidad(Func<Shoe, bool>? filtro = null)
@@ -53,14 +51,8 @@ namespace TPShoes.Datos.Repositorios
 
                     throw new Exception("Habilita el servidor, boluda!.", ex);
                 }
-
             }
-
         }
-
-
-
-
         public List<Shoe> GetLista()
         {
             var shoesQuery = _context.Shoes
@@ -77,8 +69,6 @@ namespace TPShoes.Datos.Repositorios
 
             return shoesSports;
         }
-
-
         public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada
           (int cantidadPorPagina, int paginaActual,
           Orden? orden = null, Brand? BrandFiltro = null,
