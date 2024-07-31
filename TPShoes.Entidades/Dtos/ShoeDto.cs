@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TPShoes.Entidades.Dtos
 {
-    public class ShoeDto
+    public class ShoeDto:ICloneable
     {
         public int ShoeId { get; set; }
         public string? Brand { get; set; }
@@ -18,7 +18,11 @@ namespace TPShoes.Entidades.Dtos
         public string? Description { get; set; }
         public decimal Price { get; set; }
 
-       // public int CantidadTalles { get; set; }
+        // public int CantidadTalles { get; set; }
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
 
     }

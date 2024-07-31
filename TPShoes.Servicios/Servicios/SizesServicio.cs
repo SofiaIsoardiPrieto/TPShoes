@@ -1,7 +1,8 @@
-﻿using TPShoes.Datos;
+﻿using System.Drawing;
+using TPShoes.Datos;
 using TPShoes.Datos.Interfaces;
 using TPShoes.Entidades.Clases;
-using TPShoes.Entidades.Enum;
+using TPShoes.Entidades.Dtos;
 using TPShoes.Servicios.Interfaces;
 
 namespace TPShoes.Servicios.Servicios
@@ -19,12 +20,12 @@ namespace TPShoes.Servicios.Servicios
             _unitOfWork = unitOfWork;
         }
 
-        public void Borrar(Size size)
+        public void Borrar(SizeShoe sizeShoe)
         {
             try
             {
                 _unitOfWork.BeginTransaction();
-                _repository.Borrar(size);
+                _repository.Borrar(sizeShoe);
                 _unitOfWork.Commit();
             }
             catch (Exception)
@@ -34,11 +35,16 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
-        public bool EstaRelacionado(Size size)
+        public void Borrar(Entidades.Clases.Size size)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool EstaRelacionado(SizeShoe sizeShoe)
         {
             try
             {
-                return _repository.EstaRelacionado(size);
+                return _repository.EstaRelacionado(sizeShoe);
             }
             catch (Exception)
             {
@@ -47,7 +53,12 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
-        public bool Existe(Size size)
+        public bool EstaRelacionado(Entidades.Clases.Size size)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Existe(Entidades.Clases.Size size)
         {
             try
             {
@@ -59,6 +70,13 @@ namespace TPShoes.Servicios.Servicios
                 throw;
             }
         }
+
+        public bool Existe(SizeShoe sizeShoeEditado)
+        {
+            throw new NotImplementedException();
+        }
+
+        
 
         public int GetCantidad()
         {
@@ -73,35 +91,11 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
-        public List<Size> GetLista()
+        public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)
         {
             try
             {
-                return _repository.GetLista();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public List<Size> GetSizesPaginadosOrdenados(int page, int pageSize, Orden? orden = null)
-        {
-            try
-            {
-                return _repository.GetSizesPaginadosOrdenados(page, pageSize, orden);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public Size? GetSizesPorId(int id, bool incluyeShoe = false)
-        {
-            try
-            {
-                return _repository.GetSizesPorId(id, incluyeShoe);
+                return _repository.GetSizeShoeDtoPorId(shoeId);
             }
             catch (Exception)
             {
@@ -110,7 +104,33 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
-        public void Guardar(Size size)
+        public SizeShoe? GetSizeShoePorId(int sizeShoeId)
+        {
+            try
+            {
+                return _repository.GetSizeShoePorId(sizeShoeId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<Entidades.Clases.Size> GetSizesPorId(int shoeId, bool incluyeShoe = false)
+        {
+            try
+            {
+                return _repository.GetSizesPorId(shoeId, incluyeShoe);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void Guardar(Entidades.Clases.Size size)
         {
             try
             {
@@ -139,6 +159,39 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
+        public void Guardar(SizeShoe sizeShoe)
+        {
+            try
+            {
+                _unitOfWork.BeginTransaction();
+                if (sizeShoe.SizeId == 0)
+                {
+                    if (!_repository.Existe(sizeShoe))
+                    {
+                        _repository.AgregarSizeShoe(sizeShoe);
+                    }
+                    else
+                    {
+                        throw new Exception("El sizeShoe ya existe.");
+                    }
+                }
+                else
+                {
+                    _repository.Editar(sizeShoe);
+                }
+                _unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
 
+     
+        List<Entidades.Clases.Size> ISizesServicio.GetSizesPorId(int id, bool incluyeShoe)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

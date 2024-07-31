@@ -15,10 +15,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FrmBrands.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmBrandAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmStock.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FrmColourFiltro.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FrmBrandFiltro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmSizes.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

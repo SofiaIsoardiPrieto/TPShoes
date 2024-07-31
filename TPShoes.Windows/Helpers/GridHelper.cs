@@ -35,27 +35,28 @@ namespace TPShoes.Windows.Helpers
                     r.Cells[5].Value = shoeDto.Price;
                     r.Cells[6].Value = shoeDto.Description;
                     break;
-                //case TipoDeEnvase tipoEnvase:
-                //    r.Cells[0].Value = tipoEnvase.Descripcion;
-                //    break;
-                //case PlantaListDto planta:
-                //    r.Cells[0].Value = planta.Nombre;
-                //    r.Cells[1].Value = planta.Tipo;
-                //    r.Cells[2].Value = planta.Envase;
-                //    r.Cells[3].Value = planta.Precio.ToString("C");
-                //    r.Cells[4].Value = planta.CantidadProveedores;
-                //    break;
-                //case Planta planta:
-                //    r.Cells[0].Value = planta.Descripcion;
-                //    r.Cells[1].Value = planta.TipoDePlanta?.Descripcion;
-                //    r.Cells[2].Value = planta.TipoDeEnvase?.Descripcion;
-                //    r.Cells[3].Value = planta.PrecioVenta.ToString("C");
-                //    break;
-                //case Proveedor proveedor:
-                //    r.Cells[0].Value = proveedor.Nombre;
-                //    break;
-                //default:
-                //    break;
+                case SizeShoeDto sizeShoeDto:
+                    r.Cells[0].Value = sizeShoeDto.Size;
+                    r.Cells[1].Value = sizeShoeDto.Stok;
+                    break;
+                    //case PlantaListDto planta:
+                    //    r.Cells[0].Value = planta.Nombre;
+                    //    r.Cells[1].Value = planta.Tipo;
+                    //    r.Cells[2].Value = planta.Envase;
+                    //    r.Cells[3].Value = planta.Precio.ToString("C");
+                    //    r.Cells[4].Value = planta.CantidadProveedores;
+                    //    break;
+                    //case Planta planta:
+                    //    r.Cells[0].Value = planta.Descripcion;
+                    //    r.Cells[1].Value = planta.TipoDePlanta?.Descripcion;
+                    //    r.Cells[2].Value = planta.TipoDeEnvase?.Descripcion;
+                    //    r.Cells[3].Value = planta.PrecioVenta.ToString("C");
+                    //    break;
+                    //case Proveedor proveedor:
+                    //    r.Cells[0].Value = proveedor.Nombre;
+                    //    break;
+                    //default:
+                    //    break;
 
             }
             r.Tag = item;

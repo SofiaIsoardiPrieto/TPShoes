@@ -275,17 +275,23 @@ namespace TPShoes.Windows
 
         private void SizestoolStripButton_Click(object sender, EventArgs e)
         {
+            if (ShoesdataGridView.SelectedRows.Count == 0) return;
 
+            var filaSeleccionada = ShoesdataGridView.SelectedRows[0];
+            if (filaSeleccionada.Tag is null) return;
+
+            ShoeDto shoeDto = (ShoeDto)filaSeleccionada.Tag;
+            FrmSizes frm = new FrmSizes(_serviceProvider, shoeDto.ShoeId);
         }
 
         private void AddSizestoolStripButton_Click(object sender, EventArgs e)
         {
-
+            //Con el stock deberia de mostrar todos los sizes, necesito entonces eso?
         }
 
         private void DeleteSizestoolStripButton_Click(object sender, EventArgs e)
         {
-
+            //Con el stock deberia de mostrar todos los sizes, necesito entonces eso?
         }
 
         private void Primerobutton_Click(object sender, EventArgs e)
