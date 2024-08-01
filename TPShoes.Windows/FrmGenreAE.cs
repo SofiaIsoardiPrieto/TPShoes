@@ -4,13 +4,13 @@ using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
-    public partial class FrmBrandAE : Form
+    public partial class FrmGenreAE : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private Brand? brand;
+        private Genre? genre;
         private bool EsEdition = false;
 
-        public FrmBrandAE(IServiceProvider serviceProvider)
+        public FrmGenreAE(IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
@@ -19,31 +19,31 @@ namespace TPShoes.Windows
         {
             base.OnLoad(e);
             
-            if (brand is not null)
+            if (genre is not null)
             {
-                BrandtextBox.Text = brand.BrandName;
+                GenretextBox.Text = genre.GenreName;
                 EsEdition = true;
             }
         }
-        public Brand GetBrand()
+        public Genre GetGenre()
         {
-            return brand;
+            return genre;
         }
-        public void SetBrand(Brand brand)
+        public void SetGenre(Genre genre)
         {
-            this.brand = brand;
+            this.genre = genre;
         }
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                if (brand is null)
+                if (genre is null)
                 {
-                    brand = new Brand();
+                    genre = new Genre();
                 }
 
-                brand.BrandId = brand?.BrandId ?? 0;
-                brand.BrandName = BrandtextBox.Text;
+                genre.GenreId = genre?.GenreId ?? 0;
+                genre.GenreName = GenretextBox.Text;
                 DialogResult = DialogResult.OK;
             }
         }
@@ -52,10 +52,10 @@ namespace TPShoes.Windows
             bool valido = true;
             errorProvider1.Clear();
 
-            if (string.IsNullOrEmpty(BrandtextBox.Text) || string.IsNullOrWhiteSpace(BrandtextBox.Text))
+            if (string.IsNullOrEmpty(GenretextBox.Text) || string.IsNullOrWhiteSpace(GenretextBox.Text))
             {
                 valido = false;
-                errorProvider1.SetError(BrandtextBox, "Nombre requerido");
+                errorProvider1.SetError(GenretextBox, "Nombre requerido");
             }
             return valido;
         }

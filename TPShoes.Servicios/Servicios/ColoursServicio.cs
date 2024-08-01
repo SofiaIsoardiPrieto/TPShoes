@@ -40,7 +40,10 @@ namespace TPShoes.Servicios.Servicios
         {
             return _repository.Existe(colour);
         }
-
+        public int GetCantidad()
+        {
+            return _repository.GetCantidad();
+        }
         public Colour? GetColourPorId(int colourId)
         {
             return _repository.GetColourPorId(colourId);

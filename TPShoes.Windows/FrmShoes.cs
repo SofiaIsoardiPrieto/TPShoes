@@ -41,8 +41,10 @@ namespace TPShoes.Windows
             registro = _servicio.GetCantidad();
             paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
             PaginasTotalestextBox.Text = registro.ToString();
-            CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
             lista = GetListaSinFiltrar();
+
+            CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
+           
             MostrarDatosEnGrilla();
         }
         private List<ShoeDto> GetListaSinFiltrar()
@@ -281,7 +283,8 @@ namespace TPShoes.Windows
             if (filaSeleccionada.Tag is null) return;
 
             ShoeDto shoeDto = (ShoeDto)filaSeleccionada.Tag;
-            FrmSizes frm = new FrmSizes(_serviceProvider, shoeDto.ShoeId);
+            FrmSizeShoes frm = new FrmSizeShoes(_serviceProvider, shoeDto.ShoeId);
+            frm.ShowDialog();
         }
 
         private void AddSizestoolStripButton_Click(object sender, EventArgs e)

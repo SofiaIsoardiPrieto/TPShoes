@@ -1,6 +1,6 @@
 ﻿namespace TPShoes.Windows
 {
-    partial class FrmBrands
+    partial class FrmColours
     {
         /// <summary>
         /// Required designer variable.
@@ -37,8 +37,7 @@
             BorrartoolStripButton = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
             SalirtoolStripButton = new ToolStripButton();
-            BranddataGridView = new DataGridView();
-            ColBrand = new DataGridViewTextBoxColumn();
+            ColourdataGridView = new DataGridView();
             PaginasTotalestextBox = new TextBox();
             PaginaActualcomboBox = new ComboBox();
             label2 = new Label();
@@ -47,6 +46,7 @@
             Anteriorbutton = new Button();
             Siguientebutton = new Button();
             Primerobutton = new Button();
+            ColColour = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -56,7 +56,7 @@
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
             toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)BranddataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ColourdataGridView).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
@@ -97,7 +97,7 @@
             // 
             // splitContainer2.Panel2
             // 
-            splitContainer2.Panel2.Controls.Add(BranddataGridView);
+            splitContainer2.Panel2.Controls.Add(ColourdataGridView);
             splitContainer2.Size = new Size(493, 249);
             splitContainer2.SplitterDistance = 63;
             splitContainer2.TabIndex = 0;
@@ -164,32 +164,21 @@
             SalirtoolStripButton.TextImageRelation = TextImageRelation.ImageAboveText;
             SalirtoolStripButton.Click += SalirtoolStripButton_Click;
             // 
-            // BranddataGridView
+            // ColourdataGridView
             // 
-            BranddataGridView.AllowUserToAddRows = false;
-            BranddataGridView.AllowUserToDeleteRows = false;
-            BranddataGridView.BackgroundColor = Color.FromArgb(180, 210, 170);
-            BranddataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            BranddataGridView.Columns.AddRange(new DataGridViewColumn[] { ColBrand });
-            BranddataGridView.Dock = DockStyle.Fill;
-            BranddataGridView.GridColor = SystemColors.Menu;
-            BranddataGridView.Location = new Point(0, 0);
-            BranddataGridView.Name = "BranddataGridView";
-            BranddataGridView.ReadOnly = true;
-            BranddataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            BranddataGridView.Size = new Size(493, 182);
-            BranddataGridView.TabIndex = 0;
-            // 
-            // ColBrand
-            // 
-            ColBrand.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle1.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
-            ColBrand.DefaultCellStyle = dataGridViewCellStyle1;
-            ColBrand.HeaderText = "Brand";
-            ColBrand.Name = "ColBrand";
-            ColBrand.ReadOnly = true;
+            ColourdataGridView.AllowUserToAddRows = false;
+            ColourdataGridView.AllowUserToDeleteRows = false;
+            ColourdataGridView.BackgroundColor = Color.FromArgb(180, 210, 170);
+            ColourdataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            ColourdataGridView.Columns.AddRange(new DataGridViewColumn[] { ColColour });
+            ColourdataGridView.Dock = DockStyle.Fill;
+            ColourdataGridView.GridColor = SystemColors.Menu;
+            ColourdataGridView.Location = new Point(0, 0);
+            ColourdataGridView.Name = "ColourdataGridView";
+            ColourdataGridView.ReadOnly = true;
+            ColourdataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            ColourdataGridView.Size = new Size(493, 182);
+            ColourdataGridView.TabIndex = 0;
             // 
             // PaginasTotalestextBox
             // 
@@ -279,7 +268,18 @@
             Primerobutton.UseVisualStyleBackColor = false;
             Primerobutton.Click += Primerobutton_Click;
             // 
-            // FrmBrands
+            // ColColour
+            // 
+            ColColour.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle1.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            ColColour.DefaultCellStyle = dataGridViewCellStyle1;
+            ColColour.HeaderText = "Colour";
+            ColColour.Name = "ColColour";
+            ColColour.ReadOnly = true;
+            // 
+            // FrmColours
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -287,7 +287,7 @@
             ClientSize = new Size(493, 306);
             Controls.Add(splitContainer1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "FrmBrands";
+            Name = "FrmColours";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Lista de Shoes";
             Load += frmShoes_Load;
@@ -303,7 +303,7 @@
             splitContainer2.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)BranddataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ColourdataGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -311,7 +311,7 @@
 
         private SplitContainer splitContainer1;
         private SplitContainer splitContainer2;
-        private DataGridView BranddataGridView;
+        private DataGridView ColourdataGridView;
         private Button Ultimobutton;
         private Button Anteriorbutton;
         private Button Siguientebutton;
@@ -326,6 +326,6 @@
         private ToolStripButton BorrartoolStripButton;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton SalirtoolStripButton;
-        private DataGridViewTextBoxColumn ColBrand;
+        private DataGridViewTextBoxColumn ColColour;
     }
 }

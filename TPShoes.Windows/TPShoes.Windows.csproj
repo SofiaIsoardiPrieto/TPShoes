@@ -15,10 +15,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FrmBrands.cs">
+    <Compile Update="FrmBrandAE.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmBrandAE.cs">
+    <Compile Update="FrmSportAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmSports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmColourAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmGenreAE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmColours.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmGenres.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmBrands.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FrmStock.cs">
@@ -30,7 +48,7 @@
     <Compile Update="FrmBrandFiltro.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmSizes.cs">
+    <Compile Update="FrmSizeShoes.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

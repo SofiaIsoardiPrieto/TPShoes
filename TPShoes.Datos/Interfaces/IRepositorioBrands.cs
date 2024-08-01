@@ -11,6 +11,7 @@ namespace TPShoes.Datos.Interfaces
         bool Existe(Brand brand);
         Brand? GetBrandPorId(int brandId);
         Brand GetBrandPorNombre(string brandNombre);
+        int GetCantidad();
         List<Brand> GetLista();
         void SaveChanges();
     }

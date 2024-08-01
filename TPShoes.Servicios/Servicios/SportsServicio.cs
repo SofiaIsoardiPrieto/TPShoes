@@ -44,7 +44,10 @@ namespace TPShoes.Servicios.Servicios
         {
             return _repository.GetSportPorNombre(sportNombre);
         }
-
+        public int GetCantidad()
+        {
+            return _repository.GetCantidad();
+        }
         public List<Sport> GetLista()
         {
             return _repository.GetLista();

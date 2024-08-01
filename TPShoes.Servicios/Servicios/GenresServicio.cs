@@ -40,7 +40,10 @@ namespace TPShoes.Servicios.Servicios
         {
             return _repository.Existe(genre);
         }
-
+        public int GetCantidad()
+        {
+            return _repository.GetCantidad();
+        }
         public Genre? GetGenrePorId(int genreId)
         {
             return _repository.GetGenrePorId(genreId);

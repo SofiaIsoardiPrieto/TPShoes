@@ -4,13 +4,13 @@ using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
-    public partial class FrmBrandAE : Form
+    public partial class FrmColourAE : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private Brand? brand;
+        private Colour? colour;
         private bool EsEdition = false;
 
-        public FrmBrandAE(IServiceProvider serviceProvider)
+        public FrmColourAE(IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
@@ -19,31 +19,31 @@ namespace TPShoes.Windows
         {
             base.OnLoad(e);
             
-            if (brand is not null)
+            if (colour is not null)
             {
-                BrandtextBox.Text = brand.BrandName;
+                ColourtextBox.Text = colour.ColourName;
                 EsEdition = true;
             }
         }
-        public Brand GetBrand()
+        public Colour GetColour()
         {
-            return brand;
+            return colour;
         }
-        public void SetBrand(Brand brand)
+        public void SetColour(Colour colour)
         {
-            this.brand = brand;
+            this.colour = colour;
         }
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                if (brand is null)
+                if (colour is null)
                 {
-                    brand = new Brand();
+                    colour = new Colour();
                 }
 
-                brand.BrandId = brand?.BrandId ?? 0;
-                brand.BrandName = BrandtextBox.Text;
+                colour.ColourId = colour?.ColourId ?? 0;
+                colour.ColourName = ColourtextBox.Text;
                 DialogResult = DialogResult.OK;
             }
         }
@@ -52,10 +52,10 @@ namespace TPShoes.Windows
             bool valido = true;
             errorProvider1.Clear();
 
-            if (string.IsNullOrEmpty(BrandtextBox.Text) || string.IsNullOrWhiteSpace(BrandtextBox.Text))
+            if (string.IsNullOrEmpty(ColourtextBox.Text) || string.IsNullOrWhiteSpace(ColourtextBox.Text))
             {
                 valido = false;
-                errorProvider1.SetError(BrandtextBox, "Nombre requerido");
+                errorProvider1.SetError(ColourtextBox, "Nombre requerido");
             }
             return valido;
         }

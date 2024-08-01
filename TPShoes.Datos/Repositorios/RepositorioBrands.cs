@@ -59,6 +59,11 @@ namespace TPShoes.Datos.Repositorios
                 .FirstOrDefault(br => br.BrandName == brandNombre);
         }
 
+        public int GetCantidad()
+        {
+            return _context.Brands.Count();
+        }
+
         public List<Brand> GetLista()
         {
 

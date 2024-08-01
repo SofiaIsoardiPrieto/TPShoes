@@ -13,6 +13,7 @@ namespace TPShoes.Datos.Interfaces
         Genre GetGenrePorNombre(string genreNombre);
         List<Genre> GetLista();
         void SaveChanges();
+        int GetCantidad();
     }
 
 }

@@ -13,7 +13,7 @@ namespace TPShoes.Datos.Interfaces
         Colour GetColourPorNombre(string colourNombre);
         List<Colour> GetLista();
         void SaveChanges();
-
+        int GetCantidad();
     }
 
 }

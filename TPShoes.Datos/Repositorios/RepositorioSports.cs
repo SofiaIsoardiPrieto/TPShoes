@@ -27,6 +27,10 @@ namespace TPShoes.Datos.Repositorios
         {
             _context.Update(sport);
         }
+        public int GetCantidad()
+        {
+            return _context.Sports.Count();
+        }
 
         public bool EstaRelacionado(Sport sport)
         {

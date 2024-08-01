@@ -4,13 +4,13 @@ using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
-    public partial class FrmBrandAE : Form
+    public partial class FrmSportAE : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private Brand? brand;
+        private Sport? sport;
         private bool EsEdition = false;
 
-        public FrmBrandAE(IServiceProvider serviceProvider)
+        public FrmSportAE(IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
@@ -19,31 +19,31 @@ namespace TPShoes.Windows
         {
             base.OnLoad(e);
             
-            if (brand is not null)
+            if (sport is not null)
             {
-                BrandtextBox.Text = brand.BrandName;
+                SporttextBox.Text = sport.SportName;
                 EsEdition = true;
             }
         }
-        public Brand GetBrand()
+        public Sport GetSport()
         {
-            return brand;
+            return sport;
         }
-        public void SetBrand(Brand brand)
+        public void SetSport(Sport sport)
         {
-            this.brand = brand;
+            this.sport = sport;
         }
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                if (brand is null)
+                if (sport is null)
                 {
-                    brand = new Brand();
+                    sport = new Sport();
                 }
 
-                brand.BrandId = brand?.BrandId ?? 0;
-                brand.BrandName = BrandtextBox.Text;
+                sport.SportId = sport?.SportId ?? 0;
+                sport.SportName = SporttextBox.Text;
                 DialogResult = DialogResult.OK;
             }
         }
@@ -52,10 +52,10 @@ namespace TPShoes.Windows
             bool valido = true;
             errorProvider1.Clear();
 
-            if (string.IsNullOrEmpty(BrandtextBox.Text) || string.IsNullOrWhiteSpace(BrandtextBox.Text))
+            if (string.IsNullOrEmpty(SporttextBox.Text) || string.IsNullOrWhiteSpace(SporttextBox.Text))
             {
                 valido = false;
-                errorProvider1.SetError(BrandtextBox, "Nombre requerido");
+                errorProvider1.SetError(SporttextBox, "Nombre requerido");
             }
             return valido;
         }

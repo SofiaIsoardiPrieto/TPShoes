@@ -13,6 +13,7 @@ namespace TPShoes.Datos.Interfaces
         Sport? GetSportPorId(int sportId);
         Sport GetSportPorNombre(string sportNombre);
         void SaveChanges();
+        int GetCantidad();
     }
 
 }

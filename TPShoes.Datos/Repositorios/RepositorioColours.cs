@@ -34,6 +34,10 @@ namespace TPShoes.Datos.Repositorios
             .Shoes
                 .Any(c => c.ColourId == colour.ColourId);
         }
+        public int GetCantidad()
+        {
+            return _context.Colours.Count();
+        }
 
         public bool Existe(Colour colour)
         {

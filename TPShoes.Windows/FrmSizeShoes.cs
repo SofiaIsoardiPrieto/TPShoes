@@ -1,34 +1,35 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 using TPShoes.Entidades.Dtos;
 using TPShoes.Entidades.Enum;
 using TPShoes.Servicios.Interfaces;
+using TPShoes.Servicios.Servicios;
 using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
-    public partial class FrmSizes : Form
+    public partial class FrmSizeShoes : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ISizesServicio _servicio;
+        private readonly ISizeShoesServicio _servicio;
         private List<SizeShoeDto>? lista;
         private Orden orden = Orden.SinOrden;
         private Shoe? shoe = null;
 
         private int _shoeId = 0;
-       
+
         int paginaActual = 1;//private int pageNum = 0;
         int registro;//private int recordCount;
         int paginas;//private int pageCount;
         int registrosPorPagina = 5; //private int pageSize = 15; 
 
-        public FrmSizes(IServiceProvider serviceProvider, int shoeId)
+        public FrmSizeShoes(IServiceProvider serviceProvider,int shoeId)
         {
-            InitializeComponent();
-            _servicio = _serviceProvider?
-                               .GetService<ISizesServicio>();
+            InitializeComponent(); 
             _serviceProvider = serviceProvider;
+            _servicio = _serviceProvider?
+                               .GetService<ISizeShoesServicio>();
+          
             _shoeId = shoeId;
         }
         private void frmShoes_Load(object sender, EventArgs e)
@@ -37,7 +38,7 @@ namespace TPShoes.Windows
         }
         private void RecargarGrilla()
         {
-           
+
             lista = _servicio.GetSizeShoeDtoPorId
                (_shoeId);
             MostrarDatosEnGrilla();
@@ -53,7 +54,7 @@ namespace TPShoes.Windows
                 GridHelper.AgregarFila(SizeShoedataGridView, r);
             }
 
-        }  
+        }
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
             if (SizeShoedataGridView.SelectedRows.Count == 0) return;

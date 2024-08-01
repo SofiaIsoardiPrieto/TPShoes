@@ -11,7 +11,7 @@ namespace TPShoes.Servicios.Interfaces
         Colour GetColourPorNombre(string colourNombre);
         List<Colour> GetLista();
         void Guardar(Colour colour);
-
+        int GetCantidad();
 
     }
 }

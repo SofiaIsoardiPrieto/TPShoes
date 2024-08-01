@@ -1,6 +1,6 @@
 ﻿namespace TPShoes.Windows
 {
-    partial class FrmSizes
+    partial class FrmSizeShoes
     {
         /// <summary>
         /// Required designer variable.

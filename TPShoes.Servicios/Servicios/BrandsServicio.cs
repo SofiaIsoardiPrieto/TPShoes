@@ -52,6 +52,12 @@ namespace TPShoes.Servicios.Servicios
         {
             return _repository.GetBrandPorNombre(brandNombre);
         }
+
+        public int GetCantidad()
+        {
+            return _repository.GetCantidad();
+        }
+
         public List<Brand> GetLista()
         {
             return _repository.GetLista();

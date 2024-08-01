@@ -1,17 +1,18 @@
 ﻿using TPShoes.Entidades;
+using TPShoes.Entidades.Clases;
 using TPShoes.Servicios.Interfaces;
 using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
-    public partial class FrmBrands : Form
+    public partial class FrmColours : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IBrandsServicio _servicio;
-        private List<Brand>? lista;
+        private readonly IColoursServicio _servicio;
+        private List<Colour>? lista;
 
 
-        private Brand? brand = null;
+        private Colour? colour = null;
 
 
 
@@ -20,7 +21,7 @@ namespace TPShoes.Windows
         int paginas;//private int pageCount;
         int registrosPorPagina = 5; //private int pageSize = 15; 
 
-        public FrmBrands(IBrandsServicio servicio, IServiceProvider serviceProvider)
+        public FrmColours(IColoursServicio servicio, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _servicio = servicio;
@@ -44,12 +45,12 @@ namespace TPShoes.Windows
         private void MostrarDatosEnGrilla()
         {
 
-            GridHelper.LimpiarGrilla(BranddataGridView);
-            foreach (var brand in lista)
+            GridHelper.LimpiarGrilla(ColourdataGridView);
+            foreach (var colour in lista)
             {
-                DataGridViewRow r = GridHelper.ConstruirFila(BranddataGridView);
-                GridHelper.SetearFila(r, brand);
-                GridHelper.AgregarFila(BranddataGridView, r);
+                DataGridViewRow r = GridHelper.ConstruirFila(ColourdataGridView);
+                GridHelper.SetearFila(r, colour);
+                GridHelper.AgregarFila(ColourdataGridView, r);
             }
             ActualizarBotonesPaginado();
 
@@ -93,23 +94,23 @@ namespace TPShoes.Windows
 
         private void NuevotoolStripButton_Click(object sender, EventArgs e)
         {
-            FrmBrandAE frm = new FrmBrandAE(_serviceProvider);
+            FrmColourAE frm = new FrmColourAE(_serviceProvider);
             DialogResult df = frm.ShowDialog(this);
             if (df == DialogResult.Cancel) { return; }
             try
             {
-                brand = frm.GetBrand();
-                if (brand is null) return;
-                if (!_servicio.Existe(brand))
+                colour = frm.GetColour();
+                if (colour is null) return;
+                if (!_servicio.Existe(colour))
                 {
-                    _servicio.Guardar(brand);
+                    _servicio.Guardar(colour);
 
-                    MessageBox.Show("Brand agregado!!!", "Confirmación",
+                    MessageBox.Show("Colour agregado!!!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBox.Show("Brand existente!!!", "Error",
+                    MessageBox.Show("Colour existente!!!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -124,54 +125,54 @@ namespace TPShoes.Windows
 
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
-            if (BranddataGridView.SelectedRows.Count == 0) return;
+            if (ColourdataGridView.SelectedRows.Count == 0) return;
 
-            var filaSeleccionada = BranddataGridView.SelectedRows[0];
+            var filaSeleccionada = ColourdataGridView.SelectedRows[0];
             if (filaSeleccionada.Tag is null) return;
 
-            Brand brandOriginal = (Brand)filaSeleccionada.Tag;
+            Colour colourOriginal = (Colour)filaSeleccionada.Tag;
 
-            if (brandOriginal is null) return;
+            if (colourOriginal is null) return;
 
 
-            Brand brandCopia = (Brand)brandOriginal.Clone();
+            Colour colourCopia = (Colour)colourOriginal.Clone();
 
-            FrmBrandAE frm = new FrmBrandAE(_serviceProvider) { Text = "Editar Brand" };
-            frm.SetBrand(brandOriginal);
+            FrmColourAE frm = new FrmColourAE(_serviceProvider) { Text = "Editar Colour" };
+            frm.SetColour(colourOriginal);
 
             DialogResult dr = frm.ShowDialog(this);
 
             if (dr == DialogResult.Cancel)
             {
-                GridHelper.SetearFila(filaSeleccionada, brandOriginal);
+                GridHelper.SetearFila(filaSeleccionada, colourOriginal);
                 return;
             }
 
             try
             {
 
-                Brand brandEditado = frm.GetBrand();
-                if (brandEditado == null) return;
+                Colour colourEditado = frm.GetColour();
+                if (colourEditado == null) return;
 
-                if (!_servicio.Existe(brandEditado))
+                if (!_servicio.Existe(colourEditado))
                 {
-                    _servicio.Guardar(brandEditado);
-                    MessageBox.Show("¡Brand editado exitosamente!", "Confirmación",
+                    _servicio.Guardar(colourEditado);
+                    MessageBox.Show("¡Colour editado exitosamente!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    GridHelper.SetearFila(filaSeleccionada, brandEditado);
+                    GridHelper.SetearFila(filaSeleccionada, colourEditado);
                 }
                 else
                 {
-                    MessageBox.Show("¡Brand existente!", "Error",
+                    MessageBox.Show("¡Colour existente!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    GridHelper.SetearFila(filaSeleccionada, brandOriginal);
+                    GridHelper.SetearFila(filaSeleccionada, colourOriginal);
 
                 }
             }
             catch (Exception ex)
             {
 
-                GridHelper.SetearFila(filaSeleccionada, brandOriginal);
+                GridHelper.SetearFila(filaSeleccionada, colourOriginal);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -180,9 +181,9 @@ namespace TPShoes.Windows
 
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
-            if (BranddataGridView.SelectedRows.Count == 0) return;
-            var r = BranddataGridView.SelectedRows[0];
-            Brand? brand = r.Tag as Brand;//LO MISMO?
+            if (ColourdataGridView.SelectedRows.Count == 0) return;
+            var r = ColourdataGridView.SelectedRows[0];
+            Colour? colour = r.Tag as Colour;//LO MISMO?
             try
             {
                 DialogResult dr = MessageBox.Show("¿Desea borrar el registro seleccionado?",
@@ -193,11 +194,11 @@ namespace TPShoes.Windows
 
                 try
                 {
-                    if (!_servicio.EstaRelacionado(brand))
+                    if (!_servicio.EstaRelacionado(colour))
                     {
-                        _servicio.Borrar(brand);
+                        _servicio.Borrar(colour);
 
-                        GridHelper.QuitarFila( BranddataGridView, r);
+                        GridHelper.QuitarFila( ColourdataGridView, r);
                         MessageBox.Show("Registro Borrado Satisfactoriamente!!!",
                             "Mensaje",
                             MessageBoxButtons.OK,

@@ -1,17 +1,17 @@
-﻿using TPShoes.Entidades;
+﻿using TPShoes.Entidades.Clases;
 using TPShoes.Servicios.Interfaces;
 using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
-    public partial class FrmBrands : Form
+    public partial class FrmSports : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IBrandsServicio _servicio;
-        private List<Brand>? lista;
+        private readonly ISportsServicio _servicio;
+        private List<Sport>? lista;
 
 
-        private Brand? brand = null;
+        private Sport? sport = null;
 
 
 
@@ -20,7 +20,7 @@ namespace TPShoes.Windows
         int paginas;//private int pageCount;
         int registrosPorPagina = 5; //private int pageSize = 15; 
 
-        public FrmBrands(IBrandsServicio servicio, IServiceProvider serviceProvider)
+        public FrmSports(ISportsServicio servicio, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _servicio = servicio;
@@ -44,12 +44,12 @@ namespace TPShoes.Windows
         private void MostrarDatosEnGrilla()
         {
 
-            GridHelper.LimpiarGrilla(BranddataGridView);
-            foreach (var brand in lista)
+            GridHelper.LimpiarGrilla(SportdataGridView);
+            foreach (var sport in lista)
             {
-                DataGridViewRow r = GridHelper.ConstruirFila(BranddataGridView);
-                GridHelper.SetearFila(r, brand);
-                GridHelper.AgregarFila(BranddataGridView, r);
+                DataGridViewRow r = GridHelper.ConstruirFila(SportdataGridView);
+                GridHelper.SetearFila(r, sport);
+                GridHelper.AgregarFila(SportdataGridView, r);
             }
             ActualizarBotonesPaginado();
 
@@ -93,23 +93,23 @@ namespace TPShoes.Windows
 
         private void NuevotoolStripButton_Click(object sender, EventArgs e)
         {
-            FrmBrandAE frm = new FrmBrandAE(_serviceProvider);
+            FrmSportAE frm = new FrmSportAE(_serviceProvider);
             DialogResult df = frm.ShowDialog(this);
             if (df == DialogResult.Cancel) { return; }
             try
             {
-                brand = frm.GetBrand();
-                if (brand is null) return;
-                if (!_servicio.Existe(brand))
+                sport = frm.GetSport();
+                if (sport is null) return;
+                if (!_servicio.Existe(sport))
                 {
-                    _servicio.Guardar(brand);
+                    _servicio.Guardar(sport);
 
-                    MessageBox.Show("Brand agregado!!!", "Confirmación",
+                    MessageBox.Show("Sport agregado!!!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBox.Show("Brand existente!!!", "Error",
+                    MessageBox.Show("Sport existente!!!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
@@ -124,54 +124,54 @@ namespace TPShoes.Windows
 
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
-            if (BranddataGridView.SelectedRows.Count == 0) return;
+            if (SportdataGridView.SelectedRows.Count == 0) return;
 
-            var filaSeleccionada = BranddataGridView.SelectedRows[0];
+            var filaSeleccionada = SportdataGridView.SelectedRows[0];
             if (filaSeleccionada.Tag is null) return;
 
-            Brand brandOriginal = (Brand)filaSeleccionada.Tag;
+            Sport sportOriginal = (Sport)filaSeleccionada.Tag;
 
-            if (brandOriginal is null) return;
+            if (sportOriginal is null) return;
 
 
-            Brand brandCopia = (Brand)brandOriginal.Clone();
+            Sport sportCopia = (Sport)sportOriginal.Clone();
 
-            FrmBrandAE frm = new FrmBrandAE(_serviceProvider) { Text = "Editar Brand" };
-            frm.SetBrand(brandOriginal);
+            FrmSportAE frm = new FrmSportAE(_serviceProvider) { Text = "Editar Sport" };
+            frm.SetSport(sportOriginal);
 
             DialogResult dr = frm.ShowDialog(this);
 
             if (dr == DialogResult.Cancel)
             {
-                GridHelper.SetearFila(filaSeleccionada, brandOriginal);
+                GridHelper.SetearFila(filaSeleccionada, sportOriginal);
                 return;
             }
 
             try
             {
 
-                Brand brandEditado = frm.GetBrand();
-                if (brandEditado == null) return;
+                Sport sportEditado = frm.GetSport();
+                if (sportEditado == null) return;
 
-                if (!_servicio.Existe(brandEditado))
+                if (!_servicio.Existe(sportEditado))
                 {
-                    _servicio.Guardar(brandEditado);
-                    MessageBox.Show("¡Brand editado exitosamente!", "Confirmación",
+                    _servicio.Guardar(sportEditado);
+                    MessageBox.Show("¡Sport editado exitosamente!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    GridHelper.SetearFila(filaSeleccionada, brandEditado);
+                    GridHelper.SetearFila(filaSeleccionada, sportEditado);
                 }
                 else
                 {
-                    MessageBox.Show("¡Brand existente!", "Error",
+                    MessageBox.Show("¡Sport existente!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    GridHelper.SetearFila(filaSeleccionada, brandOriginal);
+                    GridHelper.SetearFila(filaSeleccionada, sportOriginal);
 
                 }
             }
             catch (Exception ex)
             {
 
-                GridHelper.SetearFila(filaSeleccionada, brandOriginal);
+                GridHelper.SetearFila(filaSeleccionada, sportOriginal);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -180,9 +180,9 @@ namespace TPShoes.Windows
 
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
-            if (BranddataGridView.SelectedRows.Count == 0) return;
-            var r = BranddataGridView.SelectedRows[0];
-            Brand? brand = r.Tag as Brand;//LO MISMO?
+            if (SportdataGridView.SelectedRows.Count == 0) return;
+            var r = SportdataGridView.SelectedRows[0];
+            Sport? sport = r.Tag as Sport;//LO MISMO?
             try
             {
                 DialogResult dr = MessageBox.Show("¿Desea borrar el registro seleccionado?",
@@ -193,11 +193,11 @@ namespace TPShoes.Windows
 
                 try
                 {
-                    if (!_servicio.EstaRelacionado(brand))
+                    if (!_servicio.EstaRelacionado(sport))
                     {
-                        _servicio.Borrar(brand);
+                        _servicio.Borrar(sport);
 
-                        GridHelper.QuitarFila( BranddataGridView, r);
+                        GridHelper.QuitarFila(SportdataGridView, r);
                         MessageBox.Show("Registro Borrado Satisfactoriamente!!!",
                             "Mensaje",
                             MessageBoxButtons.OK,

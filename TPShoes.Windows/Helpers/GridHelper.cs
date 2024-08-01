@@ -1,4 +1,5 @@
-﻿using TPShoes.Entidades.Clases;
+﻿using TPShoes.Entidades;
+using TPShoes.Entidades.Clases;
 using TPShoes.Entidades.Dtos;
 
 namespace TPShoes.Windows.Helpers
@@ -39,6 +40,18 @@ namespace TPShoes.Windows.Helpers
                     r.Cells[0].Value = sizeShoeDto.Size;
                     r.Cells[1].Value = sizeShoeDto.Stok;
                     break;
+                case Brand brand:
+                    r.Cells[0].Value = brand.BrandName;
+                    break;
+                case Genre genre:
+                    r.Cells[0].Value = genre.GenreName;
+                    break;
+                case Colour colour:
+                    r.Cells[0].Value = colour.ColourName;
+                    break;
+                case Sport sport:
+                    r.Cells[0].Value = sport.SportName;
+                    break;
                     //case PlantaListDto planta:
                     //    r.Cells[0].Value = planta.Nombre;
                     //    r.Cells[1].Value = planta.Tipo;
@@ -51,9 +64,6 @@ namespace TPShoes.Windows.Helpers
                     //    r.Cells[1].Value = planta.TipoDePlanta?.Descripcion;
                     //    r.Cells[2].Value = planta.TipoDeEnvase?.Descripcion;
                     //    r.Cells[3].Value = planta.PrecioVenta.ToString("C");
-                    //    break;
-                    //case Proveedor proveedor:
-                    //    r.Cells[0].Value = proveedor.Nombre;
                     //    break;
                     //default:
                     //    break;

@@ -33,6 +33,10 @@ namespace TPShoes.Datos.Repositorios
             .Shoes
                 .Any(c => c.GenreId == genre.GenreId);
         }
+        public int GetCantidad()
+        {
+            return _context.Genres.Count();
+        }
 
         public bool Existe(Genre genre)
         {
