@@ -20,9 +20,9 @@ namespace TPShoes.Datos.Repositorios
             _context.Add(sizes);
         }
 
-        public void AgregarSizeShoe(SizeShoe nuevaRelacion)
+        public void AgregarSizeShoe(SizeShoe sizeShoe)
         {
-            _context.Set<SizeShoe>().Add(nuevaRelacion);
+            _context.Set<SizeShoe>().Add(sizeShoe);
         }
 
 
@@ -42,6 +42,11 @@ namespace TPShoes.Datos.Repositorios
         }
 
         public void Editar(SizeShoe sizeShoe)
+        {
+            _context.Update(sizeShoe);
+        }
+
+        public void EditarSizeShoe(SizeShoe sizeShoe)
         {
             throw new NotImplementedException();
         }
@@ -65,7 +70,9 @@ namespace TPShoes.Datos.Repositorios
 
         public bool Existe(SizeShoe sizeShoe)
         {
-            throw new NotImplementedException();
+            return _context.SizeShoes.
+                  Any(s => s.SizeId == sizeShoe.SizeId
+                  && s.SizeId != sizeShoe.SizeId);
         }
 
         public int GetCantidad()
@@ -100,42 +107,22 @@ namespace TPShoes.Datos.Repositorios
 
         public SizeShoe? GetSizeShoePorId(int sizeShoeId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Utilizando Entity Framework para buscar el SizeShoe por su ID
+                var sizeShoe = _context.SizeShoes
+                    .Include(ss => ss.Shoe) // Incluir la entidad relacionada Shoe
+                    .Include(ss => ss.Size) // Incluir la entidad relacionada Size
+                    .FirstOrDefault(ss => ss.SizeShoeId == sizeShoeId);
+
+                return sizeShoe;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al obtener el SizeShoe por ID.", ex);
+            }
         }
-
-        //public List<Size> GetLista()
-        //{
-        //    return _context.Sizes.ToList();
-        //}
-
-        //public List<Size> GetSizesPaginadosOrdenados(int page, int pageSize, Orden? orden = null)
-        //{
-        //    IQueryable<Size> query = _context.Sizes;
-
-        //    //ORDEN
-        //    if (orden != null)
-        //    {
-        //        switch (orden)
-        //        {
-        //            case Orden.AZ:
-        //                query = query.OrderBy(s => s.SizeNumber);
-        //                break;
-        //            case Orden.ZA:
-        //                query = query.OrderByDescending(s => s.SizeNumber);
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-
-        //    //PAGINADO
-        //    List<Size> listaPaginada = query.AsNoTracking()
-        //        .Skip(page * pageSize) //Saltea estos registros
-        //    .Take(pageSize) //Muestra estos
-        //    .ToList();
-
-        //    return listaPaginada;
-        //}
 
         public List<Entidades.Clases.Size> GetSizesPorId(int shoeId, bool incluyeShoe = false)
         {

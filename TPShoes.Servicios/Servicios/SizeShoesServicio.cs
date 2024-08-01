@@ -73,7 +73,15 @@ namespace TPShoes.Servicios.Servicios
 
         public bool Existe(SizeShoe sizeShoeEditado)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repository.Existe(sizeShoeEditado);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         
@@ -169,10 +177,12 @@ namespace TPShoes.Servicios.Servicios
                     if (!_repository.Existe(sizeShoe))
                     {
                         _repository.AgregarSizeShoe(sizeShoe);
+                        _unitOfWork.SaveChanges();
                     }
                     else
                     {
-                        throw new Exception("El sizeShoe ya existe.");
+                        _repository.EditarSizeShoe(sizeShoe);
+                        _unitOfWork.SaveChanges();
                     }
                 }
                 else

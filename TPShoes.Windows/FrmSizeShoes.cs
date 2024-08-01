@@ -50,7 +50,7 @@ namespace TPShoes.Windows
             foreach (var sizeShoeDto in lista)
             {
                 DataGridViewRow r = GridHelper.ConstruirFila(SizeShoedataGridView);
-                GridHelper.SetearFila(r, shoe);
+                GridHelper.SetearFila(r, sizeShoeDto);
                 GridHelper.AgregarFila(SizeShoedataGridView, r);
             }
 

@@ -178,22 +178,39 @@ namespace TPShoes.Windows
 
         private void NuevoBrandbutton_Click(object sender, EventArgs e)
         {
-
+            FrmBrandAE frm = new FrmBrandAE(_serviceProvider);
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+            brand = frm.GetBrand();
+            CombosHelper.CargarComboBrand(_serviceProvider, ref BrandcomboBox);
         }
 
         private void NuevoGenrebutton_Click(object sender, EventArgs e)
         {
-
+            FrmGenreAE frm = new FrmGenreAE(_serviceProvider);
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+            genre = frm.GetGenre();
+            CombosHelper.CargarComboGenre(_serviceProvider, ref GenrecomboBox);
+          
         }
 
         private void NuevoSportbutton_Click(object sender, EventArgs e)
         {
-
+            FrmSportAE frm = new FrmSportAE(_serviceProvider);
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+            sport = frm.GetSport();
+            CombosHelper.CargarComboSport(_serviceProvider, ref SportcomboBox);
         }
 
         private void NuevoColourbutton_Click(object sender, EventArgs e)
         {
-
+            FrmColourAE frm = new FrmColourAE(_serviceProvider);
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+            colour = frm.GetColour();
+            CombosHelper.CargarComboColour(_serviceProvider, ref ColourcomboBox);
         }
 
         private void BrandcomboBox_SelectedIndexChanged(object sender, EventArgs e)
