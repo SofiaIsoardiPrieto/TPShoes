@@ -21,11 +21,14 @@ namespace TPShoes.Datos.Repositorios
             {
                 if (shoe.ShoeId == 0)
                 {
+                    //Este es el cambio que habia que hacer?
                     return _context.Shoes
-                        .Any(s => s.Model == shoe.Model && s.Price == shoe.Price);
+                        .Any(s => s.Model == shoe.Model && s.BrandId == shoe.BrandId && s.ColourId == shoe.ColourId
+                        && s.GenreId == shoe.GenreId && s.SportId == shoe.SportId);
                 }
                 return _context.Shoes
-                    .Any(s => s.Model == shoe.Model && s.Price == shoe.Price && s.ShoeId != shoe.ShoeId);
+                    .Any(s => s.Model == shoe.Model && s.BrandId == shoe.BrandId && s.ColourId == shoe.ColourId
+                        && s.GenreId == shoe.GenreId && s.SportId == shoe.SportId && s.ShoeId != shoe.ShoeId);
             }
             catch (Exception)
             {
@@ -278,6 +281,20 @@ namespace TPShoes.Datos.Repositorios
         {
             _context.Shoes.Remove(shoe);
         }
-    }
 
+        public bool ExisteRelacion(Shoe shoe, Size size)
+        {
+            if (shoe == null || size == null) return false;
+
+            return _context.SizeShoes
+                .Any(pp => pp.ShoeId == shoe.ShoeId
+                && pp.SizeId == size.SizeId);
+        }
+
+        public void AsignarSizeAShoe(SizeShoe nuevoSizeShoe)
+        {
+            _context.Set<SizeShoe>().Add(nuevoSizeShoe);
+        }
+    }
 }
+

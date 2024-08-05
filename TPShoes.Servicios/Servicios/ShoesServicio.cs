@@ -62,9 +62,6 @@ namespace TPShoes.Servicios.Servicios
                 throw new Exception("Habilita el servidor, boluda!.", ex);
             }
         }
-
-
-
         public List<Shoe> GetLista()
         {
             return _repository.GetLista();
@@ -182,6 +179,35 @@ namespace TPShoes.Servicios.Servicios
                 _unitOfWork.Rollback();
                 throw;
             }
+        }
+
+        public bool ExisteRelacion(Shoe shoe, Size size)
+        {
+            return _repository.ExisteRelacion(shoe, size);
+        }
+
+        public void AsignarSizeAShoe(Shoe shoe, Size size)
+        {
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+
+                // Crear una nueva relación entre la shoe y el size
+                SizeShoe nuevoSizeShoe = new SizeShoe
+                {
+                    Shoe = shoe,
+                    Size = size
+                };
+                _repository.AsignarSizeAShoe(nuevoSizeShoe);
+                _unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+
         }
     }
 

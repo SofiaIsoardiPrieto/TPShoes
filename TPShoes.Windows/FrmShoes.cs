@@ -1,4 +1,5 @@
-﻿using TPShoes.Entidades;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 using TPShoes.Entidades.Dtos;
 using TPShoes.Entidades.Enum;
@@ -44,7 +45,7 @@ namespace TPShoes.Windows
             lista = GetListaSinFiltrar();
 
             CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
-           
+
             MostrarDatosEnGrilla();
         }
         private List<ShoeDto> GetListaSinFiltrar()
@@ -289,12 +290,110 @@ namespace TPShoes.Windows
 
         private void AddSizestoolStripButton_Click(object sender, EventArgs e)
         {
-            //Con el stock deberia de mostrar todos los sizes, necesito entonces eso?
-        }
+            //La idea es agregar un Size a un SHoe, pero veo si el Size existe o no para agregarlo
+            //desconosco si hacie el repositorio estoy teniendo en cuanta todas las posibilidades y errores
+            // onda el ATACHED
+          var _servicioSize= _serviceProvider?
+                               .GetService<ISizesServicio>();
+            if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
 
+            var r = ShoesdataGridView.SelectedRows[0];
+            if (r.Tag is null) return;
+            var shoeDto = (ShoeDto)r.Tag;
+
+            Shoe? shoe = _servicio.GetShoePorId(shoeDto?.ShoeId ?? 0);
+            if (shoe is null) return;
+            FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider) { Text = "Agregar Size" };
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+            try
+            {
+                //CAMBIOS IMPORTANTES!!!!!
+                Entidades.Clases.Size? size = frm.GetSize();
+                if (size is null) return;
+                if (!_servicioSize.Existe(size))
+                {
+                    _servicioSize.Guardar(size);
+                    MessageBox.Show("Size creado!!!",
+                        "Mensaje",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+               
+                if (!_servicio.ExisteRelacion(shoe, size))
+                {
+                    _servicio.AsignarSizeAShoe(shoe, size);
+                    if (shoeDto is not null)
+                    {
+
+                        GridHelper.SetearFila(r, shoeDto);
+                    }
+                    MessageBox.Show("Size asignado a la Shoe!!!",
+                        "Mensaje",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Asignación Existente!!!",
+                    "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                            "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+        }
         private void DeleteSizestoolStripButton_Click(object sender, EventArgs e)
         {
-            //Con el stock deberia de mostrar todos los sizes, necesito entonces eso?
+            //La idea es borrar un Size de un Shoe, tengo que borrar todos los SizeShoeid que puediese haber
+            var _servicioSizeShoe = _serviceProvider?
+                              .GetService<ISizeShoesServicio>();
+
+
+            if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
+
+            var r = ShoesdataGridView.SelectedRows[0];
+            if (r.Tag is null) return;
+            var shoeDto = (ShoeDto)r.Tag;
+
+            Shoe? shoe = _servicio.GetShoePorId(shoeDto?.ShoeId ?? 0);
+            if (shoe is null) return;
+            FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider) { Text = "Borrar Size" };
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+
+            try
+            {
+                //CAMBIOS IMPORTANTES!!!!!
+                Entidades.Clases.Size? size = frm.GetSize();
+                if (size is null) return;
+                
+                if (_servicio.ExisteRelacion(shoe, size))
+                {
+
+                    //QUE NESECITO!?? Tengo que borrar mi lista de SizeShoeID, paso shoeid y sizesID
+                    //que pasa si borro un sheo ahora, tengo que corregir eso aún
+                    
+                }
+                else
+                {
+                    MessageBox.Show("No Existe!!!",
+                    "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,
+                            "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
 
         private void Primerobutton_Click(object sender, EventArgs e)

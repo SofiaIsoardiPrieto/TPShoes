@@ -81,21 +81,37 @@ namespace TPShoes.Windows.Helpers
             cbo.ValueMember = "SportId";
             cbo.SelectedIndex = 0;
         }
-        //public static void CargarComboProveedores(IServiceProvider serviceProvider, ref ComboBox cbo)
-        //{
-        //    var servicio = serviceProvider.GetService<IProveedoresService>();
 
-        //    var lista = servicio?.GetLista();
-        //    var defaultProveedor = new Proveedor
-        //    {
-        //        Nombre = "Seleccione"
-        //    };
-        //    lista?.Insert(0, defaultProveedor);
-        //    cbo.DataSource = lista;
-        //    cbo.DisplayMember = "Nombre";
-        //    cbo.ValueMember = "ProveedorId";
-        //    cbo.SelectedIndex = 0;
-        //}
+        internal static void CargarComboSizePorShoe(IServiceProvider serviceProvider, ref ComboBox cbo, Entidades.Clases.Size size)
+        {
+            var servicio = serviceProvider.GetService<ISizesServicio>();
+
+            List<Entidades.Clases.Size> lista = servicio?.GetSizesPorId(size.SizeId);//a checkear
+            var defaultGenre = new Entidades.Clases.Size
+            {
+                SizeNumber = 0
+            };
+            lista?.Insert(0, defaultGenre);
+            cbo.DataSource = lista;
+            cbo.DisplayMember = "SizeNumber";
+            cbo.ValueMember = "SizeId";
+            cbo.SelectedIndex = 0;
+        }
+        public static void CargarComboSize(IServiceProvider serviceProvider, ref ComboBox cbo)
+        {
+            var servicio = serviceProvider.GetService<ISizesServicio>();
+
+            List<Entidades.Clases.Size> lista = servicio?.GetLista();
+            var defaultProveedor = new Entidades.Clases.Size
+            {
+                SizeNumber = 0
+            };
+            lista?.Insert(0, defaultProveedor);
+            cbo.DataSource = lista;
+            cbo.DisplayMember = "SizeNumber";
+            cbo.ValueMember = "SizeId";
+            cbo.SelectedIndex = 0;
+        }
 
     }
 
