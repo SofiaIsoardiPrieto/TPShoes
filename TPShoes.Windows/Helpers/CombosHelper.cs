@@ -97,21 +97,7 @@ namespace TPShoes.Windows.Helpers
             cbo.ValueMember = "SizeId";
             cbo.SelectedIndex = 0;
         }
-        public static void CargarComboSize(IServiceProvider serviceProvider, ref ComboBox cbo)
-        {
-            var servicio = serviceProvider.GetService<ISizesServicio>();
-
-            List<Entidades.Clases.Size> lista = servicio?.GetLista();
-            var defaultProveedor = new Entidades.Clases.Size
-            {
-                SizeNumber = 0
-            };
-            lista?.Insert(0, defaultProveedor);
-            cbo.DataSource = lista;
-            cbo.DisplayMember = "SizeNumber";
-            cbo.ValueMember = "SizeId";
-            cbo.SelectedIndex = 0;
-        }
+       
 
     }
 

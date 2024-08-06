@@ -99,6 +99,19 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
+        public SizeShoe? GetListaSizeShoes(int shoeId, int sizeId)
+        {
+            try
+            {
+                return _repository.GetSizeShoeDtoPorId(shoeId, sizeId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)
         {
             try

@@ -8,7 +8,6 @@ namespace TPShoes.Servicios.Interfaces
     { 
         void Guardar(Size size);
         void Guardar(SizeShoe sizeShoe);
-        void Borrar(Size size);
         bool Existe(Size size);
         List<Size> GetSizesPorId(int id, bool incluyeShoe = false);
        // int GetCantidad();
@@ -16,5 +15,7 @@ namespace TPShoes.Servicios.Interfaces
         List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId);
         SizeShoe? GetSizeShoePorId(int sizeShoeId);
         bool Existe(SizeShoe sizeShoeEditado);
+        SizeShoe GetListaSizeShoes(int shoeId, int sizeId);
+        void Borrar(SizeShoe sizeShoe);
     }
 }

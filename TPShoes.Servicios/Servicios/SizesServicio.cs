@@ -91,6 +91,11 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
+        public List<Entidades.Clases.Size> GetLista()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)
         {
             try

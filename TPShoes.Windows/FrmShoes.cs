@@ -359,9 +359,8 @@ namespace TPShoes.Windows
             var r = ShoesdataGridView.SelectedRows[0];
             if (r.Tag is null) return;
             var shoeDto = (ShoeDto)r.Tag;
+            if (shoeDto is null) return;
 
-            Shoe? shoe = _servicio.GetShoePorId(shoeDto?.ShoeId ?? 0);
-            if (shoe is null) return;
             FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider) { Text = "Borrar Size" };
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) { return; }
@@ -374,14 +373,12 @@ namespace TPShoes.Windows
                 
                 if (_servicio.ExisteRelacion(shoe, size))
                 {
-
-                    //QUE NESECITO!?? Tengo que borrar mi lista de SizeShoeID, paso shoeid y sizesID
-                    //que pasa si borro un sheo ahora, tengo que corregir eso aún
-                    
+                    SizeShoe sizeShoe = _servicioSizeShoe.GetListaSizeShoes(shoeDto.ShoeId, size.SizeId);
+                    _servicioSizeShoe.Borrar(sizeShoe);
                 }
                 else
                 {
-                    MessageBox.Show("No Existe!!!",
+                    MessageBox.Show("No Existe relación!!!",
                     "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
 

@@ -104,6 +104,24 @@ namespace TPShoes.Datos.Repositorios
             return listaDto;
         }
 
+        public SizeShoe? GetSizeShoeDtoPorId(int shoeId, int sizeId)
+        {
+            try
+            {
+                // Utilizando Entity Framework para buscar el SizeShoe por ShoeId y SizeId
+                var sizeShoe = _context.SizeShoes
+                    .Include(ss => ss.Shoe) // Incluir la entidad relacionada Shoe
+                    .Include(ss => ss.Size) // Incluir la entidad relacionada Size
+                    .FirstOrDefault(ss => ss.ShoeId == shoeId && ss.SizeId == sizeId);
+
+                return sizeShoe;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al obtener el SizeShoe por ShoeId y SizeId.", ex);
+            }
+        }
 
         public SizeShoe? GetSizeShoePorId(int sizeShoeId)
         {
