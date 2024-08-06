@@ -22,25 +22,33 @@ class Program
         {
             Console.Clear();
             Console.WriteLine("Menú Principal:");
+
             Console.WriteLine("1. Listado de Brands");
             Console.WriteLine("2. Ingresar un Brand");
             Console.WriteLine("3. Borrar un Brand");
             Console.WriteLine("4. Editar un Brand");
+
             Console.WriteLine("===============================");
+
             Console.WriteLine("5. Listado de Colours");
             Console.WriteLine("6. Ingresar un Colour");
             Console.WriteLine("7. Borrar un Colour");
             Console.WriteLine("8. Editar un Colour");
+
             Console.WriteLine("===============================");
+
             Console.WriteLine("9. Listado de Genres");
             Console.WriteLine("10. Ingresar un Genre");
             Console.WriteLine("11. Borrar un Genre");
             Console.WriteLine("12. Editar un Genre");
+
             Console.WriteLine("===============================");
+
             Console.WriteLine("13. Listado de Sports");
             Console.WriteLine("14. Ingresar un Sport");
             Console.WriteLine("15. Borrar un Sport");
             Console.WriteLine("16. Editar un Sport");
+
             Console.WriteLine("===============================");
             //aun no puestos
             Console.WriteLine("17. Listado de Shoes Paginado");
@@ -53,6 +61,9 @@ class Program
             Console.WriteLine("24. Editar un Shoes");
             Console.WriteLine("===============================");
 
+            Console.WriteLine("25.Asignar un Size a un Shoe  ");
+            Console.WriteLine("26.Agregar Stock a un SizeShoe");
+            Console.WriteLine("27.Listar Shoes según Size");
             Console.WriteLine("x. Salir");
 
             Console.Write("Por favor, seleccione una opción: ");
@@ -167,6 +178,21 @@ class Program
                     EditarUnShoe();
                     ConsoleExtensions.EsperaEnter();
                     break;
+                case "25":
+                    Console.Clear();
+                    AsignarUnSizeAUnShoe();
+                    ConsoleExtensions.EsperaEnter();
+                    break;
+                case "26":
+                    Console.Clear();
+                    AgregarStockAUnSizeShoe();
+                    ConsoleExtensions.EsperaEnter();
+                    break;
+                case "27":
+                    Console.Clear();
+                    ListarShoesSegunSize();
+                    ConsoleExtensions.EsperaEnter();
+                    break;
                 case "x":
                     exit = true;
                     Console.WriteLine("Saliendo del programa...");
@@ -179,6 +205,230 @@ class Program
             Console.WriteLine(); // Añade una línea en blanco para mejorar la legibilidad
         }
 
+    }
+    //Listo, sin probar
+    private static void ListarShoesSegunSize()
+    {
+        Console.Clear();
+        Console.WriteLine("Listado de Size, seleccione para ver disponibles");
+
+        var servicioSize = serviceProvider?.GetService<ISizesServicio>();
+        var servicioSizeShoe = serviceProvider?.GetService<ISizeShoesServicio>();
+
+        if (servicioSize is null)
+        {
+            Console.WriteLine("Servicio de Size no disponible.");
+            return;
+        }
+        if (servicioSizeShoe is null)
+        {
+            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            return;
+        }
+        var ListaSizes = servicioSize.GetLista();
+        if (ListaSizes is null)
+        {
+            Console.WriteLine("No hay lista de Sizes disponible.");
+            return;
+        }
+
+        var tabla = new ConsoleTable("ID", "Size");
+        foreach (var size in ListaSizes)
+        {
+            Console.Clear();
+            tabla.AddRow(size.SizeId, size.SizeNumber);
+        }
+
+        tabla.Options.EnableCount = false;
+        tabla.Write();
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size a filtrar");
+        ConsoleExtensions.EsperaEnter();
+
+        List<ShoeDto> sizeList = servicioSizeShoe.GetListaShoeDtoPorSize(sizeIdSeleccionado);
+
+        foreach (var shoe in sizeList)
+        {
+            Console.WriteLine($" - Shoe modelo: {shoe.Model}, color: {shoe.Colour}, marca: {shoe.Brand}, " +
+                $"deporte: {shoe.Sport}, género: {shoe.Genre}, precio: {shoe.Price}, descripción: {shoe.Description}");
+        }
+        Console.WriteLine($"Cantidad: {sizeList.Count()}");
+        Console.WriteLine($"Precio promedio:{sizeList.Average(p => p.Price)}");
+
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+
+
+    }
+    //Listo, sin probar
+    private static void AgregarStockAUnSizeShoe()
+    {
+        Console.Clear();
+        Console.WriteLine("Listado de Size, seleccione para ver disponibles");
+
+        var servicioShoe = serviceProvider?.GetService<IShoesServicio>();
+        var servicioSizeShoe = serviceProvider?.GetService<ISizeShoesServicio>();
+        var servicioSize = serviceProvider?.GetService<ISizesServicio>();
+
+        if (servicioShoe is null)
+        {
+            Console.WriteLine("Servicio de Shoe no disponible.");
+            return;
+        }
+        if (servicioSizeShoe is null)
+        {
+            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            return;
+        }
+        var ListaShoes = servicioShoe.GetLista();
+        if (ListaShoes is null)
+        {
+            Console.WriteLine("No hay lista de Shoes disponible.");
+            return;
+        }
+
+        var tablaShoe = new ConsoleTable("ID", "Brand", "Genre", "Colour", "Sport");
+
+        foreach (var item in ListaShoes)
+        {
+            tablaShoe.AddRow(item.ShoeId, item.Brand, item.Genre, item.Colour, item.Sport);
+        }
+        tablaShoe.Options.EnableCount = false;
+        tablaShoe.Write();
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+
+        int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe");
+        Shoe shoe = servicioShoe.GetShoePorId(shoeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
+
+        var ListaSizes = servicioSize.GetLista();
+        if (ListaSizes is null)
+        {
+            Console.WriteLine("No hay lista de Sizes disponible.");
+            return;
+        }
+        var tablaSize = new ConsoleTable("ID", "Size");
+        foreach (var item in ListaSizes)
+        {
+            Console.Clear();
+            tablaShoe.AddRow(item.SizeId, item.SizeNumber);
+        }
+
+        tablaShoe.Options.EnableCount = false;
+        tablaShoe.Write();
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size");
+        Size size = servicioSize.GetSizePorId(sizeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
+
+        if (!servicioShoe.ExisteRelacion(shoe, size))
+        {
+            Console.WriteLine("Relación no existente, desea agregar?");
+            var agregarrealacion = ConsoleExtensions.ReadString("S para si, N para no").ToUpper();
+            if (agregarrealacion == "S")
+            {
+                servicioShoe.AsignarSizeAShoe(shoe, size);
+                Console.WriteLine("Relación agregada");
+            }
+            else
+            {
+                return;
+            }
+
+        }
+        else
+        {
+            SizeShoe sizeShoe = servicioSizeShoe.GetSizeShoePorId(shoe.ShoeId,size.SizeId);
+            if (sizeShoe is null)
+            {
+                Console.WriteLine("Error, no hay relacion.");
+                return;
+            }
+            Console.WriteLine($"stock:{sizeShoe.Stok}");
+            int stock = ConsoleExtensions.ReadInt("Agregar/cambiar stock");
+            sizeShoe.Stok = stock;
+            servicioSizeShoe.Guardar(sizeShoe);
+          
+
+        }
+
+    }
+    //Listo, sin probar
+    private static void AsignarUnSizeAUnShoe()
+    {
+        Console.Clear();
+        Console.WriteLine("Listado de Size, seleccione para ver disponibles");
+
+        var servicioShoe = serviceProvider?.GetService<IShoesServicio>();
+        var servicioSizeShoe = serviceProvider?.GetService<ISizeShoesServicio>();
+        var servicioSize = serviceProvider?.GetService<ISizesServicio>();
+
+        if (servicioShoe is null)
+        {
+            Console.WriteLine("Servicio de Shoe no disponible.");
+            return;
+        }
+        if (servicioSizeShoe is null)
+        {
+            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            return;
+        }
+        var ListaShoes = servicioShoe.GetLista();
+        if (ListaShoes is null)
+        {
+            Console.WriteLine("No hay lista de Shoes disponible.");
+            return;
+        }
+
+        var tablaShoe = new ConsoleTable("ID", "Brand", "Genre", "Colour", "Sport");
+
+        foreach (var item in ListaShoes)
+        {
+            tablaShoe.AddRow(item.ShoeId, item.Brand, item.Genre, item.Colour, item.Sport);
+        }
+        tablaShoe.Options.EnableCount = false;
+        tablaShoe.Write();
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+
+        int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe");
+        Shoe shoe = servicioShoe.GetShoePorId(shoeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
+
+        var ListaSizes = servicioSize.GetLista();
+        if (ListaSizes is null)
+        {
+            Console.WriteLine("No hay lista de Sizes disponible.");
+            return;
+        }
+        var tablaSize = new ConsoleTable("ID", "Size");
+        foreach (var item in ListaSizes)
+        {
+            Console.Clear();
+            tablaShoe.AddRow(item.SizeId, item.SizeNumber);
+        }
+
+        tablaShoe.Options.EnableCount = false;
+        tablaShoe.Write();
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size para agregar al Shoe");
+        Size size = servicioSize.GetSizePorId(sizeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
+        if (servicioShoe.ExisteRelacion(shoe, size))
+        {
+            Console.WriteLine("Relación existente");
+            return;
+        }
+        else
+        {
+            servicioShoe.AsignarSizeAShoe(shoe, size);
+            Console.WriteLine("Relación agregada");
+        }
+        ConsoleExtensions.EsperaEnter();
     }
 
     private static void ListaDeShoesPorColourYBrand()
@@ -269,7 +519,7 @@ class Program
             Console.WriteLine($"Cantidad: {grupo.Count()}");
             Console.WriteLine($"Precio promedio:{grupo.Average(p => p.Price)}");
             ConsoleExtensions.EsperaEnter();
-            
+
         }
         Console.WriteLine("Fin del listado");
         ConsoleExtensions.EsperaEnter();
@@ -339,7 +589,7 @@ class Program
             Console.WriteLine("Listado de Shoes");
             Console.WriteLine($"Página: {page + 1}");
             List<ShoeDto>? listaPaginada = servicio?
-                .GetListaPaginadaOrdenadaFiltrada(page, pageSize,null,null,null);
+                .GetListaPaginadaOrdenadaFiltrada(page, pageSize, null, null, null);
             MostrarListaShoes(listaPaginada);
         }
     }

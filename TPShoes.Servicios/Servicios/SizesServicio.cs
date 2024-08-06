@@ -96,6 +96,19 @@ namespace TPShoes.Servicios.Servicios
             throw new NotImplementedException();
         }
 
+        public Entidades.Clases.Size? GetSizePorId(int sizeId)
+        {
+            try
+            {
+                return _repository.GetSizePorId( sizeId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)
         {
             try

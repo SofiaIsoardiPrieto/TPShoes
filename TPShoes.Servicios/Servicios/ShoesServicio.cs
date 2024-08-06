@@ -29,8 +29,8 @@ namespace TPShoes.Servicios.Servicios
 
                 var shoe = _repository.GetShoePorId(shoeId) ?? throw new Exception("El Shoe especificado no existe.");
 
-                //_repository.EliminarRelaciones(shoe);
-                //_unitOfWork.SaveChanges(); 
+                _repository.EliminarRelaciones(shoe);
+                _unitOfWork.SaveChanges();
 
 
                 _repository.Borrar(shoe);

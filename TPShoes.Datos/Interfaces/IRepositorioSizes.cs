@@ -26,5 +26,6 @@ namespace TPShoes.Datos.Interfaces
         int GetCantidad();
         List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId);
         SizeShoe? GetSizeShoePorId(int sizeShoeId);
+        Size? GetSizePorId(int sizeId);
     }
 }

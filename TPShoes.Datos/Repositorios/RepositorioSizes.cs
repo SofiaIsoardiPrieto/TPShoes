@@ -73,6 +73,23 @@ namespace TPShoes.Datos.Repositorios
             return _context.Sizes.Count();
         }
 
+        public Size? GetSizePorId(int sizeId)
+        {
+            try
+            {
+                // Utilizando Entity Framework para buscar el Size por su ID
+                var size = _context.Sizes
+                    .FirstOrDefault(s => s.SizeId == sizeId);
+
+                return size;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al obtener el Size por ID.", ex);
+            }
+        }
+
         public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)
         {
             throw new NotImplementedException();

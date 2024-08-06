@@ -80,6 +80,42 @@ namespace TPShoes.Datos.Repositorios
             return _context.Sizes.Count();
         }
 
+        public List<ShoeDto> GetListaShoeDtoPorSize(int sizeIdSeleccionado)
+        {
+            try
+            {
+                // Utilizando Entity Framework para buscar los Shoes por SizeId
+                var shoes = _context.SizeShoes
+                    .Include(ss => ss.Shoe) // Incluir la entidad relacionada Shoe
+                    .Where(ss => ss.SizeId == sizeIdSeleccionado)
+                    .Select(ss => ss.Shoe)
+                    .Distinct() // Eliminar duplicados si un Shoe tiene más de un Size relacionado
+                    .ToList();
+
+                // Mapear a ShoeDto
+                var shoeDtos = shoes.Select(s => new ShoeDto
+                {
+                    ShoeId = s.ShoeId,
+                    Brand = s.Brand.BrandName, 
+                    Colour = s.Colour.ColourName, 
+                    Genre= s.Genre.GenreName,
+                    Sport= s.Sport.SportName,
+                    Model = s.Model,
+                    Description=s.Description,
+                    Price = s.Price
+
+                }).ToList();
+
+                return shoeDtos;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al obtener la lista de Shoes por Size.", ex);
+            }
+        }
+
+
         public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)
         {
             IQueryable<SizeShoe> query = _context.SizeShoes
@@ -104,7 +140,7 @@ namespace TPShoes.Datos.Repositorios
             return listaDto;
         }
 
-        public SizeShoe? GetSizeShoeDtoPorId(int shoeId, int sizeId)
+        public SizeShoe? GetSizeShoePorId(int shoeId, int sizeId)
         {
             try
             {

@@ -254,13 +254,13 @@ namespace TPShoes.Datos.Repositorios
         public Shoe? GetShoePorId(int shoeId)
         {
             //el problema viena de aca!!!!
-            Shoe shoe =
-             _context.Shoes
+            Shoe? shoe =
+             _context?.Shoes
                 .Include(p => p.Brand)   // Propiedad de navegación
                 .Include(p => p.Genre)   // Propiedad de navegación
                 .Include(p => p.Sport)   // Propiedad de navegación
                 .Include(p => p.Colour)  // Propiedad de navegación
-                .AsNoTracking()//sera?
+               // .AsNoTracking()//sera?
                 .FirstOrDefault(p => p.ShoeId == shoeId);
 
             return shoe;

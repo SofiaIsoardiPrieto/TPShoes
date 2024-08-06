@@ -54,8 +54,6 @@ namespace TPShoes.Windows
             return _servicio.GetListaPaginadaOrdenadaFiltrada
                (registrosPorPagina, paginaActual, null, null, null);
         }
-
-
         private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null)
         {
             if (brand is not null)
@@ -73,7 +71,6 @@ namespace TPShoes.Windows
 
             MostrarDatosEnGrilla();
         }
-
         private void MostrarDatosEnGrilla()
         {
 
@@ -88,7 +85,6 @@ namespace TPShoes.Windows
 
 
         }
-
         private void ActualizarBotonesPaginado()
         {
             PaginasTotalestextBox.Text = paginas.ToString();
@@ -124,7 +120,6 @@ namespace TPShoes.Windows
                 Ultimobutton.Enabled = true;
             }
         }
-
         private void NuevotoolStripButton_Click(object sender, EventArgs e)
         {
             FrmShoeAE frm = new FrmShoeAE(_serviceProvider);
@@ -137,9 +132,6 @@ namespace TPShoes.Windows
                 if (!_servicio.Existe(shoe))
                 {
                     _servicio.Guardar(shoe);
-
-                    //// Actualizar la lista después de agregar la planta
-                    //ActualizarListaDespuesAgregar(p.planta);
 
                     MessageBox.Show("Shoe agregado!!!", "Confirmación",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -162,7 +154,6 @@ namespace TPShoes.Windows
             }
             RecargarGrilla();// para evitar algun error
         }
-
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
@@ -191,11 +182,8 @@ namespace TPShoes.Windows
                 GridHelper.SetearFila(filaSeleccionada, shoeDto);
                 return;
             }
-
             try
             {
-                //DONDE ME TRAIGO LA INFO DE AE Y GUARDO EN EDITADO, CAMBIA TAMBIEN EL ORIGNAL PORQUE!!??
-                // Obtener el shoe editado desde el formulario
                 Shoe shoeEditado = frm.GetShoe();
                 if (shoeEditado == null) return;
 
@@ -221,14 +209,13 @@ namespace TPShoes.Windows
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            RecargarGrilla();//para evitar algun error
+            RecargarGrilla();
         }
-
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
             var r = ShoesdataGridView.SelectedRows[0];
-            ShoeDto? shoeDto = r.Tag as ShoeDto;//LO MISMO?
+            ShoeDto? shoeDto = r.Tag as ShoeDto;
             try
             {
                 DialogResult dr = MessageBox.Show("¿Desea borrar el registro seleccionado?",
@@ -253,13 +240,10 @@ namespace TPShoes.Windows
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
         private void ActualizartoolStripButton_Click(object sender, EventArgs e)
         {
             LimpiarBotonesYActualizarLista();
         }
-
         private void LimpiarBotonesYActualizarLista()
         {
             orden = Orden.SinOrden;
@@ -275,7 +259,6 @@ namespace TPShoes.Windows
             mayorPrecioToolStripMenuItem.BackColor = colorOriginal;
 
         }
-
         private void SizestoolStripButton_Click(object sender, EventArgs e)
         {
             if (ShoesdataGridView.SelectedRows.Count == 0) return;
@@ -287,7 +270,6 @@ namespace TPShoes.Windows
             FrmSizeShoes frm = new FrmSizeShoes(_serviceProvider, shoeDto.ShoeId);
             frm.ShowDialog();
         }
-
         private void AddSizestoolStripButton_Click(object sender, EventArgs e)
         {
             //La idea es agregar un Size a un SHoe, pero veo si el Size existe o no para agregarlo
@@ -312,7 +294,7 @@ namespace TPShoes.Windows
                 Entidades.Clases.Size? size = frm.GetSize();
                 if (size is null) return;
                 if (!_servicioSize.Existe(size))
-                {
+                { //es necsario??
                     _servicioSize.Guardar(size);
                     MessageBox.Show("Size creado!!!",
                         "Mensaje",
@@ -373,7 +355,7 @@ namespace TPShoes.Windows
                 
                 if (_servicio.ExisteRelacion(shoe, size))
                 {
-                    SizeShoe sizeShoe = _servicioSizeShoe.GetListaSizeShoes(shoeDto.ShoeId, size.SizeId);
+                    SizeShoe sizeShoe = _servicioSizeShoe.GetSizeShoePorId(shoeDto.ShoeId, size.SizeId);
                     _servicioSizeShoe.Borrar(sizeShoe);
                 }
                 else
@@ -392,13 +374,11 @@ namespace TPShoes.Windows
 
             }
         }
-
         private void Primerobutton_Click(object sender, EventArgs e)
         {
             paginaActual = 1;
             PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
-
         private void Anteriorbutton_Click(object sender, EventArgs e)
         {
             paginaActual--;
@@ -409,7 +389,6 @@ namespace TPShoes.Windows
             }
             PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
-
         private void Siguientebutton_Click(object sender, EventArgs e)
         {
             paginaActual++;
@@ -421,7 +400,6 @@ namespace TPShoes.Windows
             }
             PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
         }
-
         private void Ultimobutton_Click(object sender, EventArgs e)
         {
             paginaActual = paginas;
@@ -441,14 +419,12 @@ namespace TPShoes.Windows
             ActualizarListaPaginada(orden, brand, colour);
             colorOriginal = OrdenartoolStripButton.BackColor;
         }
-
         private void zAToolStripMenuItem_Click(object sender, EventArgs e)
         {
             orden = Orden.ZA;
             ActualizarListaPaginada(orden, brand, colour);
             colorOriginal = OrdenartoolStripButton.BackColor;
         }
-
         private void menorPercioToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -462,7 +438,6 @@ namespace TPShoes.Windows
             ActualizarListaPaginada(orden, brand, colour);
             colorOriginal = OrdenartoolStripButton.BackColor;
         }
-
         private void brandToolStripMenuItem_Click(object sender, EventArgs e)
         {
             colorOriginal = brandToolStripMenuItem.BackColor;
@@ -483,7 +458,6 @@ namespace TPShoes.Windows
                 throw;
             }
         }
-
         private void colourToolStripMenuItem_Click(object sender, EventArgs e)
         {
             colorOriginal = colourToolStripMenuItem.BackColor;
