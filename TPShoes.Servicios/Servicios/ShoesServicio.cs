@@ -209,6 +209,11 @@ namespace TPShoes.Servicios.Servicios
             }
 
         }
+
+        public List<ShoeDto> GetListaDto()
+        {
+            return _repository.GetListaDto();
+        }
     }
 
 }

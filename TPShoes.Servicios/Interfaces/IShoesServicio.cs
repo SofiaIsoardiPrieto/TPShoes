@@ -23,5 +23,6 @@ namespace TPShoes.Servicios.Interfaces
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();
         bool ExisteRelacion(Shoe shoe, Size size);
         void AsignarSizeAShoe(Shoe shoe, Size size);
+        List<ShoeDto> GetListaDto();
     }
 }

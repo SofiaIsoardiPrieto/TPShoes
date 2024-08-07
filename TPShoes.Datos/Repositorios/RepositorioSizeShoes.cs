@@ -2,7 +2,6 @@
 using TPShoes.Datos.Interfaces;
 using TPShoes.Entidades.Clases;
 using TPShoes.Entidades.Dtos;
-using TPShoes.Entidades.Enum;
 
 namespace TPShoes.Datos.Repositorios
 {
@@ -87,6 +86,13 @@ namespace TPShoes.Datos.Repositorios
                 // Utilizando Entity Framework para buscar los Shoes por SizeId
                 var shoes = _context.SizeShoes
                     .Include(ss => ss.Shoe) // Incluir la entidad relacionada Shoe
+                        .ThenInclude(s => s.Brand) // Incluir la entidad relacionada Brand
+                    .Include(ss => ss.Shoe)
+                        .ThenInclude(s => s.Colour) // Incluir la entidad relacionada Colour
+                    .Include(ss => ss.Shoe)
+                        .ThenInclude(s => s.Genre) // Incluir la entidad relacionada Genre
+                    .Include(ss => ss.Shoe)
+                        .ThenInclude(s => s.Sport) // Incluir la entidad relacionada Sport
                     .Where(ss => ss.SizeId == sizeIdSeleccionado)
                     .Select(ss => ss.Shoe)
                     .Distinct() // Eliminar duplicados si un Shoe tiene más de un Size relacionado
@@ -96,12 +102,12 @@ namespace TPShoes.Datos.Repositorios
                 var shoeDtos = shoes.Select(s => new ShoeDto
                 {
                     ShoeId = s.ShoeId,
-                    Brand = s.Brand.BrandName, 
-                    Colour = s.Colour.ColourName, 
-                    Genre= s.Genre.GenreName,
-                    Sport= s.Sport.SportName,
+                    Brand = s.Brand?.BrandName ?? "N/A",
+                    Colour = s.Colour?.ColourName ?? "N/A",
+                    Genre = s.Genre?.GenreName ?? "N/A",
+                    Sport = s.Sport?.SportName ?? "N/A",
                     Model = s.Model,
-                    Description=s.Description,
+                    Description = s.Description,
                     Price = s.Price
 
                 }).ToList();
@@ -111,9 +117,10 @@ namespace TPShoes.Datos.Repositorios
             catch (Exception ex)
             {
                 // Manejo de excepciones
-                throw new Exception("Error al obtener la lista de Shoes por Size.", ex);
+                throw new Exception("Error al obtener la lista de ShoeDto por Size.", ex);
             }
         }
+
 
 
         public List<SizeShoeDto>? GetSizeShoeDtoPorId(int shoeId)

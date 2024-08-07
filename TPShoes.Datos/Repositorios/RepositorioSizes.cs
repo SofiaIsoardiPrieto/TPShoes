@@ -73,6 +73,20 @@ namespace TPShoes.Datos.Repositorios
             return _context.Sizes.Count();
         }
 
+        public List<Size> GetLista()
+        {
+            try
+            {
+                // Utilizando Entity Framework para obtener todos los registros de la tabla Sizes
+                return _context.Sizes.ToList();
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                throw new Exception("Error al obtener la lista de Sizes.", ex);
+            }
+        }
+
         public Size? GetSizePorId(int sizeId)
         {
             try

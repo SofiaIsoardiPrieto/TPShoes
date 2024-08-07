@@ -93,7 +93,15 @@ namespace TPShoes.Servicios.Servicios
 
         public List<Entidades.Clases.Size> GetLista()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _repository.GetLista();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Entidades.Clases.Size? GetSizePorId(int sizeId)

@@ -23,5 +23,6 @@ namespace TPShoes.Datos.Interfaces
         void Borrar(Shoe shoe);
         bool ExisteRelacion(Shoe shoe, Size size);
         void AsignarSizeAShoe(SizeShoe nuevoSizeShoe);
+        List<ShoeDto> GetListaDto();
     }
 }

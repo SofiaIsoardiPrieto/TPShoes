@@ -62,15 +62,10 @@ namespace TPShoes.Datos.Repositorios
                 .Include(s => s.Brand)
                 .Include(s => s.Colour)
                 .Include(s => s.Genre)
+                 .Include(s => s.Sport)
                 .AsNoTracking();
 
-            var shoesSports = shoesQuery
-                .Where(s => s.Genre.GenreName == "zapatillas")
-                .Include(s => s.Sport)
-                .Union(shoesQuery.Where(s => s.Genre.GenreName != "zapatillas"))
-                .ToList();
-
-            return shoesSports;
+            return shoesQuery.ToList(); ;
         }
         public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada
           (int cantidadPorPagina, int paginaActual,
@@ -121,10 +116,12 @@ namespace TPShoes.Datos.Repositorios
                 }
             }
 
-            // Paginar los resultados
+            // Cambio en el paginado, se quitó el -1 y take(paginaAtual)
             List<Shoe> listaPaginada = query
-                .Skip(cantidadPorPagina * (paginaActual - 1))
-                .Take(cantidadPorPagina)
+            .AsNoTracking()
+
+                .Skip(cantidadPorPagina * (paginaActual))
+                .Take(paginaActual)
                 .ToList();
 
             List<ShoeDto> listaDto = listaPaginada
@@ -159,9 +156,7 @@ namespace TPShoes.Datos.Repositorios
 
         public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport()
         {
-
-            return _context.Shoes.GroupBy(s => s.SportId)
-                .ToList();
+            return _context.Shoes.GroupBy(s => s.SportId).ToList();
         }
 
         public void Agregar(Shoe shoe)
@@ -260,7 +255,7 @@ namespace TPShoes.Datos.Repositorios
                 .Include(p => p.Genre)   // Propiedad de navegación
                 .Include(p => p.Sport)   // Propiedad de navegación
                 .Include(p => p.Colour)  // Propiedad de navegación
-               // .AsNoTracking()//sera?
+                                         // .AsNoTracking()//sera?
                 .FirstOrDefault(p => p.ShoeId == shoeId);
 
             return shoe;
@@ -294,6 +289,33 @@ namespace TPShoes.Datos.Repositorios
         public void AsignarSizeAShoe(SizeShoe nuevoSizeShoe)
         {
             _context.Set<SizeShoe>().Add(nuevoSizeShoe);
+        }
+
+        public List<ShoeDto> GetListaDto()
+        {
+            var query = _context.Shoes
+               .Include(p => p.Brand)
+               .Include(p => p.Colour)
+               .Include(p => p.Genre)
+               .Include(p => p.Sport)
+               .AsNoTracking()
+               .ToList();
+
+            List<ShoeDto> listaDto = query
+               .Select(p => new ShoeDto
+               {
+                   ShoeId = p.ShoeId,
+                   Brand = p.Brand?.BrandName ?? "N/A",
+                   Genre = p.Genre?.GenreName ?? "N/A",
+                   Colour = p.Colour?.ColourName ?? "N/A",
+                   Sport = p.Sport?.SportName ?? "N/A",
+                   Description = p.Description,
+                   Price = p.Price,
+                   Model = p.Model
+               })
+               .ToList();
+
+            return listaDto;
         }
     }
 }

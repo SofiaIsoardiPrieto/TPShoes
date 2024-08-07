@@ -238,7 +238,10 @@ namespace TPShoes.Datos
             {
                 entity.ToTable("SizeShoes");
                 entity.Property(e => e.Stok).IsRequired();
-             
+
+                //Modificacion UniqueSizeShoes
+                entity.HasIndex(ss => new { ss.ShoeId, ss.SizeId })
+                .IsUnique();
             });
         }
     }
