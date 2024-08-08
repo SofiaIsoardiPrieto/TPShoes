@@ -212,6 +212,9 @@ class Program
         }
 
     }
+
+    //Creacion de un metodo generico y estatico en la consolahelper para probar si las tablas se hacen todas ahi
+
     //Listo, testeado
     private static void ListarSizeShoes()//28
     {
@@ -497,35 +500,43 @@ class Program
         }
         ConsoleExtensions.EsperaEnter();
     }
-
+    //testado, pero hay que listar los brands y los colores para saber sus ids
     private static void ListaDeShoesPorColourYBrand()
     {
         Console.Clear();
-        Console.WriteLine("Listado de Shoes");
-
         var servicioShoes = serviceProvider?.GetService<IShoesServicio>();
-        var servicioColour = serviceProvider?.GetService<IColoursServicio>();
-        var servicioBrand = serviceProvider?.GetService<IBrandsServicio>();
+
         if (servicioShoes is null)
         {
             Console.WriteLine("Servicio de Shoes no disponible.");
             return;
         }
-        var agrupaciones = servicioShoes.GetShoesAgrupadosPorColourYBrand();
-        foreach (var grupo in agrupaciones)
-        {
-            Console.Clear();
-            Console.WriteLine($"Colour: {grupo.Key} {servicioColour?.GetColourPorId(grupo.Key).ColourName}");
-            Console.WriteLine($"Brand: {grupo.Key} {servicioBrand?.GetBrandPorId(grupo.Key).BrandName}");
-            foreach (var shoe in grupo)
-            {
-                Console.WriteLine($"  - Shoe modelo: {shoe.Model}, Colour: {shoe.Colour.ColourName}, Brand: {shoe.Brand.BrandName}");
-            }
-            Console.WriteLine($"Cantidad: {grupo.Count()}");
-            Console.WriteLine($"Precio promedio:{grupo.Average(p => p.Price)}");
-            ConsoleExtensions.EsperaEnter();
 
+      
+        int brandId = ConsoleExtensions.ReadInt("Ingrese el ID del Brand: ");
+        int colourId = ConsoleExtensions.ReadInt("Ingrese el ID del Colour: ");
+
+        // Obtener los Shoes filtrados
+        var shoesFiltrados = servicioShoes.GetShoesFiltradosPorBrandYColour(brandId, colourId);
+
+        // Mostrar los resultados en una tabla
+        if (shoesFiltrados.Any())
+        {
+            var tablaShoe = new ConsoleTable("ID", "Brand", "Genre", "Colour", "Sport", "Price");
+
+            foreach (var item in shoesFiltrados)
+            {
+                tablaShoe.AddRow(item.ShoeId, item.Brand, item.Genre, item.Colour, item.Sport, item.Price);
+            }
+
+            tablaShoe.Options.EnableCount = false;
+            tablaShoe.Write();
         }
+        else
+        {
+            Console.WriteLine("No se encontraron Shoes con los criterios seleccionados.");
+        }
+
         Console.WriteLine("Fin del listado");
         ConsoleExtensions.EsperaEnter();
     }

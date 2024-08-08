@@ -141,12 +141,6 @@ namespace TPShoes.Datos.Repositorios
             return listaDto;
         }
 
-        public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand()
-        {
-            // falta por Brand tmb
-            return _context.Shoes.GroupBy(s => s.ColourId)
-                .ToList();
-        }
 
         public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre()
         {
@@ -317,6 +311,34 @@ namespace TPShoes.Datos.Repositorios
 
             return listaDto;
         }
+
+        public IEnumerable<ShoeDto> GetShoesFiltradosPorBrandYColour(int brandId, int colourId)
+        {
+
+            try
+            {
+                return _context.Shoes
+                    .Where(s => s.BrandId == brandId && s.ColourId == colourId)
+                    .Select(s => new ShoeDto
+                    {
+                        ShoeId = s.ShoeId,
+                        Brand = s.Brand.BrandName,
+                        Colour = s.Colour.ColourName,
+                        Sport = s.Sport.SportName,
+                        Genre = s.Genre.GenreName,
+                        Model = s.Model,
+                        Price = s.Price,
+                        Description = s.Description
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los Shoes filtrados.", ex);
+            }
+        }
+
+
     }
 }
 

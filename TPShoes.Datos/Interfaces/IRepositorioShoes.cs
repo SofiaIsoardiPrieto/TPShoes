@@ -13,7 +13,7 @@ namespace TPShoes.Datos.Interfaces
         List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
             int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
             Colour? ColourFiltro = null);
-        IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand();
+      
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();
         void Agregar(Shoe shoe);
@@ -24,5 +24,6 @@ namespace TPShoes.Datos.Interfaces
         bool ExisteRelacion(Shoe shoe, Size size);
         void AsignarSizeAShoe(SizeShoe nuevoSizeShoe);
         List<ShoeDto> GetListaDto();
+        IEnumerable<ShoeDto> GetShoesFiltradosPorBrandYColour(int brandId, int colourId);
     }
 }

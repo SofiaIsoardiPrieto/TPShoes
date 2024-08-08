@@ -1,4 +1,5 @@
-﻿using TPShoes.Entidades;
+﻿using ConsoleTables;
+using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 
 namespace TPShoes.Herramientas
@@ -186,6 +187,27 @@ namespace TPShoes.Herramientas
             }
         }
 
+        //a evaluar
+        public static void MostrarTabla<T>(List<T> lista, params string[] nombresColumnas)
+        {
+            if (lista == null || !lista.Any())
+            {
+                Console.WriteLine("No hay datos disponibles.");
+                return;
+            }
+
+            var tabla = new ConsoleTable(nombresColumnas);
+
+            foreach (var item in lista)
+            {
+                var valores = item.GetType().GetProperties().Select(prop => prop.GetValue(item, null)).ToArray();
+                tabla.AddRow(valores);
+            }
+
+            tabla.Options.EnableCount = false;
+            tabla.Write();
+            Console.WriteLine("Fin del listado");
+        }
     }
 
 }

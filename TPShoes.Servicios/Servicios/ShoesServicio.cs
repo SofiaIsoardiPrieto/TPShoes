@@ -80,10 +80,7 @@ namespace TPShoes.Servicios.Servicios
             return _repository.GetShoePorId(shoeId);
         }
 
-        public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand()
-        {
-            return _repository.GetShoesAgrupadosPorColourYBrand();
-        }
+       
 
         public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre()
         {
@@ -213,6 +210,19 @@ namespace TPShoes.Servicios.Servicios
         public List<ShoeDto> GetListaDto()
         {
             return _repository.GetListaDto();
+        }
+
+        public IEnumerable<ShoeDto> GetShoesFiltradosPorBrandYColour(int brandId, int colourId)
+        {
+            try
+            {
+                return _repository.GetShoesFiltradosPorBrandYColour(brandId, colourId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 

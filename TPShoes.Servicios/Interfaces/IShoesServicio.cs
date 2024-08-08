@@ -18,11 +18,12 @@ namespace TPShoes.Servicios.Interfaces
            int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
            Colour? ColourFiltro = null);
         Shoe GetShoePorId(int shoeId);
-        IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorColourYBrand();
+ 
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();
         bool ExisteRelacion(Shoe shoe, Size size);
         void AsignarSizeAShoe(Shoe shoe, Size size);
         List<ShoeDto> GetListaDto();
+        IEnumerable<ShoeDto> GetShoesFiltradosPorBrandYColour(int brandId, int colourId);
     }
 }
