@@ -52,7 +52,7 @@ namespace TPShoes.Datos.Repositorios
                 catch (Exception ex)
                 {
 
-                    throw new Exception("Habilita el servidor, boluda!.", ex);
+                    throw new Exception("Habilita el servidor", ex);
                 }
             }
         }

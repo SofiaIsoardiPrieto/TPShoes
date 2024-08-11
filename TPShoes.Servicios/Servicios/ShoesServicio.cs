@@ -59,7 +59,7 @@ namespace TPShoes.Servicios.Servicios
             catch (Exception ex)
             {
 
-                throw new Exception("Habilita el servidor, boluda!.", ex);
+                throw new Exception("Habilita el servidor!.", ex);
             }
         }
         public List<Shoe> GetLista()

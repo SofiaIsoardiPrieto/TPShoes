@@ -111,7 +111,7 @@ namespace TPShoes.Windows
                 Ultimobutton.Enabled = true;
 
             }
-            if (paginaActual == 1)
+            if (paginaActual == 1 && registro!=registrosPorPagina )//podria plantearlo mejor??
             {
                 Primerobutton.Enabled = false;
                 Anteriorbutton.Enabled = false;
