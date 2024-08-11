@@ -14,7 +14,7 @@ namespace TPShoes.Datos.Repositorios
         public RepositorioShoes() { }
 
         public RepositorioShoes(DBContextShoes context) { _context = context; }
-
+     
         public bool Existe(Shoe shoe)
         {
             try
@@ -146,6 +146,17 @@ namespace TPShoes.Datos.Repositorios
         {
             return _context.Shoes.GroupBy(s => s.GenreId)
                .ToList();
+        }
+        public IEnumerable<IGrouping<int, Shoe>> GetShoesPorMarcaEntreRangoPrecios(decimal rangoMin, decimal rangoMax)
+        {
+            return _context.Shoes
+                .Include(s => s.Brand)
+                .Include(s => s.Genre)
+                .Include(s => s.Colour)
+                .Include(s => s.Sport)
+                .Where(s => s.Price >= rangoMin && s.Price <= rangoMax)  // Filtrar por rango de precios
+                .GroupBy(s => s.BrandId)
+                .ToList();
         }
 
         public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport()

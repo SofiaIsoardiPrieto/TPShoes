@@ -25,5 +25,6 @@ namespace TPShoes.Datos.Interfaces
         void AsignarSizeAShoe(SizeShoe nuevoSizeShoe);
         List<ShoeDto> GetListaDto();
         IEnumerable<ShoeDto> GetShoesFiltradosPorBrandYColour(int brandId, int colourId);
+        IEnumerable<IGrouping<int, Shoe>> GetShoesPorMarcaEntreRangoPrecios(decimal rangoMin, decimal rangoMax);
     }
 }

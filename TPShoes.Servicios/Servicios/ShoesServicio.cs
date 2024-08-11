@@ -103,10 +103,7 @@ namespace TPShoes.Servicios.Servicios
                     _repository.Agregar(shoe);
                     _unitOfWork.SaveChanges(); // Guardar cambios para obtener el id de la planta agregada
 
-                    //if (proveedores != null && proveedores.Any())
-                    //{
-                    //    _repository.AgregarProveedoresPlanta(planta, proveedores);
-                    //}
+                    
                 }
                 else
                 {
@@ -217,6 +214,20 @@ namespace TPShoes.Servicios.Servicios
             try
             {
                 return _repository.GetShoesFiltradosPorBrandYColour(brandId, colourId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IEnumerable<IGrouping<int, Shoe>> GetShoesPorMarcaEntreRangoPrecios(decimal rangoMin, decimal rangoMax)
+        {
+
+            try
+            {
+                return _repository.GetShoesPorMarcaEntreRangoPrecios(rangoMin, rangoMax);
             }
             catch (Exception)
             {

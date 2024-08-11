@@ -18,7 +18,7 @@ namespace TPShoes.Servicios.Interfaces
            int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
            Colour? ColourFiltro = null);
         Shoe GetShoePorId(int shoeId);
- 
+        IEnumerable<IGrouping<int, Shoe>> GetShoesPorMarcaEntreRangoPrecios(decimal rangoMin, decimal rangoMax);
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();
         bool ExisteRelacion(Shoe shoe, Size size);
