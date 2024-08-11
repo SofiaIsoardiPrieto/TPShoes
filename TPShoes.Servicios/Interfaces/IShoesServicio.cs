@@ -14,8 +14,8 @@ namespace TPShoes.Servicios.Interfaces
         bool Existe(Shoe shoe);
         int GetCantidad(Func<Shoe, bool>? filtro = null);
         List<Shoe> GetLista();
-        List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
-           int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
+        List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int registrosPorPagina,
+           int paginaActual , Orden? orden = null, Brand? BrandFiltro = null,
            Colour? ColourFiltro = null);
         Shoe GetShoePorId(int shoeId);
         IEnumerable<IGrouping<int, Shoe>> GetShoesPorMarcaEntreRangoPrecios(decimal rangoMin, decimal rangoMax);

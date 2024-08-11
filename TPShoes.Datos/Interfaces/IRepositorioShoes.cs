@@ -10,7 +10,7 @@ namespace TPShoes.Datos.Interfaces
         bool Existe(Shoe shoe);
         int GetCantidad(Func<Shoe, bool>? filtro);
         List<Shoe> GetLista();
-        List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
+        List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int  registrosPorPagina,
             int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
             Colour? ColourFiltro = null);
       

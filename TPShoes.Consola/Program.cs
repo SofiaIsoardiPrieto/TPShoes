@@ -644,7 +644,7 @@ class Program
             Console.WriteLine("Listado de Shoes");
             Console.WriteLine($"Página: {page + 1}");
             List<ShoeDto>? listaPaginada = servicio?
-                .GetListaPaginadaOrdenadaFiltrada(page, registrosPorPagina, null, null, null);
+                .GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, page+1, null, null, null);
             MostrarListaShoes(listaPaginada);
             ConsoleExtensions.EsperaEnter();
         }

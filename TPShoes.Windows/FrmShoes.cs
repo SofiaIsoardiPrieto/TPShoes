@@ -42,18 +42,17 @@ namespace TPShoes.Windows
             registro = _servicio.GetCantidad();
             paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
             PaginasTotalestextBox.Text = registro.ToString();
-            lista = GetListaSinFiltrar();
-
+            //que está pasando aca!??
             CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
-
-            MostrarDatosEnGrilla();
+            //lista = GetListaSinFiltrar();
+            //MostrarDatosEnGrilla();
         }
-        private List<ShoeDto> GetListaSinFiltrar()
-        {
-            //Sin flitrar ni ordenar
-            return _servicio.GetListaPaginadaOrdenadaFiltrada
-               (registrosPorPagina, paginaActual, null, null, null);
-        }
+        //private List<ShoeDto> GetListaSinFiltrar()
+        //{
+        //    //Sin flitrar ni ordenar
+        //    return _servicio.GetListaPaginadaOrdenadaFiltrada
+        //       (registrosPorPagina,paginaActual, null, null, null);
+        //}
         private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null)
         {
             if (brand is not null)

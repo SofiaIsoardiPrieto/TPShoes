@@ -67,11 +67,11 @@ namespace TPShoes.Servicios.Servicios
             return _repository.GetLista();
         }
 
-        public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int cantidadPorPagina,
+        public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int registrosPorPagina,
             int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
             Colour? ColourFiltro = null)
         {
-            return _repository.GetListaPaginadaOrdenadaFiltrada(cantidadPorPagina, paginaActual,
+            return _repository.GetListaPaginadaOrdenadaFiltrada( registrosPorPagina,paginaActual,
                 orden, BrandFiltro, ColourFiltro);
         }
 

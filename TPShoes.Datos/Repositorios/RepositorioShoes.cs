@@ -68,7 +68,7 @@ namespace TPShoes.Datos.Repositorios
             return shoesQuery.ToList(); ;
         }
         public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada
-          (int cantidadPorPagina, int paginaActual,
+          (int  registrosPorPagina, int paginaActual,
           Orden? orden = null, Brand? BrandFiltro = null,
           Colour? ColourFiltro = null)
         {
@@ -116,12 +116,18 @@ namespace TPShoes.Datos.Repositorios
                 }
             }
 
-            // Cambio en el paginado, se quitó el -1 y take(paginaAtual)
-            List<Shoe> listaPaginada = query
-            .AsNoTracking()
+            //// Cambio en el paginado, se quitó el -1 y take(paginaAtual)
+            //List<Shoe> listaPaginada = query
+            //.AsNoTracking()
 
-                .Skip(cantidadPorPagina * (paginaActual))
-                .Take(paginaActual)
+            //    .Skip(registrosPorPagina * (paginaActual))
+            //    .Take(paginaActual)
+            //    .ToList();
+
+            // Paginación correcta
+            List<Shoe> listaPaginada = query
+                .Skip(registrosPorPagina * (paginaActual - 1)) // Restar 1 para obtener el índice correcto
+                .Take(registrosPorPagina) // Tomar la cantidad de registros por página
                 .ToList();
 
             List<ShoeDto> listaDto = listaPaginada
