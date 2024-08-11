@@ -187,7 +187,7 @@ namespace TPShoes.Herramientas
             }
         }
 
-        //a evaluar
+      
         public static void MostrarTabla<T>(List<T> lista, params string[] nombresColumnas)
         {
             if (lista == null || !lista.Any())
@@ -200,14 +200,29 @@ namespace TPShoes.Herramientas
 
             foreach (var item in lista)
             {
-                var valores = item.GetType().GetProperties().Select(prop => prop.GetValue(item, null)).ToArray();
-                tabla.AddRow(valores);
+                var valores = new List<object>();
+
+                for (int i = 0; i < nombresColumnas.Length; i++)
+                {
+                    var property = item.GetType().GetProperty(nombresColumnas[i]);
+                    if (property != null)
+                    {
+                        var valor = property.GetValue(item, null) ?? "N/A";
+                        valores.Add(valor);
+                    }
+                    else
+                    {
+                        valores.Add("N/A");
+                    }
+                }
+
+                tabla.AddRow(valores.ToArray());
             }
 
             tabla.Options.EnableCount = false;
             tabla.Write();
             Console.WriteLine("Fin del listado");
         }
-    }
 
+    }
 }
