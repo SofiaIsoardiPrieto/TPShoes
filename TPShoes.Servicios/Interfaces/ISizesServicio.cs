@@ -18,5 +18,6 @@ namespace TPShoes.Servicios.Interfaces
         bool Existe(SizeShoe sizeShoeEditado);
         List<Size> GetLista();
         Size GetSizePorId(int sizeId);
+        List<Size>? GetSizesNoAsociadosPorShoeId(int shoeId);
     }
 }

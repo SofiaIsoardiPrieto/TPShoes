@@ -32,7 +32,7 @@ namespace TPShoes.Datos.Repositorios
 
         public void Borrar(SizeShoe sizeShoe)
         {
-            throw new NotImplementedException();
+            _context.Remove(sizeShoe);
         }
 
         public void Editar(Entidades.Clases.Size sizes)

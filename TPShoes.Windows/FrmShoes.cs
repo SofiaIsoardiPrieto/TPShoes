@@ -56,7 +56,7 @@ namespace TPShoes.Windows
         private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null)
         {
             if (brand is not null)
-            {
+            {//no anda registro
                 registro = _servicio.GetCantidad(s => s.Brand == brand);
                 paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
             }
@@ -111,7 +111,7 @@ namespace TPShoes.Windows
                 Ultimobutton.Enabled = true;
 
             }
-            if (paginaActual == 1 && registro!=registrosPorPagina )//podria plantearlo mejor??
+            if (paginaActual == 1 && registro != registrosPorPagina)//podria plantearlo mejor??
             {
                 Primerobutton.Enabled = false;
                 Anteriorbutton.Enabled = false;
@@ -271,35 +271,21 @@ namespace TPShoes.Windows
         }
         private void AddSizestoolStripButton_Click(object sender, EventArgs e)
         {
-            //La idea es agregar un Size a un SHoe, pero veo si el Size existe o no para agregarlo
-            //desconosco si hacie el repositorio estoy teniendo en cuanta todas las posibilidades y errores
-            // onda el ATACHED
-          var _servicioSize= _serviceProvider?
-                               .GetService<ISizesServicio>();
+            var _servicioSize = _serviceProvider?.GetService<ISizesServicio>();
+            
             if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
-
             var r = ShoesdataGridView.SelectedRows[0];
             if (r.Tag is null) return;
             var shoeDto = (ShoeDto)r.Tag;
-
             Shoe? shoe = _servicio.GetShoePorId(shoeDto?.ShoeId ?? 0);
             if (shoe is null) return;
-            FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider) { Text = "Agregar Size" };
+            FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider, shoe.ShoeId, true) { Text = "Agregar Size" };
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) { return; }
             try
             {
-                //CAMBIOS IMPORTANTES!!!!!
                 Entidades.Clases.Size? size = frm.GetSize();
                 if (size is null) return;
-                if (!_servicioSize.Existe(size))
-                { //es necsario??
-                    _servicioSize.Guardar(size);
-                    MessageBox.Show("Size creado!!!",
-                        "Mensaje",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-               
                 if (!_servicio.ExisteRelacion(shoe, size))
                 {
                     _servicio.AsignarSizeAShoe(shoe, size);
@@ -330,28 +316,29 @@ namespace TPShoes.Windows
         }
         private void DeleteSizestoolStripButton_Click(object sender, EventArgs e)
         {
-            //La idea es borrar un Size de un Shoe, tengo que borrar todos los SizeShoeid que puediese haber
-            var _servicioSizeShoe = _serviceProvider?
-                              .GetService<ISizeShoesServicio>();
+           
+            var _servicioSizeShoe = _serviceProvider?.GetService<ISizeShoesServicio>();
 
 
             if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
-
             var r = ShoesdataGridView.SelectedRows[0];
             if (r.Tag is null) return;
             var shoeDto = (ShoeDto)r.Tag;
             if (shoeDto is null) return;
 
-            FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider) { Text = "Borrar Size" };
+            Shoe? shoe = _servicio.GetShoePorId(shoeDto?.ShoeId ?? 0);
+            if (shoe is null) return;
+
+            FrmSizeCombo frm = new FrmSizeCombo(_serviceProvider, shoeDto.ShoeId, false) { Text = "Borrar Size" };
             DialogResult dr = frm.ShowDialog(this);
             if (dr == DialogResult.Cancel) { return; }
 
             try
             {
-                //CAMBIOS IMPORTANTES!!!!!
+              
                 Entidades.Clases.Size? size = frm.GetSize();
                 if (size is null) return;
-                
+
                 if (_servicio.ExisteRelacion(shoe, size))
                 {
                     SizeShoe sizeShoe = _servicioSizeShoe.GetSizeShoePorId(shoeDto.ShoeId, size.SizeId);
@@ -362,7 +349,6 @@ namespace TPShoes.Windows
                     MessageBox.Show("No Existe relación!!!",
                     "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 }
             }
             catch (Exception ex)
@@ -370,7 +356,6 @@ namespace TPShoes.Windows
                 MessageBox.Show(ex.Message,
                             "Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-
             }
         }
         private void Primerobutton_Click(object sender, EventArgs e)

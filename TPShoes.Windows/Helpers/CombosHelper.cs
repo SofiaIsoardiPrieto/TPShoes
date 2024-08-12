@@ -10,13 +10,13 @@ namespace TPShoes.Windows.Helpers
     {
 
         public static void CargarCombosPaginas(int paginaActual, ref ComboBox cbo)
-        {    
-                cbo.Items.Clear();
-                for (int pagina = 1; pagina <= paginaActual; pagina++)
-                {
-                    cbo.Items.Add(pagina.ToString());
-                }
-                cbo.SelectedIndex = 0;
+        {
+            cbo.Items.Clear();
+            for (int pagina = 1; pagina <= paginaActual; pagina++)
+            {
+                cbo.Items.Add(pagina.ToString());
+            }
+            cbo.SelectedIndex = 0;
         }
 
         public static void CargarComboBrand(IServiceProvider serviceProvider, ref ComboBox cbo)
@@ -82,22 +82,34 @@ namespace TPShoes.Windows.Helpers
             cbo.SelectedIndex = 0;
         }
 
-        internal static void CargarComboSizePorShoe(IServiceProvider serviceProvider, ref ComboBox cbo, Entidades.Clases.Size size)
+        internal static void CargarComboSizePorShoe(IServiceProvider serviceProvider, ref ComboBox cbo, int shoeId, bool esAgregar)
         {
             var servicio = serviceProvider.GetService<ISizesServicio>();
 
-            List<Entidades.Clases.Size> lista = servicio?.GetSizesPorId(size.SizeId);//a checkear
-            var defaultGenre = new Entidades.Clases.Size
+            List<Entidades.Clases.Size>? lista;
+
+            if (esAgregar)
+            {
+                // Cargar los Size no asociados al Shoe
+                lista = servicio?.GetSizesNoAsociadosPorShoeId(shoeId);
+            }
+            else
+            {
+                // Cargar los Size asociados al Shoe
+                lista = servicio?.GetSizesPorId(shoeId);
+            }
+
+            var defaultSize = new Entidades.Clases.Size
             {
                 SizeNumber = 0
             };
-            lista?.Insert(0, defaultGenre);
+            lista?.Insert(0, defaultSize);
             cbo.DataSource = lista;
             cbo.DisplayMember = "SizeNumber";
             cbo.ValueMember = "SizeId";
             cbo.SelectedIndex = 0;
         }
-       
+
 
     }
 

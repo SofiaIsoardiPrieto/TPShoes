@@ -143,6 +143,19 @@ namespace TPShoes.Servicios.Servicios
             }
         }
 
+        public List<Entidades.Clases.Size>? GetSizesNoAsociadosPorShoeId(int shoeId)
+        {
+            try
+            {
+                return _repository.GetSizesNoAsociadosPorShoeId(shoeId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<Entidades.Clases.Size> GetSizesPorId(int shoeId, bool incluyeShoe = false)
         {
             try
@@ -215,9 +228,6 @@ namespace TPShoes.Servicios.Servicios
         }
 
      
-        List<Entidades.Clases.Size> ISizesServicio.GetSizesPorId(int id, bool incluyeShoe)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

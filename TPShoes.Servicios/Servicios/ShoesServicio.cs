@@ -34,6 +34,7 @@ namespace TPShoes.Servicios.Servicios
 
 
                 _repository.Borrar(shoe);
+                //error aqui
                 _unitOfWork.SaveChanges();
 
                 _unitOfWork.Commit();

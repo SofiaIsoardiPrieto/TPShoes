@@ -1,4 +1,3 @@
-using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 using TPShoes.Windows.Helpers;
 
@@ -8,22 +7,26 @@ namespace TPShoes.Windows
     {
         private readonly IServiceProvider _serviceProvider;
         private Entidades.Clases.Size? size;
-        public FrmSizeCombo(IServiceProvider serviceProvider)
+        int shoeId;
+        bool esAgregar;
+        public FrmSizeCombo(IServiceProvider serviceProvider, int shoeId, bool esAgregar)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
+            this.shoeId=shoeId;
+            this.esAgregar = esAgregar;
         }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            CombosHelper.CargarComboSizePorShoe(_serviceProvider, ref SizecomboBox, size);
-           
+            CombosHelper.CargarComboSizePorShoe(_serviceProvider, ref SizecomboBox, shoeId, esAgregar);
+
         }
         public Entidades.Clases.Size GetSize()
         {
             return size;
         }
-       
+
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())

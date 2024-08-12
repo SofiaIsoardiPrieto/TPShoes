@@ -114,6 +114,21 @@ namespace TPShoes.Datos.Repositorios
             throw new NotImplementedException();
         }
 
+        public List<Size>? GetSizesNoAsociadosPorShoeId(int shoeId)
+        {
+            var sizeIdsAsociados = _context.SizeShoes
+            .Where(ss => ss.ShoeId == shoeId)
+            .Select(ss => ss.SizeId)
+            .ToList();
+
+            // Obtenemos todos los Size que no están en la lista de asociados
+            var sizesNoAsociados = _context.Sizes
+                .Where(s => !sizeIdsAsociados.Contains(s.SizeId))
+                .ToList();
+
+            return sizesNoAsociados;
+        }
+
         //public List<Size> GetLista()
         //{
         //    return _context.Sizes.ToList();

@@ -20,13 +20,14 @@ namespace TPShoes.Windows
            
         }
       
-      
-
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-               
+                if (sizeShoe is not null)
+                {
+                    sizeShoe.Stok = int.Parse(StocktextBox.Text);
+                }
                 DialogResult = DialogResult.OK;
             }
         }
