@@ -53,7 +53,8 @@ namespace TPShoes.Windows
         }
         public void SetShoe(Shoe shoe)
         {
-            this.shoe = shoe;
+            this.shoe =(Shoe) shoe.Clone();
+            //this.shoe=shoe
         }
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {

@@ -164,8 +164,7 @@ namespace TPShoes.Windows
             //tengo un problema con un FrmShoes SOlO COPIA,
             //pasa el punto de interupcion por un metodo viejo que estaba en forma de comentario
             //guardo cierro y veo que pasa
-            Shoe? shoeOriginal = null;
-            shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
+            var shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
             if (shoeOriginal is null) return;
 
             // Crear una copia del objeto original para restaurar en caso de error
@@ -272,7 +271,7 @@ namespace TPShoes.Windows
         private void AddSizestoolStripButton_Click(object sender, EventArgs e)
         {
             var _servicioSize = _serviceProvider?.GetService<ISizesServicio>();
-            
+
             if (ShoesdataGridView.SelectedRows.Count == 0) { return; }
             var r = ShoesdataGridView.SelectedRows[0];
             if (r.Tag is null) return;
@@ -316,7 +315,7 @@ namespace TPShoes.Windows
         }
         private void DeleteSizestoolStripButton_Click(object sender, EventArgs e)
         {
-           
+
             var _servicioSizeShoe = _serviceProvider?.GetService<ISizeShoesServicio>();
 
 
@@ -335,7 +334,7 @@ namespace TPShoes.Windows
 
             try
             {
-              
+
                 Entidades.Clases.Size? size = frm.GetSize();
                 if (size is null) return;
 

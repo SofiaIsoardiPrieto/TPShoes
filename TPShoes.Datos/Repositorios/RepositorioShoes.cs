@@ -14,16 +14,15 @@ namespace TPShoes.Datos.Repositorios
         public RepositorioShoes() { }
 
         public RepositorioShoes(DBContextShoes context) { _context = context; }
-     
+
         public bool Existe(Shoe shoe)
         {
             try
             {
                 if (shoe.ShoeId == 0)
-                {
-                    //Este es el cambio que habia que hacer?
+                {               
                     return _context.Shoes
-                        .Any(s => s.Model == shoe.Model && s.BrandId == shoe.BrandId && s.ColourId == shoe.ColourId
+                        .Any(s => s.Model.ToUpper() == shoe.Model.ToUpper() && s.BrandId == shoe.BrandId && s.ColourId == shoe.ColourId
                         && s.GenreId == shoe.GenreId && s.SportId == shoe.SportId);
                 }
                 return _context.Shoes
@@ -68,16 +67,16 @@ namespace TPShoes.Datos.Repositorios
             return shoesQuery.ToList(); ;
         }
         public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada
-          (int  registrosPorPagina, int paginaActual,
+          (int registrosPorPagina, int paginaActual,
           Orden? orden = null, Brand? BrandFiltro = null,
           Colour? ColourFiltro = null)
         {
             IQueryable<Shoe> query = _context.Shoes
-                .Include(p => p.Brand)
-                .Include(p => p.Colour)
-                .Include(p => p.Genre)
-                .Include(p => p.Sport)
-                //.Include(p => p.SizeShoe)
+                .Include(s => s.Brand)
+                .Include(s => s.Colour)
+                .Include(s => s.Genre)
+                .Include(s => s.Sport)
+                .OrderBy(s => s.ShoeId)
                 .AsNoTracking();
 
             // Aplicar filtro si se proporciona un brand
@@ -235,7 +234,7 @@ namespace TPShoes.Datos.Repositorios
             }
 
             // Verificar si el TipoDeGenero asociado
-            // a la Zapatilla ya existe en la base de datos
+            // al shoe ya existe en la base de datos
             var GenreExistente = _context.Genres
               .FirstOrDefault(t => t.GenreId == shoe.GenreId);
             if (GenreExistente != null)
@@ -244,7 +243,7 @@ namespace TPShoes.Datos.Repositorios
                 shoe.Genre = GenreExistente;
             }
             // Verificar si el TipoDeColor asociado
-            // a la Zapatilla ya existe en la base de datos
+            // al shoe ya existe en la base de datos
             var colourExistente = _context.Colours
               .FirstOrDefault(t => t.ColourId == shoe.ColourId);
             if (colourExistente != null)

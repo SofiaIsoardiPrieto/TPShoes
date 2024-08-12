@@ -81,8 +81,6 @@ namespace TPShoes.Servicios.Servicios
             return _repository.GetShoePorId(shoeId);
         }
 
-       
-
         public IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre()
         {
             return _repository.GetShoesAgrupadosPorGenre();

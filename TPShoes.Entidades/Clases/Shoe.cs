@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TPShoes.Entidades.Clases
+﻿namespace TPShoes.Entidades.Clases
 {
-    public class Shoe:ICloneable
+    public class Shoe : ICloneable
     {
         public int ShoeId { get; set; }
         public int BrandId { get; set; }
@@ -27,7 +21,29 @@ namespace TPShoes.Entidades.Clases
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return new Shoe
+            {
+                ShoeId = this.ShoeId,
+                BrandId = this.BrandId,
+                ColourId = this.ColourId,
+                GenreId = this.GenreId,
+                SportId = this.SportId,
+                Model = this.Model,
+                Description = this.Description,
+                Price = this.Price,
+                Active = this.Active,
+
+                Brand = this.Brand,
+                Colour = this.Colour,
+                Genre = this.Genre,
+                Sport = this.Sport
+
+            };
         }
+
+        //public object Clone()
+        //{
+        //    return this.MemberwiseClone();
+        //}
     }
 }
