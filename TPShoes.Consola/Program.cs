@@ -21,6 +21,15 @@ class Program
     {
         serviceProvider = DI.ConfigurarServicios();
         bool exit = false;
+        //try
+        //{
+        //    Console.SetWindowSize(120, 60);
+        //}
+        //catch (ArgumentOutOfRangeException ex)
+        //{
+        //    Console.WriteLine($"Error al ajustar el tamaño de la consola: {ex.Message}");
+        //}
+        //Console.ReadLine();
 
 
         while (!exit)
@@ -215,7 +224,7 @@ class Program
 
             Console.WriteLine(); // Añade una línea en blanco para mejorar la legibilidad
         }
-
+       
     }
 
     //Creacion de un metodo generico y estatico en la consolahelper para probar si las tablas se hacen todas ahi

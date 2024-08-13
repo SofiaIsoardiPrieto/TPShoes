@@ -161,19 +161,16 @@ namespace TPShoes.Windows
             if (filaSeleccionada.Tag is null) return;
 
             ShoeDto shoeDto = (ShoeDto)filaSeleccionada.Tag;
-            //tengo un problema con un FrmShoes SOlO COPIA,
-            //pasa el punto de interupcion por un metodo viejo que estaba en forma de comentario
-            //guardo cierro y veo que pasa
+         
             var shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
             if (shoeOriginal is null) return;
 
-            // Crear una copia del objeto original para restaurar en caso de error
-            Shoe shoeCopia = (Shoe)shoeOriginal.Clone();
+            Shoe shoeEditado = (Shoe)shoeOriginal.Clone();
 
             FrmShoeAE frm = new FrmShoeAE(_serviceProvider) { Text = "Editar Shoe" };
-            frm.SetShoe(shoeOriginal); // Asegúrate de pasar el objeto original al formulario
+            frm.SetShoe(shoeOriginal); 
 
-            DialogResult dr = frm.ShowDialog(this);// ACA ME CAMBIA EL shoeOrignal!!!!!!!!
+            DialogResult dr = frm.ShowDialog(this);
 
             if (dr == DialogResult.Cancel)
             {
@@ -182,7 +179,7 @@ namespace TPShoes.Windows
             }
             try
             {
-                Shoe shoeEditado = frm.GetShoe();
+                 shoeEditado = frm.GetShoe();
                 if (shoeEditado == null) return;
 
                 if (!_servicio.Existe(shoeEditado))

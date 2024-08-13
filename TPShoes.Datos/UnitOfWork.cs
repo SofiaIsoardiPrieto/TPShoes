@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace TPShoes.Datos
 {
@@ -22,6 +23,7 @@ namespace TPShoes.Datos
             try
             {
                 SaveChanges();
+                DetachAllEntities(); // Deshabilita el rastreo después de guardar los cambios
                 _transaction?.Commit();
             }
             catch (Exception)
@@ -30,7 +32,14 @@ namespace TPShoes.Datos
                 throw;
             }
         }
-
+        private void DetachAllEntities()//probando
+        {
+            var entries = _context.ChangeTracker.Entries().ToList();
+            foreach (var entry in entries)
+            {
+                _context.Entry(entry.Entity).State = EntityState.Detached;
+            }
+        }
         public void Rollback()
         {
             _transaction?.Rollback();

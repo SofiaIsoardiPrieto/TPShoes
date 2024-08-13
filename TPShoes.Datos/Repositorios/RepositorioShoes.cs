@@ -20,9 +20,9 @@ namespace TPShoes.Datos.Repositorios
             try
             {
                 if (shoe.ShoeId == 0)
-                {               
+                {
                     return _context.Shoes
-                        .Any(s => s.Model.ToUpper() == shoe.Model.ToUpper() && s.BrandId == shoe.BrandId && s.ColourId == shoe.ColourId
+                        .Any(s => s.Model == shoe.Model && s.BrandId == shoe.BrandId && s.ColourId == shoe.ColourId
                         && s.GenreId == shoe.GenreId && s.SportId == shoe.SportId);
                 }
                 return _context.Shoes
@@ -218,7 +218,7 @@ namespace TPShoes.Datos.Repositorios
         {
             var brandExistente = _context.Brands
                .FirstOrDefault(t => t.BrandId == shoe.BrandId);
-
+      
             if (brandExistente != null)
             {
                 _context.Attach(brandExistente);
@@ -265,7 +265,7 @@ namespace TPShoes.Datos.Repositorios
                 .Include(p => p.Genre)   // Propiedad de navegación
                 .Include(p => p.Sport)   // Propiedad de navegación
                 .Include(p => p.Colour)  // Propiedad de navegación
-                                         // .AsNoTracking()//sera?
+                .AsNoTracking()//Era necesario!!
                 .FirstOrDefault(p => p.ShoeId == shoeId);
 
             return shoe;

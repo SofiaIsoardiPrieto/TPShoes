@@ -19,31 +19,31 @@
 
         public ICollection<SizeShoe> SizeShoe { get; set; } = new List<SizeShoe>();
 
-        public object Clone()
-        {
-            return new Shoe
-            {
-                ShoeId = this.ShoeId,
-                BrandId = this.BrandId,
-                ColourId = this.ColourId,
-                GenreId = this.GenreId,
-                SportId = this.SportId,
-                Model = this.Model,
-                Description = this.Description,
-                Price = this.Price,
-                Active = this.Active,
-
-                Brand = this.Brand,
-                Colour = this.Colour,
-                Genre = this.Genre,
-                Sport = this.Sport
-
-            };
-        }
-
         //public object Clone()
         //{
-        //    return this.MemberwiseClone();
+        //    return new Shoe
+        //    {
+        //        ShoeId = this.ShoeId,
+        //        BrandId = this.BrandId,
+        //        ColourId = this.ColourId,
+        //        GenreId = this.GenreId,
+        //        SportId = this.SportId,
+        //        Model = this.Model,
+        //        Description = this.Description,
+        //        Price = this.Price,
+        //        Active = this.Active,
+
+        //        Brand = this.Brand,
+        //        Colour = this.Colour,
+        //        Genre = this.Genre,
+        //        Sport = this.Sport
+
+        //    };
         //}
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

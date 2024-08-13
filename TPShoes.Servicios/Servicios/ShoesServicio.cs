@@ -30,12 +30,12 @@ namespace TPShoes.Servicios.Servicios
                 var shoe = _repository.GetShoePorId(shoeId) ?? throw new Exception("El Shoe especificado no existe.");
 
                 _repository.EliminarRelaciones(shoe);
-                _unitOfWork.SaveChanges();
+               // _unitOfWork.SaveChanges();
 
 
                 _repository.Borrar(shoe);
                 //error aqui
-                _unitOfWork.SaveChanges();
+               // _unitOfWork.SaveChanges();
 
                 _unitOfWork.Commit();
             }
@@ -109,16 +109,6 @@ namespace TPShoes.Servicios.Servicios
                     _repository.Editar(shoe);
                     _unitOfWork.SaveChanges(); // Guardar cambios de la planta antes de manejar relaciones
 
-                    //if (proveedores != null)
-                    //{
-                    //    _repository.EliminarRelaciones(planta);
-                    //    _unitOfWork.SaveChanges(); // Guardar cambios para confirmar eliminación
-
-                    //    if (proveedores.Any())
-                    //    {
-                    //        _repository.AgregarProveedoresPlanta(planta, proveedores);
-                    //    }
-                    //}
                 }
                 _unitOfWork.SaveChanges(); // Guardar todos los cambios al final
                 _unitOfWork.Commit(); // Confirmar los cambios
@@ -136,7 +126,6 @@ namespace TPShoes.Servicios.Servicios
             {
                 _unitOfWork.BeginTransaction();
 
-                // Editar la planta
                 _repository.Editar(shoe);
 
                 //if (sizeId.HasValue)
