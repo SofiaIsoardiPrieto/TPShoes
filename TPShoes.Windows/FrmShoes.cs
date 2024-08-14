@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Drawing;
+using System.Linq.Expressions;
 using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 using TPShoes.Entidades.Dtos;
@@ -19,7 +21,7 @@ namespace TPShoes.Windows
         private Sport? sport = null;
         private Genre? genre = null;
         private Colour? colour = null;
-
+        private Expression<Func<Shoe, bool>> rangoPrecio;
         private Color colorOriginal;
 
         int paginaActual = 1;//private int pageNum = 0;
@@ -41,8 +43,8 @@ namespace TPShoes.Windows
         {
             registro = _servicio.GetCantidad();
             paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
-            PaginasTotalestextBox.Text = registro.ToString();
-            //que está pasando aca!??
+
+
             CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
             //lista = GetListaSinFiltrar();
             //MostrarDatosEnGrilla();
@@ -53,7 +55,7 @@ namespace TPShoes.Windows
         //    return _servicio.GetListaPaginadaOrdenadaFiltrada
         //       (registrosPorPagina,paginaActual, null, null, null);
         //}
-        private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null)
+        private void ActualizarListaPaginada(Orden? orden = null, Brand? brand = null, Colour? colour = null, Expression<Func<Shoe, bool>>? rangoPrecio = null)
         {
             if (brand is not null)
             {//no anda registro
@@ -65,8 +67,13 @@ namespace TPShoes.Windows
                 registro = _servicio.GetCantidad(s => s.Colour == colour);
                 paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
             }
+            if (rangoPrecio is not null)
+            {
+                registro = _servicio.GetCantidad(rangoPrecio);
+                paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
+            }
             // Actualizar la lista paginada según la página actual y tamaño de página
-            lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, orden, brand, colour);
+            lista = _servicio.GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, paginaActual, orden, brand, colour,rangoPrecio);
 
             MostrarDatosEnGrilla();
         }
@@ -86,15 +93,20 @@ namespace TPShoes.Windows
         }
         private void ActualizarBotonesPaginado()
         {
-            PaginasTotalestextBox.Text = paginas.ToString();
-
+            if (registro <= registrosPorPagina)
+            {
+                Primerobutton.Enabled = false;
+                Anteriorbutton.Enabled = false;
+                Siguientebutton.Enabled = false;
+                Ultimobutton.Enabled = false;
+                return;
+            }
             if (paginaActual == paginas)
             {
                 Primerobutton.Enabled = true;
                 Anteriorbutton.Enabled = true;
                 Siguientebutton.Enabled = false;
                 Ultimobutton.Enabled = false;
-
             }
             if (paginaActual < paginas)
             {
@@ -109,9 +121,8 @@ namespace TPShoes.Windows
                 Anteriorbutton.Enabled = true;
                 Siguientebutton.Enabled = true;
                 Ultimobutton.Enabled = true;
-
             }
-            if (paginaActual == 1 && registro != registrosPorPagina)//podria plantearlo mejor??
+            if (paginaActual == 1)
             {
                 Primerobutton.Enabled = false;
                 Anteriorbutton.Enabled = false;
@@ -161,14 +172,14 @@ namespace TPShoes.Windows
             if (filaSeleccionada.Tag is null) return;
 
             ShoeDto shoeDto = (ShoeDto)filaSeleccionada.Tag;
-         
+
             var shoeOriginal = _servicio.GetShoePorId(shoeDto.ShoeId);
             if (shoeOriginal is null) return;
 
             Shoe shoeEditado = (Shoe)shoeOriginal.Clone();
 
             FrmShoeAE frm = new FrmShoeAE(_serviceProvider) { Text = "Editar Shoe" };
-            frm.SetShoe(shoeOriginal); 
+            frm.SetShoe(shoeOriginal);
 
             DialogResult dr = frm.ShowDialog(this);
 
@@ -179,7 +190,7 @@ namespace TPShoes.Windows
             }
             try
             {
-                 shoeEditado = frm.GetShoe();
+                shoeEditado = frm.GetShoe();
                 if (shoeEditado == null) return;
 
                 if (!_servicio.Existe(shoeEditado))
@@ -244,15 +255,16 @@ namespace TPShoes.Windows
             orden = Orden.SinOrden;
             brand = null;
             colour = null;
+            rangoPrecio = null;
             FiltrotoolStripButton.Enabled = true;
-            ActualizarListaPaginada(orden, brand, colour);
-            brandToolStripMenuItem.BackColor = colorOriginal;
-            colourToolStripMenuItem.BackColor = colorOriginal;
-            aZToolStripMenuItem.BackColor = colorOriginal;
-            zAToolStripMenuItem.BackColor = colorOriginal;
-            menorPercioToolStripMenuItem.BackColor = colorOriginal;
-            mayorPrecioToolStripMenuItem.BackColor = colorOriginal;
-
+            brandToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            colourToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            rangoDePrecioToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            aZToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            zAToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            menorPercioToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            mayorPrecioToolStripMenuItem.BackColor = Color.FromArgb(240, 240, 240);
+            RecargarGrilla();
         }
         private void SizestoolStripButton_Click(object sender, EventArgs e)
         {
@@ -387,12 +399,21 @@ namespace TPShoes.Windows
         }
         private void PaginaActualcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            GenerarCambiosDePagina();
+
+
+        }
+
+        private void GenerarCambiosDePagina()
+        {
             if (PaginaActualcomboBox.SelectedIndex >= 0)
             {
                 paginaActual = PaginaActualcomboBox.SelectedIndex + 1;
-                ActualizarListaPaginada(orden, brand, colour);
+                ActualizarListaPaginada(orden, brand, colour,rangoPrecio);
+                PaginasTotalestextBox.Text = paginas.ToString();
             }
         }
+
         private void aZToolStripMenuItem_Click(object sender, EventArgs e)
         {
             orden = Orden.AZ;
@@ -420,7 +441,6 @@ namespace TPShoes.Windows
         }
         private void brandToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            colorOriginal = brandToolStripMenuItem.BackColor;
             try
             {
                 FrmBrandFiltro frm = new FrmBrandFiltro(_serviceProvider) { Text = "Buscar Brand" };
@@ -428,7 +448,9 @@ namespace TPShoes.Windows
                 if (dr == DialogResult.Cancel) { return; }
                 brand = frm.GetBrand();
                 paginaActual = 1;
-                ActualizarListaPaginada(orden, brand, colour);
+                PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
+                GenerarCambiosDePagina();
+            
                 brandToolStripMenuItem.BackColor = Color.Gray;
             }
 
@@ -440,8 +462,6 @@ namespace TPShoes.Windows
         }
         private void colourToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            colorOriginal = colourToolStripMenuItem.BackColor;
-
             try
             {
                 FrmColourFiltro frm = new FrmColourFiltro(_serviceProvider) { Text = "Buscar Colour" };
@@ -451,8 +471,10 @@ namespace TPShoes.Windows
                 colour = frm.GetColour();
                 paginaActual = 1;
                 colourToolStripMenuItem.BackColor = Color.Gray;
-
-                ActualizarListaPaginada(orden, brand, colour);
+                paginaActual = 1;
+                PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
+                GenerarCambiosDePagina();
+                
             }
 
             catch (Exception)
@@ -464,6 +486,32 @@ namespace TPShoes.Windows
         private void SalirtoolStripButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void rangoDePrecioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FrmRangoPrecioFiltro frm = new FrmRangoPrecioFiltro(_serviceProvider) { Text = "Rango Precio" };
+                DialogResult dr = frm.ShowDialog(this);
+                if (dr == DialogResult.Cancel) { return; }
+
+                decimal minPrice = frm.GetMinPrice();
+                decimal maxPrice = frm.GetMaxPrice();
+                rangoPrecio = s => s.Price >= minPrice && s.Price <= maxPrice;
+                paginaActual = 1;
+                rangoDePrecioToolStripMenuItem.BackColor = Color.Gray;
+                paginaActual = 1;
+                PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
+                GenerarCambiosDePagina();
+               
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

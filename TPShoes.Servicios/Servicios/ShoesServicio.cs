@@ -1,4 +1,5 @@
-﻿using TPShoes.Datos;
+﻿using System.Linq.Expressions;
+using TPShoes.Datos;
 using TPShoes.Datos.Interfaces;
 using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
@@ -51,7 +52,7 @@ namespace TPShoes.Servicios.Servicios
             return _repository.Existe(shoe);
         }
 
-        public int GetCantidad(Func<Shoe, bool>? filtro = null)
+        public int GetCantidad(Expression<Func<Shoe, bool>>? filtro = null)
         {
             try
             {
@@ -70,10 +71,10 @@ namespace TPShoes.Servicios.Servicios
 
         public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int registrosPorPagina,
             int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
-            Colour? ColourFiltro = null)
+            Colour? ColourFiltro = null, Expression<Func<Shoe, bool>>? rangoPrecio = null)
         {
             return _repository.GetListaPaginadaOrdenadaFiltrada( registrosPorPagina,paginaActual,
-                orden, BrandFiltro, ColourFiltro);
+                orden, BrandFiltro, ColourFiltro,rangoPrecio);
         }
 
         public Shoe GetShoePorId(int shoeId)

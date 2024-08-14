@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TPShoes.Datos.Interfaces;
 using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
@@ -36,24 +37,20 @@ namespace TPShoes.Datos.Repositorios
             }
         }
 
-        public int GetCantidad(Func<Shoe, bool>? filtro = null)
+        public int GetCantidad(Expression<Func<Shoe, bool>>? filtro = null)
         {
+            int cantidad;
+
             if (filtro != null)
             {
-                return _context.Shoes.Count(filtro);
+                cantidad = _context.Shoes.Count(filtro);
             }
             else
             {
-                try
-                {
-                    return _context.Shoes.Count();
-                }
-                catch (Exception ex)
-                {
+                cantidad = _context.Shoes.Count();
 
-                    throw new Exception("Habilita el servidor", ex);
-                }
             }
+            return cantidad;
         }
         public List<Shoe> GetLista()
         {
@@ -69,7 +66,7 @@ namespace TPShoes.Datos.Repositorios
         public List<ShoeDto> GetListaPaginadaOrdenadaFiltrada
           (int registrosPorPagina, int paginaActual,
           Orden? orden = null, Brand? BrandFiltro = null,
-          Colour? ColourFiltro = null)
+          Colour? ColourFiltro = null, Expression<Func<Shoe, bool>>? rangoPrecio = null)
         {
             IQueryable<Shoe> query = _context.Shoes
                 .Include(s => s.Brand)
@@ -83,16 +80,19 @@ namespace TPShoes.Datos.Repositorios
             if (BrandFiltro is not null)
             {
                 query = query
-                    .Where(p => p.BrandId == BrandFiltro.BrandId);
+                    .Where(s => s.BrandId == BrandFiltro.BrandId);
             }
 
             // Aplicar filtro si se proporciona un colour
             if (ColourFiltro is not null)
             {
                 query = query
-                    .Where(p => p.ColourId == ColourFiltro.ColourId);
+                    .Where(s => s.ColourId == ColourFiltro.ColourId);
             }
-
+            if (rangoPrecio is not null)
+            {
+                query = query.Where(rangoPrecio);
+            }
             // Aplicar orden si se proporciona
             if (orden != null)
             {
@@ -218,7 +218,7 @@ namespace TPShoes.Datos.Repositorios
         {
             var brandExistente = _context.Brands
                .FirstOrDefault(t => t.BrandId == shoe.BrandId);
-      
+
             if (brandExistente != null)
             {
                 _context.Attach(brandExistente);

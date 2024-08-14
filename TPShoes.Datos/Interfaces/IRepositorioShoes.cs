@@ -1,4 +1,5 @@
-﻿using TPShoes.Entidades;
+﻿using System.Linq.Expressions;
+using TPShoes.Entidades;
 using TPShoes.Entidades.Clases;
 using TPShoes.Entidades.Dtos;
 using TPShoes.Entidades.Enum;
@@ -8,11 +9,11 @@ namespace TPShoes.Datos.Interfaces
     public interface IRepositorioShoes
     {
         bool Existe(Shoe shoe);
-        int GetCantidad(Func<Shoe, bool>? filtro);
+       int GetCantidad(Expression<Func<Shoe, bool>>? filtro = null);
         List<Shoe> GetLista();
         List<ShoeDto> GetListaPaginadaOrdenadaFiltrada(int  registrosPorPagina,
             int paginaActual, Orden? orden = null, Brand? BrandFiltro = null,
-            Colour? ColourFiltro = null);
+            Colour? ColourFiltro = null, Expression<Func<Shoe, bool>>? rangoPrecio = null);
       
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorGenre();
         IEnumerable<IGrouping<int, Shoe>> GetShoesAgrupadosPorSport();

@@ -42,6 +42,9 @@
     <Compile Update="FrmBrands.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FrmRangoPrecioFiltro.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FrmStock.cs">
       <SubType>Form</SubType>
     </Compile>

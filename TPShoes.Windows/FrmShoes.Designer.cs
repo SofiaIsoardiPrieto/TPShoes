@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
             toolStrip1 = new ToolStrip();
@@ -45,6 +45,7 @@
             FiltrotoolStripButton = new ToolStripDropDownButton();
             brandToolStripMenuItem = new ToolStripMenuItem();
             colourToolStripMenuItem = new ToolStripMenuItem();
+            rangoDePrecioToolStripMenuItem = new ToolStripMenuItem();
             ActualizartoolStripButton = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             SizestoolStripButton = new ToolStripButton();
@@ -107,8 +108,8 @@
             splitContainer1.Panel2.Controls.Add(Anteriorbutton);
             splitContainer1.Panel2.Controls.Add(Siguientebutton);
             splitContainer1.Panel2.Controls.Add(Primerobutton);
-            splitContainer1.Size = new Size(665, 306);
-            splitContainer1.SplitterDistance = 249;
+            splitContainer1.Size = new Size(670, 300);
+            splitContainer1.SplitterDistance = 233;
             splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -125,8 +126,8 @@
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(ShoesdataGridView);
-            splitContainer2.Size = new Size(665, 249);
-            splitContainer2.SplitterDistance = 63;
+            splitContainer2.Size = new Size(670, 233);
+            splitContainer2.SplitterDistance = 57;
             splitContainer2.TabIndex = 0;
             // 
             // toolStrip1
@@ -134,7 +135,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { NuevotoolStripButton, EditartoolStripButton, BorrartoolStripButton, toolStripSeparator1, FiltrotoolStripButton, ActualizartoolStripButton, toolStripSeparator2, SizestoolStripButton, AddSizestoolStripButton, DeleteSizestoolStripButton, toolStripSeparator3, OrdenartoolStripButton, toolStripSeparator4, SalirtoolStripButton });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(665, 61);
+            toolStrip1.Size = new Size(670, 61);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -181,7 +182,7 @@
             // 
             // FiltrotoolStripButton
             // 
-            FiltrotoolStripButton.DropDownItems.AddRange(new ToolStripItem[] { brandToolStripMenuItem, colourToolStripMenuItem });
+            FiltrotoolStripButton.DropDownItems.AddRange(new ToolStripItem[] { brandToolStripMenuItem, colourToolStripMenuItem, rangoDePrecioToolStripMenuItem });
             FiltrotoolStripButton.Font = new Font("Candara", 11.25F);
             FiltrotoolStripButton.Image = Properties.Resources.filter_36px;
             FiltrotoolStripButton.ImageScaling = ToolStripItemImageScaling.None;
@@ -194,16 +195,23 @@
             // brandToolStripMenuItem
             // 
             brandToolStripMenuItem.Name = "brandToolStripMenuItem";
-            brandToolStripMenuItem.Size = new Size(116, 22);
+            brandToolStripMenuItem.Size = new Size(177, 22);
             brandToolStripMenuItem.Text = "Brand";
             brandToolStripMenuItem.Click += brandToolStripMenuItem_Click;
             // 
             // colourToolStripMenuItem
             // 
             colourToolStripMenuItem.Name = "colourToolStripMenuItem";
-            colourToolStripMenuItem.Size = new Size(116, 22);
+            colourToolStripMenuItem.Size = new Size(177, 22);
             colourToolStripMenuItem.Text = "Colour";
             colourToolStripMenuItem.Click += colourToolStripMenuItem_Click;
+            // 
+            // rangoDePrecioToolStripMenuItem
+            // 
+            rangoDePrecioToolStripMenuItem.Name = "rangoDePrecioToolStripMenuItem";
+            rangoDePrecioToolStripMenuItem.Size = new Size(177, 22);
+            rangoDePrecioToolStripMenuItem.Text = "Rango de Precio";
+            rangoDePrecioToolStripMenuItem.Click += rangoDePrecioToolStripMenuItem_Click;
             // 
             // ActualizartoolStripButton
             // 
@@ -332,89 +340,97 @@
             ShoesdataGridView.Location = new Point(0, 0);
             ShoesdataGridView.Name = "ShoesdataGridView";
             ShoesdataGridView.ReadOnly = true;
+            ShoesdataGridView.RowHeadersWidth = 45;
             ShoesdataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            ShoesdataGridView.Size = new Size(665, 182);
+            ShoesdataGridView.Size = new Size(670, 172);
             ShoesdataGridView.TabIndex = 0;
             // 
             // ColBrand
             // 
-            ColBrand.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle8.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
-            ColBrand.DefaultCellStyle = dataGridViewCellStyle8;
+            ColBrand.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle1.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            ColBrand.DefaultCellStyle = dataGridViewCellStyle1;
             ColBrand.HeaderText = "Brand";
             ColBrand.Name = "ColBrand";
             ColBrand.ReadOnly = true;
+            ColBrand.Width = 63;
             // 
             // ColColour
             // 
-            ColColour.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle9.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle9.SelectionForeColor = Color.Black;
-            ColColour.DefaultCellStyle = dataGridViewCellStyle9;
+            ColColour.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle2.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            ColColour.DefaultCellStyle = dataGridViewCellStyle2;
             ColColour.HeaderText = "Colour";
             ColColour.Name = "ColColour";
             ColColour.ReadOnly = true;
+            ColColour.Width = 68;
             // 
             // ColGenre
             // 
-            ColGenre.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle10.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle10.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle10.SelectionForeColor = Color.Black;
-            ColGenre.DefaultCellStyle = dataGridViewCellStyle10;
+            ColGenre.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle3.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
+            ColGenre.DefaultCellStyle = dataGridViewCellStyle3;
             ColGenre.HeaderText = "Genre";
             ColGenre.Name = "ColGenre";
             ColGenre.ReadOnly = true;
+            ColGenre.Width = 63;
             // 
             // ColSport
             // 
-            ColSport.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle11.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle11.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle11.SelectionForeColor = Color.Black;
-            ColSport.DefaultCellStyle = dataGridViewCellStyle11;
+            ColSport.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle4.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
+            ColSport.DefaultCellStyle = dataGridViewCellStyle4;
             ColSport.HeaderText = "Sport";
             ColSport.Name = "ColSport";
             ColSport.ReadOnly = true;
+            ColSport.Width = 60;
             // 
             // ColModel
             // 
-            ColModel.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle12.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle12.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle12.SelectionForeColor = Color.Black;
-            ColModel.DefaultCellStyle = dataGridViewCellStyle12;
+            ColModel.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle5.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
+            ColModel.DefaultCellStyle = dataGridViewCellStyle5;
             ColModel.HeaderText = "Model";
             ColModel.Name = "ColModel";
             ColModel.ReadOnly = true;
+            ColModel.Width = 66;
             // 
             // ColPrice
             // 
-            ColPrice.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle13.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle13.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle13.SelectionForeColor = Color.Black;
-            ColPrice.DefaultCellStyle = dataGridViewCellStyle13;
+            ColPrice.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle6.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle6.SelectionForeColor = Color.Black;
+            ColPrice.DefaultCellStyle = dataGridViewCellStyle6;
             ColPrice.HeaderText = "Price";
             ColPrice.Name = "ColPrice";
             ColPrice.ReadOnly = true;
+            ColPrice.Width = 58;
             // 
             // ColDescripcion
             // 
             ColDescripcion.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle14.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle14.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle14.SelectionForeColor = Color.Black;
-            ColDescripcion.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle7.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle7.SelectionForeColor = Color.Black;
+            ColDescripcion.DefaultCellStyle = dataGridViewCellStyle7;
             ColDescripcion.HeaderText = "Descripcion";
             ColDescripcion.Name = "ColDescripcion";
             ColDescripcion.ReadOnly = true;
             // 
             // PaginasTotalestextBox
             // 
+            PaginasTotalestextBox.Enabled = false;
             PaginasTotalestextBox.Font = new Font("Candara", 11.25F);
             PaginasTotalestextBox.Location = new Point(184, 14);
             PaginasTotalestextBox.Name = "PaginasTotalestextBox";
@@ -506,7 +522,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(665, 306);
+            ClientSize = new Size(670, 300);
             Controls.Add(splitContainer1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "FrmShoes";
@@ -563,6 +579,7 @@
         private ToolStripMenuItem mayorPrecioToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton SalirtoolStripButton;
+        private ToolStripMenuItem rangoDePrecioToolStripMenuItem;
         private DataGridViewTextBoxColumn ColBrand;
         private DataGridViewTextBoxColumn ColColour;
         private DataGridViewTextBoxColumn ColGenre;
