@@ -265,7 +265,6 @@ namespace TPShoes.Datos.Repositorios
                 .Include(p => p.Genre)   // Propiedad de navegación
                 .Include(p => p.Sport)   // Propiedad de navegación
                 .Include(p => p.Colour)  // Propiedad de navegación
-                .AsNoTracking()//Era necesario!!
                 .FirstOrDefault(p => p.ShoeId == shoeId);
 
             return shoe;

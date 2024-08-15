@@ -78,7 +78,7 @@ namespace TPShoes.Datos.Repositorios
             try
             {
                 // Utilizando Entity Framework para obtener todos los registros de la tabla Sizes
-                return _context.Sizes.ToList();
+                return _context.Sizes.AsNoTracking().ToList();
             }
             catch (Exception ex)
             {
@@ -128,40 +128,6 @@ namespace TPShoes.Datos.Repositorios
 
             return sizesNoAsociados;
         }
-
-        //public List<Size> GetLista()
-        //{
-        //    return _context.Sizes.ToList();
-        //}
-
-        //public List<Size> GetSizesPaginadosOrdenados(int page, int pageSize, Orden? orden = null)
-        //{
-        //    IQueryable<Size> query = _context.Sizes;
-
-        //    //ORDEN
-        //    if (orden != null)
-        //    {
-        //        switch (orden)
-        //        {
-        //            case Orden.AZ:
-        //                query = query.OrderBy(s => s.SizeNumber);
-        //                break;
-        //            case Orden.ZA:
-        //                query = query.OrderByDescending(s => s.SizeNumber);
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-
-        //    //PAGINADO
-        //    List<Size> listaPaginada = query.AsNoTracking()
-        //        .Skip(page * pageSize) //Saltea estos registros
-        //    .Take(pageSize) //Muestra estos
-        //    .ToList();
-
-        //    return listaPaginada;
-        //}
 
         public List<Entidades.Clases.Size> GetSizesPorId(int shoeId, bool incluyeShoe = false)
         {

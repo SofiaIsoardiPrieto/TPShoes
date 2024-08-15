@@ -13,7 +13,7 @@ namespace TPShoes.Datos.Repositorios
         {
             _context = context;
         }
-        public void Agregar(Entidades.Clases.Size sizes)
+        public void Agregar(Size sizes)
         {
 
             _context.Add(sizes);
@@ -96,6 +96,7 @@ namespace TPShoes.Datos.Repositorios
                     .Where(ss => ss.SizeId == sizeIdSeleccionado)
                     .Select(ss => ss.Shoe)
                     .Distinct() // Eliminar duplicados si un Shoe tiene más de un Size relacionado
+                    .AsNoTracking()
                     .ToList();
 
                 // Mapear a ShoeDto
@@ -185,7 +186,7 @@ namespace TPShoes.Datos.Repositorios
             }
         }
 
-        public List<Entidades.Clases.Size> GetSizesPorId(int shoeId, bool incluyeShoe = false)
+        public List<Size> GetSizesPorId(int shoeId, bool incluyeShoe = false)
         {
             IQueryable<Entidades.Clases.Size> query = _context.Sizes;
 

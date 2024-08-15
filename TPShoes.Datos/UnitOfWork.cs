@@ -42,6 +42,7 @@ namespace TPShoes.Datos
         }
         public void Rollback()
         {
+            DetachAllEntities(); // Desvincular también en caso de rollback
             _transaction?.Rollback();
         }
 

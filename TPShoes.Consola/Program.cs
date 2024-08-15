@@ -230,90 +230,988 @@ class Program
         }
 
     }
-
     /// <summary>
-    /// Muestra una tabla con los Sizes de un Shoe seleccionado y su stock.
+    /// Muestra lista de Brands completa
     /// </summary>
-    private static void ListarSizeShoes()//28 checked
+    private static void ListaDeBrands()//1
+    {
+        Console.Clear();
+        if (brandsServicio is null)
+        {
+            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Listado de Brands");
+
+        var listaBrands = brandsServicio.GetLista();
+
+        if (listaBrands is null)
+        {
+            Console.WriteLine("No hay lista de Brands disponible.");
+            return;
+        }
+
+        ConsoleExtensions.MostrarTabla(listaBrands, "BrandId", "BrandName");
+    }
+    /// <summary>
+    /// Agregar un nuevo Brand
+    /// </summary>
+    private static void InsertarUnBrand()//2
+    {
+        Console.Clear();
+        if (brandsServicio is null)
+        {
+            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+
+        Console.WriteLine("Nuevo Brand");
+        var brandNombre = ConsoleExtensions.ReadString("Ingrese un nuevo brand:");
+
+        var brand = new Brand { BrandName = brandNombre };
+
+
+        if (brandsServicio.Existe(brand))
+        {
+            Console.WriteLine("Brand existente!!!");
+        }
+        else
+        {
+            brandsServicio.Guardar(brand);
+            Console.WriteLine("Brand agregado!!!");
+        }
+    }
+    /// <summary>
+    /// Borrar un brand por Id seleccionado de la lista
+    /// </summary>
+    private static void BorrarUnBrand()//3
+    {
+        Console.Clear();
+        if (brandsServicio is null)
+        {
+            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de Brand a borrar");
+
+        ListaDeBrands();
+
+        var brandId = ConsoleExtensions.ReadInt("Ingrese el Id del brand: ");
+        try
+        {
+            var brand = brandsServicio?.GetBrandPorId(brandId);
+
+            if (brand is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+
+                if (brandsServicio.EstaRelacionado(brand))
+                {
+                    Console.WriteLine("Brand relacionado!!! Baja denegada");
+                }
+                else
+                {
+                    brandsServicio.Borrar(brand);
+                    Console.WriteLine("Registro borrado!!!");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message); ;
+        }
+    }
+    /// <summary>
+    /// Edita un Brand por Id seleccionado de una lista
+    /// </summary>
+    private static void EditarUnBrand()//4
+    {
+        Console.Clear();
+        if (brandsServicio is null)
+        {
+            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de brand a editar");
+
+        ListaDeBrands();
+
+        var brandId = ConsoleExtensions.ReadInt("Ingrese Id del brand: ");
+
+        try
+        {
+            Brand brand = brandsServicio?.GetBrandPorId(brandId);
+
+            if (brand is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+                Console.WriteLine($"Brand: {brand.BrandName}");
+
+                brand.BrandName = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de Brand: ");
+
+                if (brandsServicio.Existe(brand))
+                {
+                    Console.WriteLine("Registro duplicado!!!");
+                }
+                else
+                {
+                    brandsServicio.Guardar(brand);
+                    Console.WriteLine("Registro editado!!!");
+
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message); ;
+        }
+    }
+    /// <summary>
+    /// Muestra lista de Colours completa
+    /// </summary>
+    private static void ListaDeColours()//5
+    {
+        Console.Clear();
+        if (coloursServicio is null)
+        {
+            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Listado de Colours");
+
+        var listaColours = coloursServicio.GetLista();
+
+        if (listaColours is null)
+        {
+            Console.WriteLine("No hay lista de Colour disponible.");
+            return;
+        }
+
+        ConsoleExtensions.MostrarTabla(listaColours, "ColourId", "ColourName");
+    }
+    /// <summary>
+    /// Agregar un nuevo Colour
+    /// </summary>
+    private static void InsertarUnColour()//6
+    {
+        Console.Clear();
+        if (coloursServicio is null)
+        {
+            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Nuevo Colour");
+
+        var colourNombre = ConsoleExtensions.ReadString("Ingrese un nuevo colour:");
+
+        Colour colour = new Colour { ColourName = colourNombre };
+
+
+        if (coloursServicio.Existe(colour))
+        {
+            Console.WriteLine("Colour existente!!!");
+        }
+        else
+        {
+            coloursServicio.Guardar(colour);
+            Console.WriteLine("Colour agregado!!!");
+        }
+
+    }
+    /// <summary>
+    /// Borrar un Colour por Id seleccionado de la lista
+    /// </summary>
+    private static void BorrarUnColour()//7
+    {
+        Console.Clear();
+        if (coloursServicio is null)
+        {
+            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de colour a borrar");
+
+        ListaDeColours();
+
+        var colourId = ConsoleExtensions.ReadInt("Ingrese el Id del colour: ");
+        try
+        {
+            var colour = coloursServicio?.GetColourPorId(colourId);
+
+            if (colour is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+                if (coloursServicio.EstaRelacionado(colour))
+                {
+                    Console.WriteLine("Colour relacionado!!! Baja denegada");
+                }
+                else
+                {
+                    coloursServicio.Borrar(colour);
+                    Console.WriteLine("Registro borrado!!!");
+
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message); ;
+        }
+    }
+    /// <summary>
+    /// Edita un Colour por Id seleccionado de una lista
+    /// </summary>
+    private static void EditarUnColour()//8
+    {
+        Console.Clear();
+        if (coloursServicio is null)
+        {
+            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de colour a editar");
+
+        ListaDeColours();
+
+        var colourId = ConsoleExtensions.ReadInt("Ingrese Id del colour: ");
+
+        try
+        {
+            var colour = coloursServicio?.GetColourPorId(colourId);
+
+            if (colour is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+                Console.WriteLine($"Brand: {colour.ColourName}");
+
+                colour.ColourName = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de colour: ");
+
+                if (coloursServicio.Existe(colour))
+                {
+                    Console.WriteLine("Registro duplicado!!!");
+                }
+                else
+                {
+                    coloursServicio.Guardar(colour);
+                    Console.WriteLine("Registro editado!!!");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message); ;
+        }
+        Thread.Sleep(5000);
+    }
+    /// <summary>
+    /// Muestra lista de Genre completa
+    /// </summary>
+    private static void ListaDeGenres()//9
+    {
+
+        Console.Clear();
+        if (genresServicio is null)
+        {
+            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Listado de Genres");
+
+        List<Genre> listaGenre = genresServicio?.GetLista();
+
+        if (listaGenre is null)
+        {
+            Console.WriteLine("No hay lista de Genres disponible.");
+            return;
+        }
+
+        ConsoleExtensions.MostrarTabla(listaGenre, "GenreId", "GenreName");
+    }
+    /// <summary>
+    /// Agregar un nuevo Genre
+    /// </summary>
+    private static void InsertarUnGenre()//10
+    {
+
+        Console.Clear();
+        if (genresServicio is null)
+        {
+            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Nuevo Genre");
+
+        var genreNombre = ConsoleExtensions.ReadString("Ingrese un nuevo genre:");
+
+        var genre = new Genre { GenreName = genreNombre };
+
+        if (genresServicio is null)
+        {
+            Console.WriteLine("Servicio no disponible, que hice mal Marta!? Que hice mal!!???'");
+        }
+        else
+        {
+            if (genresServicio.Existe(genre))
+            {
+                Console.WriteLine("Genre existente!!!");
+            }
+            else
+            {
+                genresServicio.Guardar(genre);
+                Console.WriteLine("Genre agregado!!!");
+            }
+        }
+    }
+    /// <summary>
+    /// Borrar un Genre por Id seleccionado de la lista
+    /// </summary>
+    private static void BorrarUnGenre()//11
+    {
+        Console.Clear();
+        if (genresServicio is null)
+        {
+            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de genre a borrar");
+
+        ListaDeGenres();
+
+        var genreId = ConsoleExtensions.ReadInt("Ingrese el Id del genre: ");
+        try
+        {
+            var genre = genresServicio?.GetGenrePorId(genreId);
+
+            if (genre is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+                if (genresServicio.EstaRelacionado(genre))
+                {
+                    Console.WriteLine("Genre relacionado!!! Baja denegada");
+                }
+                else
+                {
+                    genresServicio.Borrar(genre);
+                    Console.WriteLine("Registro borrado!!!");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message); ;
+        }
+    }
+    /// <summary>
+    /// Edita un Genre por Id seleccionado de una lista
+    /// </summary>
+    private static void EditarUnGenre()//12
+    {
+
+        Console.Clear();
+        if (genresServicio is null)
+        {
+            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de genre a editar");
+
+        ListaDeGenres();
+
+        var genreId = ConsoleExtensions.ReadInt("Ingrese Id del genre: ");
+
+        try
+        {
+            var genre = genresServicio?.GetGenrePorId(genreId);
+
+            if (genre is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+                Console.WriteLine($"Genre: {genre.GenreName}");
+                genre.GenreName = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de genre:");
+
+                if (genresServicio.Existe(genre))
+                {
+                    Console.WriteLine("Registro duplicado!!!");
+                }
+                else
+                {
+                    genresServicio.Guardar(genre);
+                    Console.WriteLine("Registro editado!!!");
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message); ;
+        }
+    }
+    /// <summary>
+    /// Muestra lista de Sports completa
+    /// </summary>
+    private static void ListaDeSports()//13
+    {
+
+        Console.Clear();
+        if (sportsServicio is null)
+        {
+            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Listado de Sport");
+
+        List<Sport> listaSport = sportsServicio?.GetLista();
+
+        if (listaSport is null)
+        {
+            Console.WriteLine("No hay lista de Sport disponible.");
+            return;
+        }
+
+        ConsoleExtensions.MostrarTabla(listaSport, "SportId", "SportName");
+    }
+    /// <summary>
+    /// Agregar un nuevo Sport
+    /// </summary>
+    private static void InsertarUnSport()//14
+    {
+
+        Console.Clear();
+        if (sportsServicio is null)
+        {
+            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Nuevo Sport");
+        var sportNombre = ConsoleExtensions.ReadString("Ingrese un nuevo sport:");
+        var sport = new Sport { SportName = sportNombre };
+
+        if (sportsServicio is null)
+        {
+            Console.WriteLine("Servicio no disponible, que hice mal Marta!? Que hice mal!!???'");
+        }
+        else
+        {
+            if (sportsServicio.Existe(sport))
+            {
+                Console.WriteLine("Sport existente!!!");
+            }
+            else
+            {
+                sportsServicio.Guardar(sport);
+                Console.WriteLine("Sport agregado!!!");
+            }
+        }
+        Thread.Sleep(2000);
+
+    }
+    /// <summary>
+    /// Borrar un Sport por Id seleccionado de la lista
+    /// </summary>
+    private static void BorrarUnSport()//15
+    {
+        Console.Clear();
+        if (sportsServicio is null)
+        {
+            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de sport a borrar");
+
+        ListaDeSports();
+
+        var sportId = ConsoleExtensions.ReadInt("Ingrese el Id del sport: ");
+        try
+        {
+            var sport = sportsServicio?.GetSportPorId(sportId);
+
+            if (sport is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+
+                if (sportsServicio.EstaRelacionado(sport))
+                {
+                    Console.WriteLine("Genre relacionado!!! Baja denegada");
+                }
+                else
+                {
+                    sportsServicio.Borrar(sport);
+                    Console.WriteLine("Registro borrado!!!");
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+    /// <summary>
+    /// Edita un Sport por Id seleccionado de una lista
+    /// </summary>
+    private static void EditarUnSport()//16
+    {
+
+        Console.Clear();
+        if (sportsServicio is null)
+        {
+            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Ingreso de sport a editar");
+
+        ListaDeSports();
+
+
+        var sportId = ConsoleExtensions.ReadInt("Ingrese Id del sport: ");
+
+        try
+        {
+            var sport = sportsServicio?.GetSportPorId(sportId);
+
+            if (sport is null)
+            {
+                Console.WriteLine("Registro inexistente!!!");
+            }
+            else
+            {
+                Console.WriteLine($"Sport: {sport.SportName}");
+
+                var nuevoNombre = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de sport:");
+
+                sport.SportName = nuevoNombre;
+
+                if (sportsServicio.Existe(sport))
+                {
+                    Console.WriteLine("Registro duplicado!!!");
+                }
+                else
+                {
+                    sportsServicio.Guardar(sport);
+                    Console.WriteLine("Registro editado!!!");
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message); ;
+        }
+        Thread.Sleep(5000);
+
+    }
+    ///   /// <summary>
+    /// Muestra lista los ShoesDto paginados.
+    /// /// </summary>
+    private static void ListaDeShoesDtoPaginado()//17 checked
+    {
+        Console.Clear();
+
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio Shoe no responde");
+            return;
+        }
+        registro = shoesServicio.GetCantidad();
+        paginas = CalcularCantidadPaginas(registro, registrosPorPagina);
+
+        for (int page = 0; page < paginas; page++)
+        {
+            Console.Clear();
+            Console.WriteLine("Listado de Shoes");
+            Console.WriteLine($"Página: {page + 1}");
+            List<ShoeDto>? listaPaginada = shoesServicio?
+                .GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, page + 1, null, null, null);
+            ConsoleExtensions.MostrarTabla(listaPaginada, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
+            ConsoleExtensions.EsperaEnter();
+        }
+    }
+    /// <summary>
+    /// Muestra los Shoes que tiene precios entre un rango seleccionados y ordenados por Marca.
+    /// /// </summary>
+    private static void ListaDeShoesPorMarcaEntreRangoPrecios()//18 checked
     {
         Console.Clear();
         if (shoesServicio is null)
         {
-            Console.WriteLine("Servicio de Shoe no disponible.");
+            Console.WriteLine("Servicio de Shoes no disponible.");
             return;
         }
-        if (sizeShoesServicio is null)
+        //
+        // CUIDADO: NO USAR LA TABLA DE "ConsoleExtensions"
+        //
+        decimal rangoMin = ConsoleExtensions.ReadDecimal("Ingresar menor precio: ");
+        decimal rangoMax = ConsoleExtensions.ReadDecimal("Ingresar mayor precio: ");
+        var agrupaciones = shoesServicio.GetShoesPorMarcaEntreRangoPrecios(rangoMin, rangoMax);
+        if (agrupaciones is null)
         {
-            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            Console.WriteLine("No hay lista de Shoes disponible.");
+            return;
+        }
+        foreach (var grupo in agrupaciones)
+        {
+            Console.Clear();
+            Console.WriteLine($"Brand: {grupo.Key} {brandsServicio?.GetBrandPorId(grupo.Key).BrandName}");
+            foreach (var shoe in grupo)
+            {
+                Console.WriteLine($"  - Shoe Id: {shoe.ShoeId} Modelo: {shoe.Model}, Brand: {shoe.Brand.BrandName}");
+            }
+
+            ConsoleExtensions.EsperaEnter();
+
+        }
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+    }
+    /// <summary>
+    /// Muestra los Shoes asociados a cada Genre que hay en Shoe.
+    /// /// </summary>
+    private static void ListaDeShoesPorGenre()//19 checked
+    {
+        Console.Clear();
+
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio de Shoes no disponible.");
             return;
         }
 
-        //Shoe
+        //
+        // CUIDADO: NO USAR LA TABLA DE "ConsoleExtensions"
+        //
+        var agrupaciones = shoesServicio.GetShoesAgrupadosPorGenre();
+        if (agrupaciones is null)
+        {
+            Console.WriteLine("No hay lista de Shoes disponible.");
+            return;
+        }
+        foreach (var grupo in agrupaciones)
+        {
+            Console.Clear();
+            Console.WriteLine($"Genre: {grupo.Key} {genresServicio?.GetGenrePorId(grupo.Key).GenreName}");
+            foreach (var shoe in grupo)
+            {
+                Console.WriteLine($"  - Shoe Id: {shoe.ShoeId} Modelo: {shoe.Model}, Genre: {shoe.Genre.GenreName}");
+            }
+
+            ConsoleExtensions.EsperaEnter();
+
+        }
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+    }
+    /// <summary>
+    /// Muestra los Shoes asociados a cada Sport que hay en Shoe.
+    /// </summary>
+    private static void ListaDeShoesPorSport()//20 checked
+    {
+        Console.Clear();
+
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio de Shoes no disponible.");
+            return;
+        }
+        Console.WriteLine("Listado de Shoes");
+        var agrupaciones = shoesServicio.GetShoesAgrupadosPorSport();
+        if (agrupaciones is null)
+        {
+            Console.WriteLine("No hay lista de Shoes disponible.");
+            return;
+        }
+        foreach (var grupo in agrupaciones)
+        {
+            Console.Clear();
+            Console.WriteLine($"Sport: {grupo.Key} {sportsServicio?.GetSportPorId(grupo.Key).SportName}");
+            foreach (var shoe in grupo)
+            {
+                Console.WriteLine($"  - Shoe Id: {shoe.ShoeId} Modelo: {shoe.Model}, Sport: {shoe.Sport.SportName}");
+            }
+
+            ConsoleExtensions.EsperaEnter();
+
+        }
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+    }
+    /// <summary>
+    /// Se ingresa el Id de un Brand y un Color para filtrar la lista de Shoes con esos Id.
+    /// </summary>
+    private static void ListaDeShoesPorColourYBrand()//21 checked
+    {
+        Console.Clear();
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio de Shoes no disponible.");
+            return;
+        }
+        ListaDeBrands();
+
+        int brandId = ConsoleExtensions.ReadInt("Ingrese el ID del Brand: ");
+
+        ListaDeColours();
+
+
+        int colourId = ConsoleExtensions.ReadInt("Ingrese el ID del Colour: ");
+
+        // Obtener los Shoes filtrados
+        var shoesFiltrados = shoesServicio.GetShoesFiltradosPorBrandYColour(brandId, colourId);
+        if (shoesFiltrados is null)
+        {
+            Console.WriteLine("No hay lista de Shoes disponible con ese filtro.");
+            return;
+        }
+        //
+        // CUIDADO: NO USAR LA TABLA DE "ConsoleExtensions"
+        //
+
+        if (shoesFiltrados.Any())
+        {
+            var tablaShoe = new ConsoleTable("ID", "Brand", "Genre", "Colour", "Sport", "Price");
+
+            foreach (var item in shoesFiltrados)
+            {
+                tablaShoe.AddRow(item.ShoeId, item.Brand, item.Genre, item.Colour, item.Sport, item.Price);
+            }
+
+            tablaShoe.Options.EnableCount = false;
+            tablaShoe.Write();
+        }
+        else
+        {
+            Console.WriteLine("No se encontraron Shoes con los criterios seleccionados.");
+        }
+
+        Console.WriteLine("Fin del listado");
+        ConsoleExtensions.EsperaEnter();
+    }
+    /// <summary>
+    /// Agregar un nuevo Shoe
+    /// </summary>
+    private static void InsertarUnShoe()//22 checked
+    {
+        Console.Clear();
+        if (shoesServicio == null)
+        {
+            Console.WriteLine("Servicio no disponible, que hice mal Marta!? Que hice mal!!???'");
+            return;
+        }
+        Console.WriteLine("Nuevo Shoe");
+
+        var brandSeleccionado = SeleccionarUnBrand();
+        var genreSeleccionado = SeleccionarUnGenre();
+        var sportSeleccionado = SeleccionarUnSport();
+        var colourSeleccionado = SeleccionarUnColour();
+
+        var descripcionSeleccionada = ConsoleExtensions.ReadString("Ingrese descripción del Shoe:");
+        var modelSeleccionado = ConsoleExtensions.ReadString("Ingrese el modelo del Shoe:");
+        decimal priceSeleccionado = ConsoleExtensions.ReadDecimal("Ingrese el precio del Shoe:");
+        //--------------------------------------------------//
+
+        var shoe = new Shoe
+        {
+            ShoeId = 0,
+            Brand = brandSeleccionado,
+            BrandId = brandSeleccionado.BrandId,
+            Genre = genreSeleccionado,
+            GenreId = genreSeleccionado.GenreId,
+            Sport = sportSeleccionado,
+            SportId = sportSeleccionado.SportId,
+            Colour = colourSeleccionado,
+            ColourId = colourSeleccionado.ColourId,
+            Description = descripcionSeleccionada,
+            Model = modelSeleccionado,
+            Price = priceSeleccionado
+        };
+
+        if (shoesServicio.Existe(shoe))
+        {
+            Console.WriteLine("Shoe existente!!!");
+        }
+        else
+        {
+            shoesServicio.Guardar(shoe);
+            Console.WriteLine("Shoe agregado!!!");
+        }
+    }
+    /// <summary>
+    /// Borra un Shoe seleccionado por Id
+    /// </summary>
+    private static void BorrarUnShoe()//23
+    {
+        Console.Clear();
+
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio caido");
+            return;
+        }
+        var ListaShoesDto = shoesServicio.GetListaDto();
+        if (ListaShoesDto is null)
+        {
+            Console.WriteLine("Lista Shoe no disponible");
+            return;
+        }
+        ConsoleExtensions.MostrarTabla(ListaShoesDto, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
+        Console.WriteLine("Ingrese Shoe a borrar");
+        var shoeId = ConsoleExtensions.ReadInt("Ingrese un ID de Shoe: ");
+
+        try
+        {
+            var shoe = shoesServicio?.GetShoePorId(shoeId);
+            if (shoe is null)
+            {
+                Console.WriteLine("Shoe inexistente!!!");
+            }
+            else
+            {
+                shoesServicio.Borrar(shoe.ShoeId);
+                Console.WriteLine("Registro borrado!!!");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message); ;
+        }
+    }
+    /// <summary>
+    /// Edita el Shoe seleccionado por Id
+    /// </summary>
+    private static void EditarUnShoe()//24 
+    {
+        Console.Clear();
+
         ListaDeShoesDtoPaginado();
 
         int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe: ");
         Shoe shoe = shoesServicio.GetShoePorId(shoeIdSeleccionado);
         ConsoleExtensions.EsperaEnter();
 
-        //SizeShoe
-        ListaDeSizeShoe(shoeIdSeleccionado);
-
-
-    }
-    /// <summary>
-    /// Obtiene la lista de la tabla SizeShoes según el Id se Shoe elegido
-    /// </summary>
-    /// <param name="shoeIdSeleccionado"></param> el Shoe elegido
-    private static void ListaDeSizeShoe(int shoeIdSeleccionado)//interno
-    {
-        Console.Clear();
-        if (sizeShoesServicio is null)
+        if (shoe is null)
         {
-            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Listado de SizeShoes");
-
-        var listaSizeShoe = sizeShoesServicio.GetSizeShoeDtoPorId(shoeIdSeleccionado);
-
-        if (listaSizeShoe is null)
-        {
-            Console.WriteLine("No hay lista de SizeShoe disponible.");
+            Console.WriteLine("Shoe no encontrada.");
             return;
         }
 
-        ConsoleExtensions.MostrarTabla(listaSizeShoe, "SizeShoeId", "Size", "Stok");
-    }
+        Console.Clear();
 
+        //Mostrar los atributos a editar del Shoe seleccionado
+        Console.WriteLine("Shoe a editar:");
+        Console.WriteLine($"ShoeId: {shoe.ShoeId}");
+        Console.WriteLine($"Brand: {shoe.Brand.BrandName}");
+        Console.WriteLine($"Genre: {shoe.Genre.GenreName}");
+        Console.WriteLine($"Colour: {shoe.Colour.ColourName}");
+        Console.WriteLine($"Sport: {shoe.Sport.SportName}");
+        Console.WriteLine($"Model: {shoe.Model}");
+        Console.WriteLine($"Precio: {shoe.Price}");
+        Console.WriteLine($"Descripción: {shoe.Description}");
+
+        // Editar los detalles del shoe
+        Console.WriteLine("Editar:");
+        shoe.Brand.BrandName = ConsoleExtensions.ReadString($"Ingrese nombre Brand: ");
+        shoe.Genre.GenreName = ConsoleExtensions.ReadString("Ingrese nombre Genre: ");
+        shoe.Colour.ColourName = ConsoleExtensions.ReadString("Ingrese nombre Colour: ");
+        shoe.Sport.SportName = ConsoleExtensions.ReadString("Ingrese nombre Sport: ");
+        shoe.Model = ConsoleExtensions.ReadString("Ingrese nombre Model: ");
+        shoe.Price = ConsoleExtensions.ReadDecimal("Ingrese Precio: ");
+        shoe.Description = ConsoleExtensions.ReadString("Ingrese Descripcion: ");
+
+        if (!shoesServicio.Existe(shoe))
+        {
+            shoesServicio.Editar(shoe);//probar
+            Console.WriteLine("Shoe editado exitosamente!");
+        }
+        else
+        {
+            Console.WriteLine("Shoe ya existe");
+            return;
+        }
+    }
     /// <summary>
-    /// Muestra los Shoes que hay segun un Size
+    /// Agregar en la tabla SizeShoes una nueva relacion entre un Shoe y un Size.
     /// </summary>
-    private static void ListarShoesSegunSize()//27 - checked
+    private static void AsignarUnSizeAUnShoe()//25 checked
     {
         Console.Clear();
-        Console.WriteLine("Listado de Size:");
+        Console.WriteLine("Listado de Shoes:");
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio de Shoe no disponible.");
+            return;
+        }
         if (sizesServicio is null)
         {
             Console.WriteLine("Servicio de Size no disponible.");
             return;
         }
-        if (sizeShoesServicio is null)
+        //Shoes
+
+        List<ShoeDto> ListaShoesDto = shoesServicio.GetListaDto();
+
+        if (ListaShoesDto is null)
         {
-            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            Console.WriteLine("No hay lista de Shoes disponible.");
             return;
         }
+        ConsoleExtensions.MostrarTabla(ListaShoesDto, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
 
-        ListaDeShoesDtoPaginado();
+        int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe: ");
+        Shoe shoe = shoesServicio.GetShoePorId(shoeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
 
-        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size a filtrar: ");
-
-        List<ShoeDto> shoeList = sizeShoesServicio.GetListaShoeDtoPorSize(sizeIdSeleccionado);
-        if (shoeList is null)
+        //Size
+        var ListaSizes = sizesServicio.GetLista();
+        if (ListaSizes is null)
         {
             Console.WriteLine("No hay lista de Sizes disponible.");
             return;
         }
-        ConsoleExtensions.MostrarTabla(shoeList, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
+
+        ConsoleExtensions.MostrarTabla(ListaSizes, "SizeId", "SizeNumber");
+
+        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size para agregar al Shoe: ");
+        Size size = sizesServicio.GetSizePorId(sizeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
+
+        if (shoesServicio.ExisteRelacion(shoe, size))
+        {
+            Console.WriteLine("Relación existente");
+            return;
+        }
+        else
+        {
+            shoesServicio.AsignarSizeAShoe(shoe, size);
+            Console.WriteLine("Relación agregada");
+        }
+        ConsoleExtensions.EsperaEnter();
     }
     /// <summary>
     /// Permite cambiar el stock de shoes por size, stock=0 por default cuando se crea un Shoe.
@@ -375,7 +1273,93 @@ class Program
             Console.WriteLine("Stock agregado exitosamente!!!");
         }
     }
+    /// <summary>
+    /// Muestra los Shoes que hay segun un Size
+    /// </summary>
+    private static void ListarShoesSegunSize()//27 - checked
+    {
+        Console.Clear();
+        if (sizesServicio is null)
+        {
+            Console.WriteLine("Servicio de Size no disponible.");
+            return;
+        }
+        if (sizeShoesServicio is null)
+        {
+            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            return;
+        }
 
+        ListaDeSize();
+
+        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size a filtrar: ");
+        //
+        // no poner el otro metodo de listaShoe
+        //
+        List<ShoeDto> shoeList = sizeShoesServicio.GetListaShoeDtoPorSize(sizeIdSeleccionado);
+        if (shoeList is null)
+        {
+            Console.WriteLine("No hay lista de Sizes disponible.");
+            return;
+        }
+        ConsoleExtensions.MostrarTabla(shoeList, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
+    }
+    /// <summary>
+    /// Muestra una tabla con los Sizes de un Shoe seleccionado y su stock.
+    /// </summary>
+    private static void ListarSizeShoes()//28 checked
+    {
+        Console.Clear();
+        if (shoesServicio is null)
+        {
+            Console.WriteLine("Servicio de Shoe no disponible.");
+            return;
+        }
+        if (sizeShoesServicio is null)
+        {
+            Console.WriteLine("Servicio de SizeShoe no disponible.");
+            return;
+        }
+
+        //Shoe
+        ListaDeShoesDtoPaginado();
+
+        int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe: ");
+        Shoe shoe = shoesServicio.GetShoePorId(shoeIdSeleccionado);
+        ConsoleExtensions.EsperaEnter();
+
+        //SizeShoe
+        ListaDeSizeShoe(shoeIdSeleccionado);
+
+
+    }
+    /// <summary>
+    /// Obtiene la lista de la tabla SizeShoes según el Id se Shoe elegido
+    /// </summary>
+    /// <param name="shoeIdSeleccionado"></param> el Shoe elegido
+    private static void ListaDeSizeShoe(int shoeIdSeleccionado)//interno
+    {
+        Console.Clear();
+        if (sizeShoesServicio is null)
+        {
+            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
+            return;
+        }
+        Console.WriteLine("Listado de SizeShoes");
+
+        var listaSizeShoe = sizeShoesServicio.GetSizeShoeDtoPorId(shoeIdSeleccionado);
+
+        if (listaSizeShoe is null)
+        {
+            Console.WriteLine("No hay lista de SizeShoe disponible.");
+            return;
+        }
+
+        ConsoleExtensions.MostrarTabla(listaSizeShoe, "SizeShoeId", "Size", "Stok");
+    }
+    /// <summary>
+    /// Lista todos los Sizes que tengo en la base de datos
+    /// </summary>
     private static void ListaDeSize()//interno
     {
         Console.Clear();
@@ -385,7 +1369,7 @@ class Program
             return;
         }
 
-        Console.WriteLine("Listado de Genres");
+        Console.WriteLine("Listado de Sizes");
 
         List<Size> listaSizes = sizesServicio?.GetLista();
 
@@ -397,257 +1381,16 @@ class Program
 
         ConsoleExtensions.MostrarTabla(listaSizes, "SizeId", "SizeNumber");
     }
-
-    /// <summary>
-    /// Agregar en la tabla SizeShoes una nueva relacion entre un Shoe y un Size.
-    /// </summary>
-    private static void AsignarUnSizeAUnShoe()//25 checked
-    {
-        Console.Clear();
-        Console.WriteLine("Listado de Shoes:");
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio de Shoe no disponible.");
-            return;
-        }
-        if (sizesServicio is null)
-        {
-            Console.WriteLine("Servicio de Size no disponible.");
-            return;
-        }
-        //Shoes
-
-        List<ShoeDto> ListaShoesDto = shoesServicio.GetListaDto();
-
-        if (ListaShoesDto is null)
-        {
-            Console.WriteLine("No hay lista de Shoes disponible.");
-            return;
-        }
-        ConsoleExtensions.MostrarTabla(ListaShoesDto, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
-
-        int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe: ");
-        Shoe shoe = shoesServicio.GetShoePorId(shoeIdSeleccionado);
-        ConsoleExtensions.EsperaEnter();
-
-        //Size
-        var ListaSizes = sizesServicio.GetLista();
-        if (ListaSizes is null)
-        {
-            Console.WriteLine("No hay lista de Sizes disponible.");
-            return;
-        }
-
-        ConsoleExtensions.MostrarTabla(ListaSizes, "SizeId", "SizeNumber");
-
-        int sizeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Size para agregar al Shoe: ");
-        TPShoes.Entidades.Clases.Size size = sizesServicio.GetSizePorId(sizeIdSeleccionado);
-        ConsoleExtensions.EsperaEnter();
-
-        if (shoesServicio.ExisteRelacion(shoe, size))
-        {
-            Console.WriteLine("Relación existente");
-            return;
-        }
-        else
-        {
-            shoesServicio.AsignarSizeAShoe(shoe, size);
-            Console.WriteLine("Relación agregada");
-        }
-        ConsoleExtensions.EsperaEnter();
-    }
-    /// <summary>
-    /// Se ingresa el Id de un Brand y un Color para filtrar la lista de Shoes con esos Id.
-    /// </summary>
-    private static void ListaDeShoesPorColourYBrand()//21 checked
-    {
-        Console.Clear();
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio de Shoes no disponible.");
-            return;
-        }
-        ListaDeBrands();
-
-        int brandId = ConsoleExtensions.ReadInt("Ingrese el ID del Brand: ");
-
-        ListaDeColours();
-
-
-        int colourId = ConsoleExtensions.ReadInt("Ingrese el ID del Colour: ");
-
-        // Obtener los Shoes filtrados
-        var shoesFiltrados = shoesServicio.GetShoesFiltradosPorBrandYColour(brandId, colourId);
-        if (shoesFiltrados is null)
-        {
-            Console.WriteLine("No hay lista de Shoes disponible con ese filtro.");
-            return;
-        }
-        //
-        // CUIDADO: NO USAR LA TABLA DE "ConsoleExtensions"
-        //
-
-        if (shoesFiltrados.Any())
-        {
-            var tablaShoe = new ConsoleTable("ID", "Brand", "Genre", "Colour", "Sport", "Price");
-
-            foreach (var item in shoesFiltrados)
-            {
-                tablaShoe.AddRow(item.ShoeId, item.Brand, item.Genre, item.Colour, item.Sport, item.Price);
-            }
-
-            tablaShoe.Options.EnableCount = false;
-            tablaShoe.Write();
-        }
-        else
-        {
-            Console.WriteLine("No se encontraron Shoes con los criterios seleccionados.");
-        }
-
-        Console.WriteLine("Fin del listado");
-        ConsoleExtensions.EsperaEnter();
-    }
-    /// <summary>
-    /// Muestra los Shoes asociados a cada Sport que hay en Shoe.
-    /// </summary>
-    private static void ListaDeShoesPorSport()//20 checked
-    {
-        Console.Clear();
-
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio de Shoes no disponible.");
-            return;
-        }
-        Console.WriteLine("Listado de Shoes");
-        var agrupaciones = shoesServicio.GetShoesAgrupadosPorSport();
-        if (agrupaciones is null)
-        {
-            Console.WriteLine("No hay lista de Shoes disponible.");
-            return;
-        }
-        foreach (var grupo in agrupaciones)
-        {
-            Console.Clear();
-            Console.WriteLine($"Sport: {grupo.Key} {sportsServicio?.GetSportPorId(grupo.Key).SportName}");
-            foreach (var shoe in grupo)
-            {
-                Console.WriteLine($"  - Shoe Id: {shoe.ShoeId} Modelo: {shoe.Model}, Sport: {shoe.Sport.SportName}");
-            }
-
-            ConsoleExtensions.EsperaEnter();
-
-        }
-        Console.WriteLine("Fin del listado");
-        ConsoleExtensions.EsperaEnter();
-    }
-    /// <summary>
-    /// Muestra los Shoes asociados a cada Genre que hay en Shoe.
-    /// /// </summary>
-    private static void ListaDeShoesPorGenre()//19 checked
-    {
-        Console.Clear();
-
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio de Shoes no disponible.");
-            return;
-        }
-
-        //
-        // CUIDADO: NO USAR LA TABLA DE "ConsoleExtensions"
-        //
-        var agrupaciones = shoesServicio.GetShoesAgrupadosPorGenre();
-        if (agrupaciones is null)
-        {
-            Console.WriteLine("No hay lista de Shoes disponible.");
-            return;
-        }
-        foreach (var grupo in agrupaciones)
-        {
-            Console.Clear();
-            Console.WriteLine($"Genre: {grupo.Key} {genresServicio?.GetGenrePorId(grupo.Key).GenreName}");
-            foreach (var shoe in grupo)
-            {
-                Console.WriteLine($"  - Shoe Id: {shoe.ShoeId} Modelo: {shoe.Model}, Genre: {shoe.Genre.GenreName}");
-            }
-
-            ConsoleExtensions.EsperaEnter();
-
-        }
-        Console.WriteLine("Fin del listado");
-        ConsoleExtensions.EsperaEnter();
-    }
-    /// <summary>
-    /// Muestra los Shoes que tiene precios entre un rango seleccionados y ordenados por Marca.
-    /// /// </summary>
-    private static void ListaDeShoesPorMarcaEntreRangoPrecios()//18 checked
-    {
-        Console.Clear();
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio de Shoes no disponible.");
-            return;
-        }
-        //
-        // CUIDADO: NO USAR LA TABLA DE "ConsoleExtensions"
-        //
-        decimal rangoMin = ConsoleExtensions.ReadDecimal("Ingresar menor precio: ");
-        decimal rangoMax = ConsoleExtensions.ReadDecimal("Ingresar mayor precio: ");
-        var agrupaciones = shoesServicio.GetShoesPorMarcaEntreRangoPrecios(rangoMin, rangoMax);
-        if (agrupaciones is null)
-        {
-            Console.WriteLine("No hay lista de Shoes disponible.");
-            return;
-        }
-        foreach (var grupo in agrupaciones)
-        {
-            Console.Clear();
-            Console.WriteLine($"Brand: {grupo.Key} {brandsServicio?.GetBrandPorId(grupo.Key).BrandName}");
-            foreach (var shoe in grupo)
-            {
-                Console.WriteLine($"  - Shoe Id: {shoe.ShoeId} Modelo: {shoe.Model}, Brand: {shoe.Brand.BrandName}");
-            }
-
-            ConsoleExtensions.EsperaEnter();
-
-        }
-        Console.WriteLine("Fin del listado");
-        ConsoleExtensions.EsperaEnter();
-    }
-    /// <summary>
-    /// Muestra lista los ShoesDto paginados.
-    /// /// </summary>
-    private static void ListaDeShoesDtoPaginado()//17 checked
-    {
-        Console.Clear();
-
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio Shoe no responde");
-            return;
-        }
-        registro = shoesServicio.GetCantidad();
-        paginas = CalcularCantidadPaginas(registro, registrosPorPagina);
-
-        for (int page = 0; page < paginas; page++)
-        {
-            Console.Clear();
-            Console.WriteLine("Listado de Shoes");
-            Console.WriteLine($"Página: {page + 1}");
-            List<ShoeDto>? listaPaginada = shoesServicio?
-                .GetListaPaginadaOrdenadaFiltrada(registrosPorPagina, page + 1, null, null, null);
-            ConsoleExtensions.MostrarTabla(listaPaginada, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
-            ConsoleExtensions.EsperaEnter();
-        }
-    }
     /// <summary>
     /// Calcula la cantidad de paginas segun la cantidad de objects que me traigo y cuantos muestro por pagina.
     /// </summary>
     /// <param name="cantidadRegistros"></param>: cantidad de objects que trae de base de datos
     /// <param name="cantidadPorPagina"></param>: cat¿ntidad de registro se muestran por pagina
     /// <returns></returns>
-    private static int CalcularCantidadPaginas(int cantidadRegistros, int cantidadPorPagina)//checked
+    ///   /// <summary>
+    /// Ingresar un nuevo Shoe
+    /// </summary>
+    private static int CalcularCantidadPaginas(int cantidadRegistros, int cantidadPorPagina)//interno
     {
         if (cantidadRegistros < cantidadPorPagina)
         {
@@ -662,145 +1405,6 @@ class Program
             return cantidadRegistros / cantidadPorPagina + 1;
         }
     }
-    /// <summary>
-    /// Edita el Shoe seleccionado por Id
-    /// </summary>
-    private static void EditarUnShoe()//24 
-    {
-        Console.Clear();
-
-        List<ShoeDto> ListaShoesDto = shoesServicio.GetListaDto();
-
-        if (ListaShoesDto is null)
-        {
-            Console.WriteLine("No hay lista de Shoes disponible.");
-            return;
-        }
-        ConsoleExtensions.MostrarTabla(ListaShoesDto, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
-
-        int shoeIdSeleccionado = ConsoleExtensions.ReadInt("Ingrese el numero Id del Shoe: ");
-        Shoe shoe = shoesServicio.GetShoePorId(shoeIdSeleccionado);
-        ConsoleExtensions.EsperaEnter();
-
-        if (shoe is null)
-        {
-            Console.WriteLine("Shoe no encontrada.");
-            return;
-        }
-
-        // Editar los detalles del shoe
-
-        shoe.Brand.BrandName = ConsoleExtensions.ReadString("Ingrese nombre Brand: ");
-        shoe.Genre.GenreName = ConsoleExtensions.ReadString("Ingrese nombre Genre: ");
-        shoe.Colour.ColourName = ConsoleExtensions.ReadString("Ingrese nombre Colour: ");
-        shoe.Sport.SportName = ConsoleExtensions.ReadString("Ingrese nombre Sport: ");
-        shoe.Model = ConsoleExtensions.ReadString("Ingrese nombre Model: ");
-        shoe.Price = ConsoleExtensions.ReadDecimal("Ingrese Precio: ");
-        shoe.Description = ConsoleExtensions.ReadString("Ingrese Descripcion: ");
-
-        if (!shoesServicio.Existe(shoe))
-        {
-            shoesServicio.Editar(shoe);//probar
-            Console.WriteLine("Shoe editado exitosamente!");
-        }
-        else
-        {
-            Console.WriteLine("Shoe ya existe");
-            return;
-        }
-    }
-    /// <summary>
-    /// Borra un Shoe seleccionado por Id
-    /// </summary>
-    private static void BorrarUnShoe()//23
-    {
-        Console.Clear();
-
-        if (shoesServicio is null)
-        {
-            Console.WriteLine("Servicio caido");
-            return;
-        }
-        var ListaShoesDto = shoesServicio.GetListaDto();
-        if (ListaShoesDto is null)
-        {
-            Console.WriteLine("Lista Shoe no disponible");
-            return;
-        }
-        ConsoleExtensions.MostrarTabla(ListaShoesDto, "ShoeId", "Brand", "Sport", "Genre", "Colour", "Model", "Description", "Price");
-        Console.WriteLine("Ingrese Shoe a borrar");
-        var shoeId = ConsoleExtensions.ReadInt("Ingrese un ID de Shoe: ");
-
-        try
-        {
-            var shoe = shoesServicio?.GetShoePorId(shoeId);
-            if (shoe is null)
-            {
-                Console.WriteLine("Shoe inexistente!!!");
-            }
-            else
-            {
-                shoesServicio.Borrar(shoe.ShoeId);
-                Console.WriteLine("Registro borrado!!!");
-            }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine(ex.Message); ;
-        }
-    }
-    /// <summary>
-    /// Ingresar un nuevo Shoe
-    /// </summary>
-    private static void InsertarUnShoe()//22 checked
-    {
-        Console.Clear();
-        if (shoesServicio == null)
-        {
-            Console.WriteLine("Servicio no disponible, que hice mal Marta!? Que hice mal!!???'");
-            return;
-        }
-        Console.WriteLine("Nuevo Shoe");
-
-        var brandSeleccionado = SeleccionarUnBrand();
-        var genreSeleccionado = SeleccionarUnGenre();
-        var sportSeleccionado = SeleccionarUnSport();
-        var colourSeleccionado = SeleccionarUnColour();
-
-        var descripcionSeleccionada = ConsoleExtensions.ReadString("Ingrese descripción del Shoe:");
-        var modelSeleccionado = ConsoleExtensions.ReadString("Ingrese el modelo del Shoe:");
-        decimal priceSeleccionado = ConsoleExtensions.ReadDecimal("Ingrese el precio del Shoe:");
-        //--------------------------------------------------//
-
-        var shoe = new Shoe
-        {
-            ShoeId = 0,
-            Brand = brandSeleccionado,
-            BrandId = brandSeleccionado.BrandId,
-            Genre = genreSeleccionado,
-            GenreId = genreSeleccionado.GenreId,
-            Sport = sportSeleccionado,
-            SportId = sportSeleccionado.SportId,
-            Colour = colourSeleccionado,
-            ColourId = colourSeleccionado.ColourId,
-            Description = descripcionSeleccionada,
-            Model = modelSeleccionado,
-            Price = priceSeleccionado
-        };
-
-        if (shoesServicio.Existe(shoe))
-        {
-            Console.WriteLine("Shoe existente!!!");
-        }
-        else
-        {
-            shoesServicio.Guardar(shoe);
-            Console.WriteLine("Shoe agregado!!!");
-        }
-    }
-
-    //--------------------------------------------------//
     /// <summary>
     /// Selecciona un Colour para agregar al nuevo Shoe, incluye crear un nuevo Colour si necesitase.
     /// </summary>
@@ -944,606 +1548,5 @@ class Program
 
         }
         return brand;
-    }
-
-    //---------------------------------------//
-    /// <summary>
-    /// Edita un Sport por Id seleccionado de una lista
-    /// </summary>
-    private static void EditarUnSport()//16
-    {
-
-        Console.Clear();
-        if (sportsServicio is null)
-        {
-            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de sport a editar");
-
-        ListaDeSports();
-
-        var tipoNombre = ConsoleExtensions.ReadString("Ingrese nombre del sport:");
-        try
-        {
-
-            Sport sport = sportsServicio?.GetSportPorNombre(tipoNombre);
-            if (sport is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                Console.WriteLine($"Sport: {sport.SportName}");
-
-                var nuevoNombre = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de sport:");
-
-                sport.SportName = nuevoNombre;
-
-                if (sportsServicio.Existe(sport))
-                {
-                    Console.WriteLine("Registro duplicado!!!");
-                }
-                else
-                {
-                    sportsServicio.Guardar(sport);
-                    Console.WriteLine("Registro editado!!!");
-                }
-
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message); ;
-        }
-        Thread.Sleep(5000);
-
-    }
-    /// <summary>
-    /// Borrar un Sport por Id seleccionado de la lista
-    /// </summary>
-    private static void BorrarUnSport()//15
-    {
-        Console.Clear();
-        if (sportsServicio is null)
-        {
-            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de sport a borrar");
-
-        ListaDeSports();
-
-        var sportNombre = ConsoleExtensions.ReadString("Ingrese el nombre del sport: ");
-        try
-        {
-            var servicio = serviceProvider?.GetService<ISportsServicio>();
-            var sport = servicio?.GetSportPorNombre(sportNombre);
-
-            if (sport is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                if (servicio is null)
-                {
-                    throw new Exception("Servicio no disponible");
-                }
-                else
-                {
-                    if (servicio.EstaRelacionado(sport))
-                    {
-                        Console.WriteLine("Genre relacionado!!! Baja denegada");
-                    }
-                    else
-                    {
-                        servicio.Borrar(sport);
-                        Console.WriteLine("Registro borrado!!!");
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine(ex.Message);
-        }
-
-    }
-    /// <summary>
-    /// Agregar un nuevo Sport
-    /// </summary>
-    private static void InsertarUnSport()//14
-    {
-
-        Console.Clear();
-        if (sportsServicio is null)
-        {
-            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Nuevo Sport");
-        var sportNombre = ConsoleExtensions.ReadString("Ingrese un nuevo sport:");
-        var sport = new Sport { SportName = sportNombre };
-
-        if (sportsServicio is null)
-        {
-            Console.WriteLine("Servicio no disponible, que hice mal Marta!? Que hice mal!!???'");
-        }
-        else
-        {
-            if (sportsServicio.Existe(sport))
-            {
-                Console.WriteLine("Sport existente!!!");
-            }
-            else
-            {
-                sportsServicio.Guardar(sport);
-                Console.WriteLine("Sport agregado!!!");
-            }
-        }
-        Thread.Sleep(2000);
-
-    }
-    /// <summary>
-    /// Muestra lista de Sports completa
-    /// </summary>
-    private static void ListaDeSports()//13
-    {
-
-        Console.Clear();
-        if (sportsServicio is null)
-        {
-            Console.WriteLine("Servicio de Sport no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Listado de Sport");
-
-        List<Sport> listaSport = sportsServicio?.GetLista();
-
-        if (listaSport is null)
-        {
-            Console.WriteLine("No hay lista de Sport disponible.");
-            return;
-        }
-
-        ConsoleExtensions.MostrarTabla(listaSport, "SportId", "BrandName");
-    }
-
-    //----------------------------------------//
-    /// <summary>
-    /// Edita un Genre por Id seleccionado de una lista
-    /// </summary>
-    private static void EditarUnGenre()//12
-    {
-
-        Console.Clear();
-        if (genresServicio is null)
-        {
-            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de genre a editar");
-
-        ListaDeGenres();
-
-        var tipoNombre = ConsoleExtensions.ReadString("Ingrese nombre del genre: ");
-        try
-        {
-
-            Genre genre = genresServicio?.GetGenrePorNombre(tipoNombre);
-            if (genre is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                Console.WriteLine($"Genre: {genre.GenreName}");
-                genre.GenreName = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de genre:");
-
-                if (genresServicio.Existe(genre))
-                {
-                    Console.WriteLine("Registro duplicado!!!");
-                }
-                else
-                {
-                    genresServicio.Guardar(genre);
-                    Console.WriteLine("Registro editado!!!");
-                }
-
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message); ;
-        }
-    }
-    /// <summary>
-    /// Borrar un Genre por Id seleccionado de la lista
-    /// </summary>
-    private static void BorrarUnGenre()//11
-    {
-        Console.Clear();
-        if (genresServicio is null)
-        {
-            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de genre a borrar");
-
-        var genreNombre = ConsoleExtensions.ReadString("Ingrese el nombre del genre: ");
-
-        try
-        {
-            var genre = genresServicio?.GetGenrePorNombre(genreNombre);
-            if (genre is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                if (genresServicio.EstaRelacionado(genre))
-                {
-                    Console.WriteLine("Genre relacionado!!! Baja denegada");
-                }
-                else
-                {
-                    genresServicio.Borrar(genre);
-                    Console.WriteLine("Registro borrado!!!");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine(ex.Message); ;
-        }
-    }
-    /// <summary>
-    /// Agregar un nuevo Genre
-    /// </summary>
-    private static void InsertarUnGenre()//10
-    {
-
-        Console.Clear();
-        if (genresServicio is null)
-        {
-            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Nuevo Genre");
-
-        var genreNombre = ConsoleExtensions.ReadString("Ingrese un nuevo genre:");
-
-        var genre = new Genre { GenreName = genreNombre };
-
-        if (genresServicio is null)
-        {
-            Console.WriteLine("Servicio no disponible, que hice mal Marta!? Que hice mal!!???'");
-        }
-        else
-        {
-            if (genresServicio.Existe(genre))
-            {
-                Console.WriteLine("Genre existente!!!");
-            }
-            else
-            {
-                genresServicio.Guardar(genre);
-                Console.WriteLine("Genre agregado!!!");
-            }
-        }
-    }
-    /// <summary>
-    /// Muestra lista de Genre completa
-    /// </summary>
-    private static void ListaDeGenres()//9
-    {
-
-        Console.Clear();
-        if (genresServicio is null)
-        {
-            Console.WriteLine("Servicio de Genre no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Listado de Genres");
-
-        List<Genre> listaGenre = genresServicio?.GetLista();
-
-        if (listaGenre is null)
-        {
-            Console.WriteLine("No hay lista de Genres disponible.");
-            return;
-        }
-
-        ConsoleExtensions.MostrarTabla(listaGenre, "GenreId", "GenreName");
-    }
-
-    //--------------------------------------//
-    /// <summary>
-    /// Edita un Colour por Id seleccionado de una lista
-    /// </summary>
-    private static void EditarUnColour()//8
-    {
-        Console.Clear();
-        if (coloursServicio is null)
-        {
-            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de colour a editar");
-
-        ListaDeColours();
-
-        var tipoNombre = ConsoleExtensions.ReadString("Ingrese nombre del colour:");
-        try
-        {
-            var colour = coloursServicio?.GetColourPorNombre(tipoNombre);
-
-            if (colour is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                Console.WriteLine($"Brand: {colour.ColourName}");
-
-                colour.ColourName = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de colour: ");
-
-                if (coloursServicio.Existe(colour))
-                {
-                    Console.WriteLine("Registro duplicado!!!");
-                }
-                else
-                {
-                    coloursServicio.Guardar(colour);
-                    Console.WriteLine("Registro editado!!!");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message); ;
-        }
-        Thread.Sleep(5000);
-    }
-    /// <summary>
-    /// Borrar un Colour por Id seleccionado de la lista
-    /// </summary>
-    private static void BorrarUnColour()//7
-    {
-        Console.Clear();
-        if (coloursServicio is null)
-        {
-            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de colour a borrar");
-
-        var colourNombre = ConsoleExtensions.ReadString("Ingrese el nombre del colour: ");
-
-        try
-        {
-            var colour = coloursServicio?.GetColourPorNombre(colourNombre);
-
-            if (colour is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                if (coloursServicio.EstaRelacionado(colour))
-                {
-                    Console.WriteLine("Colour relacionado!!! Baja denegada");
-                }
-                else
-                {
-                    coloursServicio.Borrar(colour);
-                    Console.WriteLine("Registro borrado!!!");
-
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine(ex.Message); ;
-        }
-    }
-    /// <summary>
-    /// Agregar un nuevo Colour
-    /// </summary>
-    private static void InsertarUnColour()//6
-    {
-        Console.Clear();
-        if (coloursServicio is null)
-        {
-            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Nuevo Colour");
-
-        var colourNombre = ConsoleExtensions.ReadString("Ingrese un nuevo colour:");
-
-        Colour colour = new Colour { ColourName = colourNombre };
-
-
-        if (coloursServicio.Existe(colour))
-        {
-            Console.WriteLine("Colour existente!!!");
-        }
-        else
-        {
-            coloursServicio.Guardar(colour);
-            Console.WriteLine("Colour agregado!!!");
-        }
-
-    }
-    /// <summary>
-    /// Muestra lista de Colours completa
-    /// </summary>
-    private static void ListaDeColours()//5
-    {
-        Console.Clear();
-        if (coloursServicio is null)
-        {
-            Console.WriteLine("Servicio de Colours no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Listado de Colours");
-
-        var listaColours = coloursServicio.GetLista();
-
-        if (listaColours is null)
-        {
-            Console.WriteLine("No hay lista de Colour disponible.");
-            return;
-        }
-
-        ConsoleExtensions.MostrarTabla(listaColours, "ColourId", "ColourName");
-    }
-
-    //----------------------------------------//
-    /// <summary>
-    /// Edita un Brand por Id seleccionado de una lista
-    /// </summary>
-    private static void EditarUnBrand()//4
-    {
-        Console.Clear();
-        if (brandsServicio is null)
-        {
-            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de brand a editar");
-
-        ListaDeBrands();
-
-        var tipoNombre = ConsoleExtensions.ReadString("Ingrese nombre del brand:");
-        try
-        {
-            var brand = brandsServicio?.GetBrandPorNombre(tipoNombre);
-
-            if (brand is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-                Console.WriteLine($"Brand: {brand.BrandName}");
-
-                brand.BrandName = ConsoleExtensions.ReadString("Ingrese el nuevo nombre de Brand: ");
-
-                if (brandsServicio.Existe(brand))
-                {
-                    Console.WriteLine("Registro duplicado!!!");
-                }
-                else
-                {
-                    brandsServicio.Guardar(brand);
-                    Console.WriteLine("Registro editado!!!");
-
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine(ex.Message); ;
-        }
-    }
-    /// <summary>
-    /// Borrar un brand por Id seleccionado de la lista
-    /// </summary>
-    private static void BorrarUnBrand()//3
-    {
-        Console.Clear();
-        if (brandsServicio is null)
-        {
-            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Ingreso de Brand a borrar");
-
-        var brandNombre = ConsoleExtensions.ReadString("Ingrese el nombre del brand:");
-        try
-        {
-            var brand = brandsServicio?.GetBrandPorNombre(brandNombre);
-
-            if (brand is null)
-            {
-                Console.WriteLine("Registro inexistente!!!");
-            }
-            else
-            {
-
-                if (brandsServicio.EstaRelacionado(brand))
-                {
-                    Console.WriteLine("Brand relacionado!!! Baja denegada");
-                }
-                else
-                {
-                    brandsServicio.Borrar(brand);
-                    Console.WriteLine("Registro borrado!!!");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine(ex.Message); ;
-        }
-    }
-    /// <summary>
-    /// Agregar un nuevo Brand
-    /// </summary>
-    private static void InsertarUnBrand()//2
-    {
-        Console.Clear();
-        if (brandsServicio is null)
-        {
-            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-
-        Console.WriteLine("Nuevo Brand");
-        var brandNombre = ConsoleExtensions.ReadString("Ingrese un nuevo brand:");
-
-        var brand = new Brand { BrandName = brandNombre };
-
-
-        if (brandsServicio.Existe(brand))
-        {
-            Console.WriteLine("Brand existente!!!");
-        }
-        else
-        {
-            brandsServicio.Guardar(brand);
-            Console.WriteLine("Brand agregado!!!");
-        }
-    }
-    /// <summary>
-    /// Muestra lista de Brands completa
-    /// </summary>
-    private static void ListaDeBrands()//1
-    {
-        Console.Clear();
-        if (brandsServicio is null)
-        {
-            Console.WriteLine("Servicio de Brands no disponible. Por favor, verifica la configuración.");
-            return;
-        }
-        Console.WriteLine("Listado de Brands");
-
-        var listaBrands = brandsServicio.GetLista();
-
-        if (listaBrands is null)
-        {
-            Console.WriteLine("No hay lista de Brands disponible.");
-            return;
-        }
-
-        ConsoleExtensions.MostrarTabla(listaBrands, "BrandId", "BrandName");
     }
 }

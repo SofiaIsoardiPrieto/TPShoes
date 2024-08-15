@@ -179,6 +179,7 @@ namespace TPShoes.Servicios.Servicios
                 // Crear una nueva relación entre la shoe y el size
                 SizeShoe nuevoSizeShoe = new SizeShoe
                 {
+                    
                     Shoe = shoe,
                     Size = size
                 };
