@@ -9,16 +9,7 @@ namespace TPShoes.Windows
         private readonly IServiceProvider _serviceProvider;
         private readonly ISportsServicio _servicio;
         private List<Sport>? lista;
-
-
         private Sport? sport = null;
-
-
-
-        int paginaActual = 1;//private int pageNum = 0;
-        int registro;//private int recordCount;
-        int paginas;//private int pageCount;
-        int registrosPorPagina = 5; //private int pageSize = 15; 
 
         public FrmSports(ISportsServicio servicio, IServiceProvider serviceProvider)
         {
@@ -26,71 +17,25 @@ namespace TPShoes.Windows
             _servicio = servicio;
             _serviceProvider = serviceProvider;
         }
-        private void frmShoes_Load(object sender, EventArgs e)
+        private void frmSports_Load(object sender, EventArgs e)
         {
             RecargarGrilla();
         }
         private void RecargarGrilla()
         {
-            registro = _servicio.GetCantidad();
-            paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
-            PaginasTotalestextBox.Text = registro.ToString();
             lista = _servicio.GetLista();
-            CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
             MostrarDatosEnGrilla();
         }
-
-
         private void MostrarDatosEnGrilla()
         {
-
             GridHelper.LimpiarGrilla(SportdataGridView);
             foreach (var sport in lista)
             {
                 DataGridViewRow r = GridHelper.ConstruirFila(SportdataGridView);
                 GridHelper.SetearFila(r, sport);
                 GridHelper.AgregarFila(SportdataGridView, r);
-            }
-            ActualizarBotonesPaginado();
-
+            }          
         }
-
-        private void ActualizarBotonesPaginado()
-        {
-            PaginasTotalestextBox.Text = paginas.ToString();
-
-            if (paginaActual == paginas)
-            {
-                Primerobutton.Enabled = true;
-                Anteriorbutton.Enabled = true;
-                Siguientebutton.Enabled = false;
-                Ultimobutton.Enabled = false;
-
-            }
-            if (paginaActual < paginas)
-            {
-                Primerobutton.Enabled = true;
-                Anteriorbutton.Enabled = true;
-                Siguientebutton.Enabled = true;
-                Ultimobutton.Enabled = true;
-            }
-            if (paginaActual > paginas)
-            {
-                Primerobutton.Enabled = true;
-                Anteriorbutton.Enabled = true;
-                Siguientebutton.Enabled = true;
-                Ultimobutton.Enabled = true;
-
-            }
-            if (paginaActual == 1)
-            {
-                Primerobutton.Enabled = false;
-                Anteriorbutton.Enabled = false;
-                Siguientebutton.Enabled = true;
-                Ultimobutton.Enabled = true;
-            }
-        }
-
         private void NuevotoolStripButton_Click(object sender, EventArgs e)
         {
             FrmSportAE frm = new FrmSportAE(_serviceProvider);
@@ -121,7 +66,6 @@ namespace TPShoes.Windows
             }
             RecargarGrilla();
         }
-
         private void EditartoolStripButton_Click(object sender, EventArgs e)
         {
             if (SportdataGridView.SelectedRows.Count == 0) return;
@@ -177,7 +121,6 @@ namespace TPShoes.Windows
 
             RecargarGrilla();
         }
-
         private void BorrartoolStripButton_Click(object sender, EventArgs e)
         {
             if (SportdataGridView.SelectedRows.Count == 0) return;
@@ -235,54 +178,11 @@ namespace TPShoes.Windows
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-        private void Primerobutton_Click(object sender, EventArgs e)
-        {
-            paginaActual = 1;
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-
-        private void Anteriorbutton_Click(object sender, EventArgs e)
-        {
-            paginaActual--;
-            if (paginaActual == 1)
-            {
-                Anteriorbutton.Enabled = false;
-                Primerobutton.Enabled = false;
-            }
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-
-        private void Siguientebutton_Click(object sender, EventArgs e)
-        {
-            paginaActual++;
-            if (paginaActual == paginas)
-            {
-                Siguientebutton.Enabled = false;
-                Ultimobutton.Enabled = false;
-
-            }
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-
-        private void Ultimobutton_Click(object sender, EventArgs e)
-        {
-            paginaActual = paginas;
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-        private void PaginaActualcomboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (PaginaActualcomboBox.SelectedIndex >= 0)
-            {
-                paginaActual = PaginaActualcomboBox.SelectedIndex + 1;
-                MostrarDatosEnGrilla();
-            }
-        }
-
         private void SalirtoolStripButton_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+
     }
 }

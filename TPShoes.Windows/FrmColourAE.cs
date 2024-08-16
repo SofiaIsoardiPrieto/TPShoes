@@ -21,7 +21,7 @@ namespace TPShoes.Windows
             
             if (colour is not null)
             {
-                ColourtextBox.Text = colour.ColourName;
+                ColourtextBox.Text = colour.ColourName.ToLower();
                 EsEdition = true;
             }
         }

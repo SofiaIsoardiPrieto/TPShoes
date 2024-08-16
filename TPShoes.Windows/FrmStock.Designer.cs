@@ -53,7 +53,7 @@
             Aceptarbutton.BackColor = SystemColors.ButtonHighlight;
             Aceptarbutton.FlatStyle = FlatStyle.Flat;
             Aceptarbutton.Image = Properties.Resources.thumbs_up_36px;
-            Aceptarbutton.Location = new Point(69, 69);
+            Aceptarbutton.Location = new Point(29, 69);
             Aceptarbutton.Name = "Aceptarbutton";
             Aceptarbutton.Size = new Size(75, 68);
             Aceptarbutton.TabIndex = 11;
@@ -67,7 +67,7 @@
             Cancelarbutton.BackColor = SystemColors.ButtonHighlight;
             Cancelarbutton.FlatStyle = FlatStyle.Flat;
             Cancelarbutton.Image = Properties.Resources.thumbs_down_36px;
-            Cancelarbutton.Location = new Point(185, 69);
+            Cancelarbutton.Location = new Point(163, 69);
             Cancelarbutton.Name = "Cancelarbutton";
             Cancelarbutton.Size = new Size(75, 68);
             Cancelarbutton.TabIndex = 12;
@@ -103,7 +103,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(316, 149);
+            ClientSize = new Size(281, 150);
             Controls.Add(StocktextBox);
             Controls.Add(label8);
             Controls.Add(Cancelarbutton);

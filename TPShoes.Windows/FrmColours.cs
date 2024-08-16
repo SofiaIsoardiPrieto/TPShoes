@@ -10,38 +10,23 @@ namespace TPShoes.Windows
         private readonly IServiceProvider _serviceProvider;
         private readonly IColoursServicio _servicio;
         private List<Colour>? lista;
-
-
         private Colour? colour = null;
-
-
-
-        int paginaActual = 1;//private int pageNum = 0;
-        int registro;//private int recordCount;
-        int paginas;//private int pageCount;
-        int registrosPorPagina = 5; //private int pageSize = 15; 
-
         public FrmColours(IColoursServicio servicio, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _servicio = servicio;
             _serviceProvider = serviceProvider;
         }
-        private void frmShoes_Load(object sender, EventArgs e)
+     
+        private void frmColours_Load(object sender, EventArgs e)
         {
             RecargarGrilla();
         }
         private void RecargarGrilla()
         {
-            registro = _servicio.GetCantidad();
-            paginas = FormHelper.CalcularPaginas(registro, registrosPorPagina);
-            PaginasTotalestextBox.Text = registro.ToString();
             lista = _servicio.GetLista();
-            CombosHelper.CargarCombosPaginas(paginas, ref PaginaActualcomboBox);
             MostrarDatosEnGrilla();
         }
-
-
         private void MostrarDatosEnGrilla()
         {
 
@@ -51,44 +36,6 @@ namespace TPShoes.Windows
                 DataGridViewRow r = GridHelper.ConstruirFila(ColourdataGridView);
                 GridHelper.SetearFila(r, colour);
                 GridHelper.AgregarFila(ColourdataGridView, r);
-            }
-            ActualizarBotonesPaginado();
-
-        }
-
-        private void ActualizarBotonesPaginado()
-        {
-            PaginasTotalestextBox.Text = paginas.ToString();
-
-            if (paginaActual == paginas)
-            {
-                Primerobutton.Enabled = true;
-                Anteriorbutton.Enabled = true;
-                Siguientebutton.Enabled = false;
-                Ultimobutton.Enabled = false;
-
-            }
-            if (paginaActual < paginas)
-            {
-                Primerobutton.Enabled = true;
-                Anteriorbutton.Enabled = true;
-                Siguientebutton.Enabled = true;
-                Ultimobutton.Enabled = true;
-            }
-            if (paginaActual > paginas)
-            {
-                Primerobutton.Enabled = true;
-                Anteriorbutton.Enabled = true;
-                Siguientebutton.Enabled = true;
-                Ultimobutton.Enabled = true;
-
-            }
-            if (paginaActual == 1)
-            {
-                Primerobutton.Enabled = false;
-                Anteriorbutton.Enabled = false;
-                Siguientebutton.Enabled = true;
-                Ultimobutton.Enabled = true;
             }
         }
 
@@ -113,7 +60,6 @@ namespace TPShoes.Windows
                     MessageBox.Show("Colour existente!!!", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
             catch (Exception ex)
             {
@@ -175,7 +121,6 @@ namespace TPShoes.Windows
                 GridHelper.SetearFila(filaSeleccionada, colourOriginal);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
             RecargarGrilla();
         }
 
@@ -198,13 +143,11 @@ namespace TPShoes.Windows
                     {
                         _servicio.Borrar(colour);
 
-                        GridHelper.QuitarFila( ColourdataGridView, r);
+                        GridHelper.QuitarFila(ColourdataGridView, r);
                         MessageBox.Show("Registro Borrado Satisfactoriamente!!!",
                             "Mensaje",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
-
-
                     }
                     else
                     {
@@ -212,7 +155,6 @@ namespace TPShoes.Windows
                             "Error",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
-
                     }
                 }
                 catch (Exception ex)
@@ -222,68 +164,20 @@ namespace TPShoes.Windows
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
-
                 }
 
-
-                RecargarGrilla();//evitar errores
-
+                RecargarGrilla();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message, "Mensaje",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-        private void Primerobutton_Click(object sender, EventArgs e)
-        {
-            paginaActual = 1;
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-
-        private void Anteriorbutton_Click(object sender, EventArgs e)
-        {
-            paginaActual--;
-            if (paginaActual == 1)
-            {
-                Anteriorbutton.Enabled = false;
-                Primerobutton.Enabled = false;
-            }
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-
-        private void Siguientebutton_Click(object sender, EventArgs e)
-        {
-            paginaActual++;
-            if (paginaActual == paginas)
-            {
-                Siguientebutton.Enabled = false;
-                Ultimobutton.Enabled = false;
-
-            }
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-
-        private void Ultimobutton_Click(object sender, EventArgs e)
-        {
-            paginaActual = paginas;
-            PaginaActualcomboBox.SelectedIndex = paginaActual - 1;
-        }
-        private void PaginaActualcomboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (PaginaActualcomboBox.SelectedIndex >= 0)
-            {
-                paginaActual = PaginaActualcomboBox.SelectedIndex + 1;
-                MostrarDatosEnGrilla();
-            }
-        }
-
         private void SalirtoolStripButton_Click(object sender, EventArgs e)
         {
             Close();
         }
+
     }
 }

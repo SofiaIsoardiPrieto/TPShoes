@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             splitContainer2 = new SplitContainer();
             toolStrip1 = new ToolStrip();
             EditartoolStripButton = new ToolStripButton();
@@ -117,6 +117,7 @@
             SizeShoedataGridView.Dock = DockStyle.Fill;
             SizeShoedataGridView.GridColor = SystemColors.Menu;
             SizeShoedataGridView.Location = new Point(0, 0);
+            SizeShoedataGridView.MultiSelect = false;
             SizeShoedataGridView.Name = "SizeShoedataGridView";
             SizeShoedataGridView.ReadOnly = true;
             SizeShoedataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -126,10 +127,10 @@
             // ColZise
             // 
             ColZise.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle3.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
-            ColZise.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            ColZise.DefaultCellStyle = dataGridViewCellStyle1;
             ColZise.HeaderText = "Size";
             ColZise.Name = "ColZise";
             ColZise.ReadOnly = true;
@@ -137,10 +138,10 @@
             // ColStock
             // 
             ColStock.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle4.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
-            ColStock.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            ColStock.DefaultCellStyle = dataGridViewCellStyle2;
             ColStock.HeaderText = "Stock";
             ColStock.Name = "ColStock";
             ColStock.ReadOnly = true;
@@ -172,7 +173,7 @@
             splitContainer1.SplitterDistance = 383;
             splitContainer1.TabIndex = 0;
             // 
-            // FrmSizes
+            // FrmSizeShoes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -180,7 +181,7 @@
             ClientSize = new Size(330, 412);
             Controls.Add(splitContainer1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "FrmSizes";
+            Name = "FrmSizeShoes";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Lista de Shoes";
             Load += frmShoes_Load;

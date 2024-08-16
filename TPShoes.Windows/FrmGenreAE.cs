@@ -21,7 +21,7 @@ namespace TPShoes.Windows
             
             if (genre is not null)
             {
-                GenretextBox.Text = genre.GenreName;
+                GenretextBox.Text = genre.GenreName.ToLower();
                 EsEdition = true;
             }
         }

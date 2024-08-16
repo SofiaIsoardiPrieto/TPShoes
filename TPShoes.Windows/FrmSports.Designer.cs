@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
             toolStrip1 = new ToolStrip();
@@ -38,15 +38,8 @@
             toolStripSeparator1 = new ToolStripSeparator();
             SalirtoolStripButton = new ToolStripButton();
             SportdataGridView = new DataGridView();
-            PaginasTotalestextBox = new TextBox();
-            PaginaActualcomboBox = new ComboBox();
-            label2 = new Label();
-            label1 = new Label();
-            Ultimobutton = new Button();
-            Anteriorbutton = new Button();
-            Siguientebutton = new Button();
-            Primerobutton = new Button();
             ColSport = new DataGridViewTextBoxColumn();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -72,16 +65,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(PaginasTotalestextBox);
-            splitContainer1.Panel2.Controls.Add(PaginaActualcomboBox);
-            splitContainer1.Panel2.Controls.Add(label2);
             splitContainer1.Panel2.Controls.Add(label1);
-            splitContainer1.Panel2.Controls.Add(Ultimobutton);
-            splitContainer1.Panel2.Controls.Add(Anteriorbutton);
-            splitContainer1.Panel2.Controls.Add(Siguientebutton);
-            splitContainer1.Panel2.Controls.Add(Primerobutton);
-            splitContainer1.Size = new Size(493, 306);
-            splitContainer1.SplitterDistance = 249;
+            splitContainer1.Size = new Size(228, 294);
+            splitContainer1.SplitterDistance = 239;
             splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -98,8 +84,8 @@
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(SportdataGridView);
-            splitContainer2.Size = new Size(493, 249);
-            splitContainer2.SplitterDistance = 63;
+            splitContainer2.Size = new Size(228, 239);
+            splitContainer2.SplitterDistance = 60;
             splitContainer2.TabIndex = 0;
             // 
             // toolStrip1
@@ -107,7 +93,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { NuevotoolStripButton, EditartoolStripButton, BorrartoolStripButton, toolStripSeparator1, SalirtoolStripButton });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(493, 61);
+            toolStrip1.Size = new Size(228, 61);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -174,123 +160,46 @@
             SportdataGridView.Dock = DockStyle.Fill;
             SportdataGridView.GridColor = SystemColors.Menu;
             SportdataGridView.Location = new Point(0, 0);
+            SportdataGridView.MultiSelect = false;
             SportdataGridView.Name = "SportdataGridView";
             SportdataGridView.ReadOnly = true;
             SportdataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            SportdataGridView.Size = new Size(493, 182);
+            SportdataGridView.Size = new Size(228, 175);
             SportdataGridView.TabIndex = 0;
-            // 
-            // PaginasTotalestextBox
-            // 
-            PaginasTotalestextBox.Font = new Font("Candara", 11.25F);
-            PaginasTotalestextBox.Location = new Point(155, 14);
-            PaginasTotalestextBox.Name = "PaginasTotalestextBox";
-            PaginasTotalestextBox.Size = new Size(60, 26);
-            PaginasTotalestextBox.TabIndex = 1;
-            // 
-            // PaginaActualcomboBox
-            // 
-            PaginaActualcomboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            PaginaActualcomboBox.Font = new Font("Candara", 11.25F);
-            PaginaActualcomboBox.FormattingEnabled = true;
-            PaginaActualcomboBox.Location = new Point(45, 13);
-            PaginaActualcomboBox.Name = "PaginaActualcomboBox";
-            PaginaActualcomboBox.Size = new Size(71, 26);
-            PaginaActualcomboBox.TabIndex = 0;
-            PaginaActualcomboBox.SelectedIndexChanged += PaginaActualcomboBox_SelectedIndexChanged;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Candara", 11.25F);
-            label2.Location = new Point(123, 17);
-            label2.Name = "label2";
-            label2.Size = new Size(28, 18);
-            label2.TabIndex = 1;
-            label2.Text = "de:";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Candara", 11.25F);
-            label1.Location = new Point(4, 16);
-            label1.Name = "label1";
-            label1.Size = new Size(35, 18);
-            label1.TabIndex = 1;
-            label1.Text = "Pág:";
-            // 
-            // Ultimobutton
-            // 
-            Ultimobutton.BackColor = Color.White;
-            Ultimobutton.FlatStyle = FlatStyle.Flat;
-            Ultimobutton.Image = Properties.Resources.end_36px;
-            Ultimobutton.Location = new Point(428, 6);
-            Ultimobutton.Name = "Ultimobutton";
-            Ultimobutton.Size = new Size(51, 40);
-            Ultimobutton.TabIndex = 5;
-            Ultimobutton.UseVisualStyleBackColor = false;
-            Ultimobutton.Click += Ultimobutton_Click;
-            // 
-            // Anteriorbutton
-            // 
-            Anteriorbutton.BackColor = Color.White;
-            Anteriorbutton.FlatStyle = FlatStyle.Flat;
-            Anteriorbutton.Image = Properties.Resources.rewind_36px;
-            Anteriorbutton.Location = new Point(303, 6);
-            Anteriorbutton.Name = "Anteriorbutton";
-            Anteriorbutton.Size = new Size(51, 40);
-            Anteriorbutton.TabIndex = 3;
-            Anteriorbutton.UseVisualStyleBackColor = false;
-            Anteriorbutton.Click += Anteriorbutton_Click;
-            // 
-            // Siguientebutton
-            // 
-            Siguientebutton.BackColor = Color.White;
-            Siguientebutton.FlatStyle = FlatStyle.Flat;
-            Siguientebutton.Image = Properties.Resources.fast_forward_36px;
-            Siguientebutton.Location = new Point(367, 6);
-            Siguientebutton.Name = "Siguientebutton";
-            Siguientebutton.Size = new Size(51, 40);
-            Siguientebutton.TabIndex = 4;
-            Siguientebutton.UseVisualStyleBackColor = false;
-            Siguientebutton.Click += Siguientebutton_Click;
-            // 
-            // Primerobutton
-            // 
-            Primerobutton.BackColor = Color.White;
-            Primerobutton.FlatStyle = FlatStyle.Flat;
-            Primerobutton.Image = Properties.Resources.skip_to_start_36px;
-            Primerobutton.Location = new Point(241, 6);
-            Primerobutton.Name = "Primerobutton";
-            Primerobutton.Size = new Size(51, 40);
-            Primerobutton.TabIndex = 2;
-            Primerobutton.TextImageRelation = TextImageRelation.TextBeforeImage;
-            Primerobutton.UseVisualStyleBackColor = false;
-            Primerobutton.Click += Primerobutton_Click;
             // 
             // ColSport
             // 
             ColSport.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle1.Font = new Font("Candara", 11.25F);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(222, 180, 210);
-            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
-            ColSport.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Font = new Font("Candara", 11.25F);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(222, 180, 210);
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
+            ColSport.DefaultCellStyle = dataGridViewCellStyle3;
             ColSport.HeaderText = "Sport";
             ColSport.Name = "ColSport";
             ColSport.ReadOnly = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Candara", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label1.Location = new Point(29, 16);
+            label1.Name = "label1";
+            label1.Size = new Size(171, 19);
+            label1.TabIndex = 5;
+            label1.Text = "Zapateria \"Los juanetes\"";
             // 
             // FrmSports
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(493, 306);
+            ClientSize = new Size(228, 294);
             Controls.Add(splitContainer1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "FrmSports";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Lista de Shoes";
-            Load += frmShoes_Load;
+            Load += frmSports_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
@@ -312,14 +221,6 @@
         private SplitContainer splitContainer1;
         private SplitContainer splitContainer2;
         private DataGridView SportdataGridView;
-        private Button Ultimobutton;
-        private Button Anteriorbutton;
-        private Button Siguientebutton;
-        private Button Primerobutton;
-        private TextBox PaginasTotalestextBox;
-        private ComboBox PaginaActualcomboBox;
-        private Label label2;
-        private Label label1;
         private ToolStrip toolStrip1;
         private ToolStripButton NuevotoolStripButton;
         private ToolStripButton EditartoolStripButton;
@@ -327,5 +228,6 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton SalirtoolStripButton;
         private DataGridViewTextBoxColumn ColSport;
+        private Label label1;
     }
 }

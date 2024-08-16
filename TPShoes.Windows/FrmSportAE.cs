@@ -43,7 +43,7 @@ namespace TPShoes.Windows
                 }
 
                 sport.SportId = sport?.SportId ?? 0;
-                sport.SportName = SporttextBox.Text;
+                sport.SportName = SporttextBox.Text.ToLower();
                 DialogResult = DialogResult.OK;
             }
         }

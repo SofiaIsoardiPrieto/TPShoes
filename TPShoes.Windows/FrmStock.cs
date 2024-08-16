@@ -1,6 +1,4 @@
 using TPShoes.Entidades.Clases;
-using TPShoes.Entidades.Dtos;
-using TPShoes.Windows.Helpers;
 
 namespace TPShoes.Windows
 {
@@ -17,9 +15,7 @@ namespace TPShoes.Windows
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-           
         }
-      
         private void Aceptarbutton_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())

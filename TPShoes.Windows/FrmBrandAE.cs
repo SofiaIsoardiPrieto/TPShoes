@@ -43,7 +43,7 @@ namespace TPShoes.Windows
                 }
 
                 brand.BrandId = brand?.BrandId ?? 0;
-                brand.BrandName = BrandtextBox.Text;
+                brand.BrandName = BrandtextBox.Text.ToLower();
                 DialogResult = DialogResult.OK;
             }
         }

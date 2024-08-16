@@ -338,6 +338,7 @@
             ShoesdataGridView.Dock = DockStyle.Fill;
             ShoesdataGridView.GridColor = SystemColors.Menu;
             ShoesdataGridView.Location = new Point(0, 0);
+            ShoesdataGridView.MultiSelect = false;
             ShoesdataGridView.Name = "ShoesdataGridView";
             ShoesdataGridView.ReadOnly = true;
             ShoesdataGridView.RowHeadersWidth = 45;
